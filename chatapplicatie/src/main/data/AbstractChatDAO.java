@@ -3,7 +3,7 @@ package src.main.data;
 import src.main.data.dto.MessageDTO;
 
 public class AbstractChatDAO {
-    public MessageDTO getChatHistory(String senderId, String receiverId){
+    public MessageDTO[] getChatHistory(String senderId, String receiverId){
         // code
         return null;
     }

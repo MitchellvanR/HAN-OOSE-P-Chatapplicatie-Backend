@@ -3,7 +3,7 @@ package src.main.data;
 import src.main.data.dto.MessageDTO;
 
 public class SQLChatDAO extends AbstractChatDAO {
-    public MessageDTO getChatMessages(String senderId, String receiverId){
+    public MessageDTO[] getChatMessages(String senderId, String receiverId){
         // code
         return null;
     }

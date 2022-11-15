@@ -4,9 +4,9 @@ import src.main.data.dto.MessageDTO;
 import src.main.models.Chat;
 
 public class ChatController {
-    private Chat chats = new Chat();
+    private Chat[] chats;
 
-    public MessageDTO getChatHistory(Object sender, Object receiver){
+    public MessageDTO[] getChatHistory(Object sender, Object receiver){
         // code
         return null;
     }
