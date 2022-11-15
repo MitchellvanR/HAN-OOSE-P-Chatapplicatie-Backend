@@ -1,7 +1,7 @@
-package src.main.controllers;
+package controllers;
 
-import src.main.data.dto.MessageDTO;
-import src.main.models.Chat;
+import data.dto.MessageDTO;
+import models.Chat;
 
 public class ChatController {
     private Chat[] chats;

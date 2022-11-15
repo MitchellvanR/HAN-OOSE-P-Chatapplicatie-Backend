@@ -1,4 +1,4 @@
-package src.main.models;
+package models;
 
 import src.main.data.AbstractChatDAO;
 import src.main.data.SQLChatDAO;

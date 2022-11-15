@@ -1,6 +1,6 @@
-package src.main.data;
+package data;
 
-import src.main.data.dto.MessageDTO;
+import data.dto.MessageDTO;
 
 public abstract class AbstractChatDAO {
     public MessageDTO[] getChatHistory(String senderId, String receiverId){

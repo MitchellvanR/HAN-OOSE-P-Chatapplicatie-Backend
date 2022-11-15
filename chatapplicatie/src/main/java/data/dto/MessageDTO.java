@@ -1,4 +1,4 @@
-package src.main.data.dto;
+package data.dto;
 
 public class MessageDTO {
     private String senderId;
