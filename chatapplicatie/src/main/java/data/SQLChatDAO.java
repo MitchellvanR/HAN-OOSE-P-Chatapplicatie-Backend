@@ -1,6 +1,6 @@
-package src.main.data;
+package data;
 
-import src.main.data.dto.MessageDTO;
+import data.dto.MessageDTO;
 
 public class SQLChatDAO extends AbstractChatDAO {
     public MessageDTO[] getChatMessages(String senderId, String receiverId){

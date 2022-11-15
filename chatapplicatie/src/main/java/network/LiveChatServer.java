@@ -1,6 +1,6 @@
-package src.main.network;
+package network;
 
-import src.main.models.User;
+import models.User;
 
 public class LiveChatServer {
     public void connect(User user){

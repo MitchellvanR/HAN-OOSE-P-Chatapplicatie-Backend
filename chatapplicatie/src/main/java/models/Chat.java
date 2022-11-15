@@ -1,8 +1,8 @@
 package models;
 
-import src.main.data.AbstractChatDAO;
-import src.main.data.SQLChatDAO;
-import src.main.data.dto.MessageDTO;
+import data.AbstractChatDAO;
+import data.SQLChatDAO;
+import data.dto.MessageDTO;
 
 public class Chat {
     private User sender = new User();

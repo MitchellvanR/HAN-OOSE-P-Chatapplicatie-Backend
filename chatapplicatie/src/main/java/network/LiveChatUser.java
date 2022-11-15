@@ -1,4 +1,4 @@
-package src.main.network;
+package network;
 
 public class LiveChatUser {
     // code

@@ -1,6 +1,6 @@
-package src.main.models;
+package models;
 
-import src.main.network.LiveChatServer;
+import network.LiveChatServer;
 
 public class User {
     private String id;
