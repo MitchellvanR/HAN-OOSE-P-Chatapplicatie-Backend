@@ -14,4 +14,12 @@ public class User {
     public void sendMessage(String message){
         // code
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public boolean geOnline(){
+        return online;
+    }
 }

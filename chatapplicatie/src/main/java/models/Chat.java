@@ -15,6 +15,11 @@ public class Chat {
     }
 
     public void sendMessage(String message){
-        // code
+      String senderId = sender.getId();
+      String receiverId = receiver.getId();
+      chatDAO.saveMessage(senderId, receiverId, message);
+      if (receiver.geOnline()){
+          sender.sendMessage(message);
+      }
     }
 }
