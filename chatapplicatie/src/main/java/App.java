@@ -1,5 +1,8 @@
+import data.SQLChatDAO;
+
 public class App {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        SQLChatDAO dao = new SQLChatDAO();
+        dao.saveMessage("TestSender", "testReceiver", "TestMessage");
     }
 }
