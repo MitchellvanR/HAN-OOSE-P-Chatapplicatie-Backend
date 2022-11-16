@@ -19,7 +19,7 @@ public class User {
         return id;
     }
 
-    public boolean geOnline(){
+    public boolean getOnline(){
         return online;
     }
 }
