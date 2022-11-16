@@ -2,7 +2,7 @@ package data;
 
 import data.dto.MessageDTO;
 
-public abstract class AbstractChatDAO {
+public abstract class AbstractChatDAO extends ConnectionDAO{
     public MessageDTO[] getChatHistory(String senderId, String receiverId){
         // code
         return null;
