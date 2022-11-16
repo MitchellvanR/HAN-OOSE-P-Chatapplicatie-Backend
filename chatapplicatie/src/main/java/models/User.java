@@ -12,7 +12,7 @@ public class User {
     }
 
     public void sendMessage(String message){
-        // code
+        server.sendMessage(message);
     }
 
     public String getId() {
