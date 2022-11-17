@@ -1,8 +1,8 @@
-package models;
+package jdi.chat.application.models;
 
-import data.AbstractChatDAO;
-import data.SQLChatDAO;
-import data.dto.MessageDTO;
+import jdi.chat.application.data.AbstractChatDAO;
+import jdi.chat.application.data.SQLChatDAO;
+import jdi.chat.application.data.dto.MessageDTO;
 
 public class Chat {
     private User sender = new User();

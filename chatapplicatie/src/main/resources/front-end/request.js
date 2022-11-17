@@ -28,18 +28,18 @@ const sendHttpRequest = (method, url, data) => {
 };
 
 function getChatLog(){
-    sendHttpRequest('GET', 'https://reqres.in/api/users').then(responseData => {
-    // sendHttpRequest('GET', 'http://localhost:8080/chats').then(responseData => {
-    //   console.log(responseData);
+    // sendHttpRequest('GET', 'https://reqres.in/api/users').then(responseData => {
+    sendHttpRequest('GET', 'http://localhost:63342/prolog-jdi/chatapplicatie/chats').then(hoi => {
+      console.log(hoi);
     });
 
   let responseData = { //@todo Dit is nepdata, straks halen we dit uit de response.
     "messages": [
-      {"sender": "1", "receiver": "2", "message": "Hoi Jesse"},
-      {"sender": "2", "receiver": "1", "message": "Hallo Thijs"},
-      {"sender": "1", "receiver": "2", "message": "Hoe is het."},
-      {"sender": "2", "receiver": "1", "message": "Kan beter."},
-      {"sender": "1", "receiver": "2", "message": "Amen."},
+      {"senderId": "1", "receiverId": "2", "message": "Hoi Jesse"},
+      {"senderId": "2", "receiverId": "1", "message": "Hallo Thijs"},
+      {"senderId": "1", "receiverId": "2", "message": "Hoe is het."},
+      {"senderId": "2", "receiverId": "1", "message": "Kan beter."},
+      {"senderId": "1", "receiverId": "2", "message": "Amen."},
     ]
   }
 
@@ -47,7 +47,7 @@ function getChatLog(){
   const outgoingMessage = document.getElementById('content');
 
   for (let message of responseData.messages){
-    if (message.sender === "1"){ //@todo het ID van de huidige gebruiker moet hier komen.
+    if (message.senderId === "1"){ //@todo het ID van de huidige gebruiker moet hier komen.
       incomingMessage.innerHTML += '' +
           '<div class="outgoing_msg"> ' +
             '<div class="sent_msg"> ' +
@@ -70,17 +70,17 @@ function getChatLog(){
 }
 
 const sendMessage = () => {
-  sendHttpRequest('POST', '/sendMessage', {
+  sendHttpRequest('POST', 'http://localhost:63342/prolog-jdi/chatapplicatie/chats', {
     message:
         {
-          "sender":"1",
-          "receiver":"2",
+          "senderId":"1",
+          "receiverId":"2",
           "message":document.getElementById('message').value,
         },
-  })
-      .catch(err => {
-        console.log(err);
-      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 post.addEventListener('click', sendMessage);

@@ -1,6 +1,6 @@
-package models;
+package jdi.chat.application.models;
 
-import network.LiveChatServer;
+import jdi.chat.application.network.LiveChatServer;
 
 public class User {
     private String id;

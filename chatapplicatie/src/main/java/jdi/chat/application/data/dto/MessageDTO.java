@@ -1,4 +1,4 @@
-package data.dto;
+package jdi.chat.application.data.dto;
 
 public class MessageDTO {
     private String senderId;

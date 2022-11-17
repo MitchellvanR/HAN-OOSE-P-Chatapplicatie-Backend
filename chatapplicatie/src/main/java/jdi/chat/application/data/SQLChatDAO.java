@@ -1,6 +1,6 @@
-package data;
+package jdi.chat.application.data;
 
-import data.dto.MessageDTO;
+import jdi.chat.application.data.dto.MessageDTO;
 
 import java.io.IOException;
 import java.sql.*;
