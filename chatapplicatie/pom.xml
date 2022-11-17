@@ -10,4 +10,11 @@
   </properties>
   <name>Archetype - chatapplicatie</name>
   <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>com.microsoft.sqlserver</groupId>
+      <artifactId>mssql-jdbc</artifactId>
+      <version>11.2.0.jre11</version>
+    </dependency>
+  </dependencies>
 </project>

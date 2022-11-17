@@ -12,6 +12,6 @@ public class ChatController {
     }
 
     public void sendMessage(String message){
-        // code
+        chats[0].sendMessage(message);
     }
 }
