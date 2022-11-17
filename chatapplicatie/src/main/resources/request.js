@@ -29,15 +29,17 @@ const sendHttpRequest = (method, url, data) => {
 
 function getChatLog(){
     sendHttpRequest('GET', 'https://reqres.in/api/users').then(responseData => {
-    // sendHttpRequest('GET', 'http://localhost:63342/getChatLog').then(responseData => {
+    // sendHttpRequest('GET', 'http://localhost:8080/chats').then(responseData => {
     //   console.log(responseData);
     });
 
   let responseData = { //@todo Dit is nepdata, straks halen we dit uit de response.
     "messages": [
       {"sender": "1", "receiver": "2", "message": "Hoi Jesse"},
-      {"sender": "2", "receiver": "1", "message": "Fakka Thijs"},
-      {"sender": "1", "receiver": "2", "message": "Val dood."},
+      {"sender": "2", "receiver": "1", "message": "Hallo Thijs"},
+      {"sender": "1", "receiver": "2", "message": "Hoe is het."},
+      {"sender": "2", "receiver": "1", "message": "Kan beter."},
+      {"sender": "1", "receiver": "2", "message": "Amen."},
     ]
   }
 
@@ -71,14 +73,15 @@ const sendMessage = () => {
   sendHttpRequest('POST', '/sendMessage', {
     message:
         {
-            "sender":"1",
-            "receiver":"2",
-            "message":document.getElementById('message').value,
+          "sender":"1",
+          "receiver":"2",
+          "message":document.getElementById('message').value,
         },
   })
-  .catch(err => {
-    console.log(err);
-  });
+      .catch(err => {
+        console.log(err);
+      });
 };
 
 post.addEventListener('click', sendMessage);
+
