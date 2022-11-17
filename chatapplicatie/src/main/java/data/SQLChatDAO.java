@@ -24,8 +24,8 @@ public class SQLChatDAO extends AbstractChatDAO {
 
             ArrayList<MessageDTO> chatHistory = new ArrayList<>();
             while(resultSet.next()) {
-                MessageDTO messages = (formatMessage(resultSet.getString("verzenderId"), resultSet.getString("ontvangerId"), resultSet.getString("bericht")));
-                chatHistory.add(messages);
+                MessageDTO message = (formatMessage(resultSet.getString("verzenderId"), resultSet.getString("ontvangerId"), resultSet.getString("bericht")));
+                chatHistory.add(message);
             }
             return chatHistory;
         } catch(Exception e) {
