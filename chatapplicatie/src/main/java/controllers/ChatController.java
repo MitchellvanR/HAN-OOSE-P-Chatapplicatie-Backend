@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class ChatController {
     private Chat[] chats;
 
-    public ArrayList<MessageDTO> getChatHistory(String sender, String receiver){
+    public ArrayList<MessageDTO> getChatHistory(String senderId, String receiverId){
         Chat chat = new Chat(/*sender, receiver*/ "1", "2");
         ArrayList<MessageDTO> chatHistory = chat.getChatHistory();
         return chatHistory;
