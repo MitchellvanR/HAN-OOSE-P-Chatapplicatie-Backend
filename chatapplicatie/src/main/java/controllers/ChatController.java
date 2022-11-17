@@ -23,6 +23,6 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void sendMessage(String message){
-        // code
+        chats[0].sendMessage(message);
     }
 }
