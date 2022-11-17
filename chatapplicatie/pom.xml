@@ -6,8 +6,6 @@
   <artifactId>chatapplicatie</artifactId>
   <packaging>war</packaging>
   <version>1.0</version>
-  <name>Chatapplicatie</name>
-  <url>http://maven.apache.org</url>
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
@@ -59,7 +57,7 @@
   </dependencies>
 
   <build>
-    <finalName>${artifactId}</finalName>
+    <finalName>${project.artifactId}</finalName>
     <pluginManagement>
 
       <plugins>
