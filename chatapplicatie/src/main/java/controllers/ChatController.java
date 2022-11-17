@@ -4,6 +4,7 @@ import data.dto.MessageDTO;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import models.Chat;
 
 @Path("/chats")
@@ -14,15 +15,15 @@ public class ChatController {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public MessageDTO[] getChatHistory(Object sender, Object receiver){
-        // code
+    public Response getChatHistory(Object sender, Object receiver){
         return null;
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void sendMessage(String message){
+    public Response sendMessage(String message){
         chats[0].sendMessage(message);
+        return null;
     }
 }
