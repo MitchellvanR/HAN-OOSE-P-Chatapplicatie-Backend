@@ -14,13 +14,12 @@ public class SQLChatDAO extends AbstractChatDAO {
 
     public void saveMessage(String senderId, String receiverId, String message){
         try {
-        Connection connection;
         Properties properties = new Properties();
         properties.load(getClass().getClassLoader().getResourceAsStream("database.properties"));
 
         String url = properties.getProperty("connectionString");
 
-        connection = DriverManager.getConnection(url);
+        Connection connection = DriverManager.getConnection(url);
         String sql = "Insert into Bericht Values ('" + senderId + "', '" + receiverId + "', '" + message + "')";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.executeUpdate();
