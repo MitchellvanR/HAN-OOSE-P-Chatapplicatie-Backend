@@ -1,17 +1,35 @@
 package controllers;
 
 import data.dto.MessageDTO;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Application;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import models.Chat;
 
-public class ChatController {
-    private Chat[] chats;
+import java.util.ArrayList;
 
-    public MessageDTO[] getChatHistory(Object sender, Object receiver){
-        // code
+@Path("/chats")
+public class ChatController {
+
+    private ArrayList<Chat> chats;
+
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getChatHistory(Object sender, Object receiver){
         return null;
     }
 
-    public void sendMessage(String message){
-        chats[0].sendMessage(message);
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response sendMessage(String message){
+        chats.get(0).sendMessage(message);
+        return null;
     }
+
+    @Inject
+    public void setChats(ArrayList<Chat> chats) { this.chats = chats; }
 }
