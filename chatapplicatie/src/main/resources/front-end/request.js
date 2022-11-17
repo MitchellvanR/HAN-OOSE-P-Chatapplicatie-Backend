@@ -29,7 +29,7 @@ const sendHttpRequest = (method, url, data) => {
 
 function getChatLog(){
     // sendHttpRequest('GET', 'https://reqres.in/api/users').then(responseData => {
-    sendHttpRequest('GET', 'http://localhost:63342/prolog-jdi/chatapplicatie/chats').then(hoi => {
+    sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats').then(hoi => {
       console.log(hoi);
     });
 
@@ -70,7 +70,7 @@ function getChatLog(){
 }
 
 const sendMessage = () => {
-  sendHttpRequest('POST', 'http://localhost:63342/prolog-jdi/chatapplicatie/chats', {
+  sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats', {
     message:
         {
           "senderId":"1",

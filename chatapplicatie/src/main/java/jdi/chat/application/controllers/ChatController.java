@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.models.Chat;
 
 import java.util.ArrayList;
@@ -17,8 +18,10 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getChatHistory(@QueryParam("senderId") String senderId, @QueryParam("receiverId") String receiverId){
+        Chat chat = new Chat(/*sender, receiver*/ "1", "2");
+        ArrayList<MessageDTO> chatHistory = chat.getChatHistory();
         return Response.accepted().build();
-        }
+    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
