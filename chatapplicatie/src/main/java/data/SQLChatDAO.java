@@ -7,6 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import java.io.IOException;
+import java.sql.*;
+import java.util.Properties;
+
 public class SQLChatDAO extends AbstractChatDAO {
 
     @Override
@@ -32,7 +36,19 @@ public class SQLChatDAO extends AbstractChatDAO {
 
     @Override
     public void saveMessage(String senderId, String receiverId, String message){
-        // code
+        try {
+        Properties properties = new Properties();
+        properties.load(getClass().getClassLoader().getResourceAsStream("database.properties"));
+
+        String url = properties.getProperty("connectionString");
+
+        Connection connection = DriverManager.getConnection(url);
+        String sql = "Insert into Bericht Values ('" + senderId + "', '" + receiverId + "', '" + message + "')";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.executeUpdate();
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private MessageDTO formatMessage(String senderId, String receiverId, String content){
