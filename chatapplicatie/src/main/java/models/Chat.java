@@ -7,17 +7,18 @@ import data.dto.MessageDTO;
 import java.util.ArrayList;
 
 public class Chat {
-    private User sender = new User();
-    private User receiver = new User();
-    private SQLChatDAO chatDAO = new SQLChatDAO();
+    private User sender;
+    private User receiver;
+    private AbstractChatDAO chatDAO = new SQLChatDAO();
 
-    public Chat(User sender, User receiver) {
-        this.sender = sender;
-        this.receiver = receiver;
+    public Chat(String senderId, String receiverId) {
+        this.sender = new User(senderId);
+        this.receiver = new User(receiverId);
     }
 
     public ArrayList<MessageDTO> getChatHistory() {
-        return chatDAO.getChatMessages(sender.getId(), receiver.getId());
+        ArrayList<MessageDTO> chatHistory = chatDAO.getChatHistory(sender.getId(), receiver.getId());
+        return chatHistory;
         // liveChat.connect();
     }
 

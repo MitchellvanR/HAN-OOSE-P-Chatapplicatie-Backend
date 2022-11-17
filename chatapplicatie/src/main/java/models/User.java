@@ -7,6 +7,10 @@ public class User {
     private boolean online;
     private LiveChatServer server = new LiveChatServer();
 
+    public User(String id) {
+        this.id = id;
+    }
+
     public void connect(){
         // code
     }

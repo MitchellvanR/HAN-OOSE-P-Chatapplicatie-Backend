@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SQLChatDAO extends AbstractChatDAO {
-    public ArrayList<MessageDTO> getChatMessages(String senderId, String receiverId) {
+
+    @Override
+    public ArrayList<MessageDTO> getChatHistory(String senderId, String receiverId) {
         try {
             String sql = "SELECT * FROM bericht WHERE verzenderId = ? AND ontvangerId = ?";
             PreparedStatement statement = createConnection().prepareStatement(sql);
@@ -16,17 +18,19 @@ public class SQLChatDAO extends AbstractChatDAO {
             statement.setString(2, receiverId);
             ResultSet resultSet = statement.executeQuery();
 
-            ArrayList<MessageDTO> messages = new ArrayList<>();
+            ArrayList<MessageDTO> chatHistory = new ArrayList<>();
             while(resultSet.next()) {
-                messages.add(formatMessage(resultSet.getString("verzenderId"), resultSet.getString("ontvangerId"), resultSet.getString("bericht")));
+                MessageDTO messages = (formatMessage(resultSet.getString("verzenderId"), resultSet.getString("ontvangerId"), resultSet.getString("bericht")));
+                chatHistory.add(messages);
             }
-            return messages;
+            return chatHistory;
         } catch(Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
+    @Override
     public void saveMessage(String senderId, String receiverId, String message){
         // code
     }
