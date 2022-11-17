@@ -1,4 +1,4 @@
-const post = document.getElementById('post-btn');
+const post = document.getElementById('formRequest');
 
 const sendHttpRequest = (method, url, data) => {
   return new Promise((resolve, reject) => {
@@ -33,7 +33,7 @@ function getChatLog(){
     //   console.log(responseData);
     });
 
-  let responseData = {
+  let responseData = { //@todo Dit is nepdata, straks halen we dit uit de response.
     "messages": [
       {"sender": "1", "receiver": "2", "message": "Hoi Jesse"},
       {"sender": "2", "receiver": "1", "message": "Fakka Thijs"},
@@ -41,40 +41,44 @@ function getChatLog(){
     ]
   }
 
-  const location = document.getElementById('body')
-  const p = document.createElement('p')
-  location.append(p)
+  const incomingMessage = document.getElementById('content');
+  const outgoingMessage = document.getElementById('content');
 
-  for (let i = 0; i < responseData.messages.length; i++){
-
-
-    if (responseData.messages[i].sender === "1)"){
-        p.classList.add('ml-5')
+  for (let message of responseData.messages){
+    if (message.sender === "1"){ //@todo het ID van de huidige gebruiker moet hier komen.
+      incomingMessage.innerHTML += '' +
+          '<div class="outgoing_msg"> ' +
+            '<div class="sent_msg"> ' +
+              '<p>'+message.message+'</p>' +
+              '<span class="time_date"> 11:01 AM | Today</span>' +
+            '</div> ' +
+          '</div>'
     } else {
-        p.classList.add('mr-5')
+      outgoingMessage.innerHTML += '' +
+          '<div class="incoming_msg"> ' +
+            '<div class="received_msg"> ' +
+              '<div class="received_content_msg"> ' +
+                '<p>'+message.message+'</p>' +
+                '<span class="time_date"> 11:01 AM | Today</span>' +
+              '</div> ' +
+            '</div>' +
+          '</div>'
     }
-    p.textContent = responseData.messages[i].message
-
   }
 }
 
 const sendMessage = () => {
-  sendHttpRequest('POST', 'http://localhost:63342/sendMessage', {
+  sendHttpRequest('POST', '/sendMessage', {
     message:
-        [
-          {
+        {
             "sender":"1",
             "receiver":"2",
             "message":document.getElementById('message').value,
-          },
-        ],
+        },
   })
-    .then(responseData => {
-      console.log(responseData);
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  .catch(err => {
+    console.log(err);
+  });
 };
 
 post.addEventListener('click', sendMessage);
