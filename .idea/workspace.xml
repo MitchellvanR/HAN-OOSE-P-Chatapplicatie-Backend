@@ -5,23 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cf11829-ffcb-4619-adc5-2af369853f27" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/prolog-jdi.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapplicatie/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapplicatie/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapplicatie/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapplicatie/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapplicatie/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapplicatie/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapplicatie/chatapplicatie.iml" beforeDir="false" afterPath="$PROJECT_DIR$/chatapplicatie/chatapplicatie.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapplicatie/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/chatapplicatie/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatapplicatie/src/main/java/data/AbstractChatDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapplicatie/src/main/java/data/AbstractChatDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chatapplicatie/src/main/java/controllers/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapplicatie/src/main/java/controllers/ChatController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatapplicatie/src/main/java/data/SQLChatDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapplicatie/src/main/java/data/SQLChatDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chatapplicatie/src/main/java/models/Chat.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapplicatie/src/main/java/models/Chat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chatapplicatie/src/main/java/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatapplicatie/src/main/java/models/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +73,7 @@
       <updated>1668587710255</updated>
       <workItem from="1668587713473" duration="11511000" />
       <workItem from="1668605093077" duration="1066000" />
-      <workItem from="1668606201066" duration="2289000" />
+      <workItem from="1668606201066" duration="4202000" />
     </task>
     <servers />
   </component>

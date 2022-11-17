@@ -12,6 +12,8 @@ public class SQLChatDAO extends AbstractChatDAO {
         try {
             String sql = "SELECT * FROM bericht WHERE verzenderId = ? AND ontvangerId = ?";
             PreparedStatement statement = createConnection().prepareStatement(sql);
+            statement.setString(1, senderId);
+            statement.setString(2, receiverId);
             ResultSet resultSet = statement.executeQuery();
 
             ArrayList<MessageDTO> messages = new ArrayList<>();
@@ -20,7 +22,8 @@ public class SQLChatDAO extends AbstractChatDAO {
             }
             return messages;
         } catch(Exception e) {
-            throw SQLException();
+            e.printStackTrace();
+            return null;
         }
     }
 
