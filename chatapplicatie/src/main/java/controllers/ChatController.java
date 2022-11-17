@@ -18,14 +18,14 @@ public class ChatController {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getChatHistory(Object sender, Object receiver){
+    public Response getChatHistory(@QueryParam("senderId") String senderId, @QueryParam("receiverId") String receiverId){
         return null;
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response sendMessage(String message){
+    public Response sendMessage(@QueryParam("message") String message){
         chats.get(0).sendMessage(message);
         return null;
     }

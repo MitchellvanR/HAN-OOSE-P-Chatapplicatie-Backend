@@ -9,7 +9,7 @@ public class Chat {
     private User receiver = new User();
     private AbstractChatDAO chatDAO = new SQLChatDAO();
 
-    public MessageDTO[] getChatHistory(Object sender, Object receiver){
+    public MessageDTO[] getChatHistory(String senderId, String receiverId){
         // code
         return null;
     }
