@@ -19,6 +19,8 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getChatHistory(@QueryParam("senderId") String senderId, @QueryParam("receiverId") String receiverId){
+        Chat chat = new Chat(/*sender, receiver*/ "1", "2");
+        ArrayList<MessageDTO> chatHistory = chat.getChatHistory();
         return null;
     }
 

@@ -2,15 +2,13 @@ package data;
 
 import data.dto.MessageDTO;
 
-public abstract class AbstractChatDAO {
-    public MessageDTO[] getChatHistory(String senderId, String receiverId){
-        // code
-        return null;
-    }
+import java.util.ArrayList;
 
-    public void saveMessage(String senderId, String receiverId, String message){
-        // code
-    }
+public abstract class AbstractChatDAO extends ConnectionDAO{
+
+    public abstract ArrayList<MessageDTO> getChatHistory(String senderId, String receiverId);
+
+    public abstract void saveMessage(String senderId, String receiverId, String message);
 
     private MessageDTO formatMessage(String senderId, String receiverId, String content){
         // code
