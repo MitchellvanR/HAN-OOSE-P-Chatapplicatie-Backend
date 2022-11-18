@@ -4,14 +4,22 @@ import jdi.chat.application.data.AbstractChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
 import jdi.chat.application.data.dto.MessageDTO;
 
+import java.util.ArrayList;
+
 public class Chat {
-    private User sender = new User();
-    private User receiver = new User();
+    private User sender;
+    private User receiver;
     private AbstractChatDAO chatDAO = new SQLChatDAO();
 
-    public MessageDTO[] getChatHistory(String senderId, String receiverId){
-        // code
-        return null;
+    public Chat(String senderId, String receiverId) {
+        this.sender = new User(senderId);
+        this.receiver = new User(receiverId);
+    }
+
+    public ArrayList<MessageDTO> getChatHistory() {
+        ArrayList<MessageDTO> chatHistory = chatDAO.getChatHistory(sender.getId(), receiver.getId());
+        return chatHistory;
+        // liveChat.connect();
     }
 
     public void sendMessage(String message){
