@@ -27,59 +27,62 @@ const sendHttpRequest = (method, url, data) => {
   });
 };
 
-function getChatLog(){
-
-    let responseData = {};
-
-    sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1/2').then(chatHistory => {
-      responseData = chatHistory;
-    });
-
-  const incomingMessage = document.getElementById('content');
-  const outgoingMessage = document.getElementById('content');
-
-  for (let message of responseData.messages){
-    if (message.senderId === "1"){ //@todo het ID van de huidige gebruiker moet hier komen.
-      incomingMessage.innerHTML += '' +
-          '<div class="outgoing_msg"> ' +
-            '<div class="sent_msg"> ' +
-              '<p>'+message.message+'</p>' +
-              '<span class="time_date"> 11:01 AM | Today</span>' +
-            '</div> ' +
-          '</div>'
-    } else {
-      outgoingMessage.innerHTML += '' +
-          '<div class="incoming_msg"> ' +
-            '<div class="received_msg"> ' +
-              '<div class="received_content_msg"> ' +
-                '<p>'+message.message+'</p>' +
-                '<span class="time_date"> 11:01 AM | Today</span>' +
-              '</div> ' +
-            '</div>' +
-          '</div>'
-    }
-  }
-}
-
-function addMessageToChat(){
-//
-}
-
 const sendMessage = () => {
+  const newMessage = document.getElementById('message').value;
+
   sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats', {
-    message:
-        {
-          "senderId":"1",
-          "receiverId":"2",
-          "message":document.getElementById('message').value,
-        },
-    })
-    .catch(err => {
-      console.log(err);
-    });
-
-
+    message: {
+      "senderId":"1",
+      "receiverId":"2",
+      "message": newMessage,
+    }
+  }).then(responseData => {
+    addMessageToChat(newMessage);
+  })
 };
 
-post.addEventListener('click', sendMessage);
 
+function getChatLog(){
+    sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1/2').then(responseData => {
+      for (let message of responseData.messages){
+        if (message.senderId !== "1"){ //@todo het ID van de huidige gebruiker moet hier komen.
+          this.outgoingMessage(message.content);
+        } else {
+          this.incomingMessage(message.content);
+        }
+      }
+    });
+}
+
+function addMessageToChat(message){
+  document.getElementById('message').value = '';
+  this.outgoingMessage(message)
+}
+
+function outgoingMessage(message){
+  const outgoingMessage = document.getElementById('content');
+
+  outgoingMessage.innerHTML += '' +
+  '<div class="outgoing_msg"> ' +
+    '<div class="sent_msg"> ' +
+      '<p>'+ message +'</p>' +
+      '<span class="time_date"> 00:00 AM/PM | Today</span>' +
+    '</div> ' +
+  '</div>'
+}
+
+function incomingMessage(message){
+  const incomingMessage = document.getElementById('content');
+
+  incomingMessage.innerHTML += '' +
+  '<div class="incoming_msg"> ' +
+    '<div class="received_msg"> ' +
+      '<div class="received_content_msg"> ' +
+        '<p>'+ message +'</p>' +
+        '<span class="time_date"> 00:00 AM/PM | Today</span>' +
+      '</div> ' +
+    '</div>' +
+  '</div>'
+}
+
+post.addEventListener('click', sendMessage);

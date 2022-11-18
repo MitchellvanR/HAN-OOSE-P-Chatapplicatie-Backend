@@ -28,7 +28,7 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response sendMessage(@QueryParam("senderId") String senderId, @QueryParam("receiverId") String receiverId, @QueryParam("message") String message){
-        chats.get(0).sendMessage(message);
+//        chats.get(0).sendMessage(message);
         return Response.accepted().build();
     }
 
