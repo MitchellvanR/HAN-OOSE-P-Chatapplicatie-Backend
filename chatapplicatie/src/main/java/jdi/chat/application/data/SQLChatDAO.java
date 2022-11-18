@@ -16,21 +16,23 @@ public class SQLChatDAO extends AbstractChatDAO {
     @Override
     public ArrayList<MessageDTO> getChatHistory(String senderId, String receiverId) {
         try {
-            String sql = "SELECT * FROM bericht WHERE verzenderId = ? AND ontvangerId = ?";
+            String sql = "SELECT * FROM Bericht WHERE (VerzenderId = ? AND OntvangerId = ?) OR (VerzenderId = ? AND OntvangerId = ?)";
             PreparedStatement statement = createConnection().prepareStatement(sql);
             statement.setString(1, senderId);
             statement.setString(2, receiverId);
+            statement.setString(3, receiverId);
+            statement.setString(4, senderId);
             ResultSet resultSet = statement.executeQuery();
 
             ArrayList<MessageDTO> chatHistory = new ArrayList<>();
             while(resultSet.next()) {
-                MessageDTO message = (formatMessage(resultSet.getString("verzenderId"), resultSet.getString("ontvangerId"), resultSet.getString("bericht")));
+                MessageDTO message = formatMessage(resultSet.getString("VerzenderId"), resultSet.getString("OntvangerId"), resultSet.getString("Bericht"));
                 chatHistory.add(message);
             }
             return chatHistory;
         } catch(Exception e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 
