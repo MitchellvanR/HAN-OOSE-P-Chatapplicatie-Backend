@@ -45,7 +45,7 @@ const sendMessage = () => {
 function getChatLog(){
     sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1/2').then(responseData => {
       for (let message of responseData.messages){
-        if (message.senderId !== "1"){ //@todo het ID van de huidige gebruiker moet hier komen.
+        if (message.senderId === "1"){ //@todo het ID van de huidige gebruiker moet hier komen.
           this.outgoingMessage(message.content);
         } else {
           this.incomingMessage(message.content);
