@@ -30,4 +30,8 @@ public class Chat {
           sender.sendMessage(message);
       }
     }
+
+    public void setChatDAO(AbstractChatDAO chatDAO) {
+        this.chatDAO = chatDAO;
+    }
 }
