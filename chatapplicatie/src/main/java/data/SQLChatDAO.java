@@ -37,16 +37,15 @@ public class SQLChatDAO extends AbstractChatDAO {
     @Override
     public void saveMessage(String senderId, String receiverId, String message){
         try {
-        Properties properties = new Properties();
-        properties.load(getClass().getClassLoader().getResourceAsStream("database.properties"));
+        ConnectionDAO connectionDAO = new ConnectionDAO();
 
-        String url = properties.getProperty("connectionString");
-
-        Connection connection = DriverManager.getConnection(url);
+        Connection connection = connectionDAO.createConnection();
         String sql = "Insert into Bericht Values ('" + senderId + "', '" + receiverId + "', '" + message + "')";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.executeUpdate();
         } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
