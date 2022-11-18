@@ -28,9 +28,15 @@ const sendHttpRequest = (method, url, data) => {
 };
 
 function getChatLog(){
-    // sendHttpRequest('GET', 'https://reqres.in/api/users').then(responseData => {
-    sendHttpRequest('GET', 'http://localhost:63342/prolog-jdi/chatapplicatie/chats').then(hoi => {
-      console.log(hoi);
+
+    sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats',{
+      message:
+          {
+            "senderId":"1",
+            "receiverId":"2",
+          },
+    }).then(hoi => {
+      console.log("data:"+ hoi);
     });
 
   let responseData = { //@todo Dit is nepdata, straks halen we dit uit de response.
@@ -69,8 +75,12 @@ function getChatLog(){
   }
 }
 
+function addMessageToChat(){
+//
+}
+
 const sendMessage = () => {
-  sendHttpRequest('POST', 'http://localhost:63342/prolog-jdi/chatapplicatie/chats', {
+  sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats', {
     message:
         {
           "senderId":"1",
@@ -81,6 +91,8 @@ const sendMessage = () => {
     .catch(err => {
       console.log(err);
     });
+
+
 };
 
 post.addEventListener('click', sendMessage);
