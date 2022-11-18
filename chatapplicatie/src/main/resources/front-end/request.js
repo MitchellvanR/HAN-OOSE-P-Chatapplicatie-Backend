@@ -29,25 +29,11 @@ const sendHttpRequest = (method, url, data) => {
 
 function getChatLog(){
 
-    sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats',{
-      message:
-          {
-            "senderId":"1",
-            "receiverId":"2",
-          },
-    }).then(hoi => {
-      console.log("data:"+ hoi);
-    });
+    let responseData = {};
 
-  let responseData = { //@todo Dit is nepdata, straks halen we dit uit de response.
-    "messages": [
-      {"senderId": "1", "receiverId": "2", "message": "Hoi Jesse"},
-      {"senderId": "2", "receiverId": "1", "message": "Hallo Thijs"},
-      {"senderId": "1", "receiverId": "2", "message": "Hoe is het."},
-      {"senderId": "2", "receiverId": "1", "message": "Kan beter."},
-      {"senderId": "1", "receiverId": "2", "message": "Amen."},
-    ]
-  }
+    sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1/2').then(chatHistory => {
+      responseData = chatHistory;
+    });
 
   const incomingMessage = document.getElementById('content');
   const outgoingMessage = document.getElementById('content');

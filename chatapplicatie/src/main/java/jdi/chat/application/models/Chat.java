@@ -30,4 +30,12 @@ public class Chat {
           sender.sendMessage(message);
       }
     }
+
+    public String getSenderId() {
+        return sender.getId();
+    }
+
+    public String getReceiverId() {
+        return receiver.getId();
+    }
 }
