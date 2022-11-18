@@ -1,19 +1,13 @@
 package jdi.chat.application.controllers;
 
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Request;
 import jakarta.ws.rs.core.Response;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.models.Chat;
-import jdi.chat.application.models.ChatCredentials;
 import net.minidev.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Map;
-
-import static com.fasterxml.jackson.databind.type.LogicalType.Map;
 
 @Path("/chats")
 public class ChatController {
