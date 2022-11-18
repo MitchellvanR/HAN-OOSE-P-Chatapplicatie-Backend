@@ -1,8 +1,12 @@
+import org.junit.jupiter.api.Test;
+
 public class testSendMessage {
-    // Arrange
+    @Test
+    void sendMessageTest() {
+        // Arrange
 
-    // Act
+        // Act
 
-    // Assert
-
+        // Assert
+    }
 }
