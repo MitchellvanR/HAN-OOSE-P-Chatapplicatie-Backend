@@ -49,7 +49,4 @@ public class ChatController {
         chats.add(chat);
         return chat;
     }
-
-//    @Inject
-//    public void setChats(ArrayList<Chat> chats) { this.chats = chats; }
 }
