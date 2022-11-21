@@ -19,16 +19,12 @@ public class Chat {
     public ArrayList<MessageDTO> getChatHistory() {
         ArrayList<MessageDTO> chatHistory = chatDAO.getChatHistory(sender.getId(), receiver.getId());
         return chatHistory;
-        // liveChat.connect();
     }
 
     public void sendMessage(String message){
-      String senderId = sender.getId();
-      String receiverId = receiver.getId();
-      chatDAO.saveMessage(senderId, receiverId, message);
-      if (receiver.getOnline()){
-          sender.sendMessage(message);
-      }
+        var senderId = sender.getId();
+        var receiverId = receiver.getId();
+        chatDAO.saveMessage(senderId, receiverId, message);
     }
 
     public String getSenderId() {

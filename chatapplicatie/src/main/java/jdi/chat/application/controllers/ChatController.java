@@ -25,11 +25,13 @@ public class ChatController {
     }
 
     @POST
+    @Path("/{senderId}/{receiverId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response sendMessage(@QueryParam("senderId") String senderId, @QueryParam("receiverId") String receiverId, @QueryParam("message") String message){
-//        chats.get(0).sendMessage(message);
-        return Response.accepted().build();
+    public Response sendMessage(@PathParam("senderId") String senderId, @PathParam("receiverId") String receiverId, String message){
+        Chat chat = openChat(senderId, receiverId);
+        chat.sendMessage(message);
+        return Response.ok().build();
     }
 
     private Chat openChat(String senderId, String receiverId) {
@@ -47,7 +49,4 @@ public class ChatController {
         chats.add(chat);
         return chat;
     }
-
-//    @Inject
-//    public void setChats(ArrayList<Chat> chats) { this.chats = chats; }
 }
