@@ -23,12 +23,12 @@ public class Chat {
     }
 
     public void sendMessage(String message){
-      String senderId = sender.getId();
-      String receiverId = receiver.getId();
-      chatDAO.saveMessage(senderId, receiverId, message);
-      if (receiver.getOnline()){
-          sender.sendMessage(message);
-      }
+        var senderId = sender.getId();
+        var receiverId = receiver.getId();
+        chatDAO.saveMessage(senderId, receiverId, message);
+//      if (receiver.getOnline()){
+//          sender.sendMessage(message);
+//      }
     }
 
     public String getSenderId() {

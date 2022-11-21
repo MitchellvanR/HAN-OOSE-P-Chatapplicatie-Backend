@@ -30,13 +30,8 @@ const sendHttpRequest = (method, url, data) => {
 const sendMessage = () => {
   const newMessage = document.getElementById('message').value;
 
-  sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats', {
-    message: {
-      "senderId":"1",
-      "receiverId":"2",
-      "message": newMessage,
-    }
-  }).then(responseData => {
+  sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/1/2', newMessage.toString()
+  ).then(responseData => {
     addMessageToChat(newMessage);
   })
 };
