@@ -1,6 +1,7 @@
 package jdi.chat.application.data;
 
 import jdi.chat.application.data.dto.MessageDTO;
+import jdi.chat.application.data.exceptions.DatabaseConnectionException;
 import jdi.chat.application.data.exceptions.DatabasePropertiesException;
 
 import java.sql.PreparedStatement;
@@ -34,8 +35,7 @@ public class SQLChatDAO extends AbstractChatDAO {
         } catch (IOException e) {
             throw new DatabasePropertiesException();
         } catch (SQLException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
+            throw new DatabaseConnectionException();
         }
     }
 
