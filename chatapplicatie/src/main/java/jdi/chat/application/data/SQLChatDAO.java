@@ -2,14 +2,10 @@ package jdi.chat.application.data;
 
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
-import jdi.chat.application.data.exceptions.DatabasePropertiesException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-
-import java.io.IOException;
 
 public class SQLChatDAO extends AbstractChatDAO {
 
@@ -30,9 +26,7 @@ public class SQLChatDAO extends AbstractChatDAO {
                 chatHistory.add(message);
             }
             return chatHistory;
-        } catch (IOException e) {
-            throw new DatabasePropertiesException();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new DatabaseRequestException();
         }
     }
@@ -43,9 +37,7 @@ public class SQLChatDAO extends AbstractChatDAO {
             String sql = "Insert into Bericht Values ('" + senderId + "', '" + receiverId + "', '" + message + "')";
             PreparedStatement statement = createConnection().prepareStatement(sql);
             statement.executeUpdate();
-        } catch (IOException e) {
-            throw new DatabasePropertiesException();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new DatabaseRequestException();
         }
     }
