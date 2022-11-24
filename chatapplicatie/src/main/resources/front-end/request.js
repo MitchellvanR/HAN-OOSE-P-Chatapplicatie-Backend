@@ -1,5 +1,19 @@
 const post = document.getElementById('formRequest');
 
+const ws = new WebSocket('ws://localhost:1234');
+ws.addEventListener('message', ev => {
+  ev.data.text().then(incomingMessage);
+});
+
+document.querySelector('form').onsubmit = ev => {
+  ev.preventDefault();
+  const input = document.querySelector('input');
+  ws.send(input.value);
+  outgoingMessage(input.value);
+  sendMessage(input.value);
+  input.value = '';
+}
+
 const sendHttpRequest = (method, url, data) => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -32,7 +46,7 @@ const sendMessage = () => {
 
   sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/1/2', newMessage.toString()
   ).then(responseData => {
-    addMessageToChat(newMessage);
+
   })
 };
 
@@ -80,5 +94,3 @@ function incomingMessage(message){
     '</div>' +
   '</div>'
 }
-
-post.addEventListener('click', sendMessage);
