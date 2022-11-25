@@ -1,17 +1,19 @@
-const post = document.getElementById('formRequest');
-
 const ws = new WebSocket('ws://localhost:1234');
 ws.addEventListener('message', ev => {
   ev.data.text().then(incomingMessage);
 });
 
-document.querySelector('form').onsubmit = ev => {
+document.getElementById('form').onsubmit = ev => {
   ev.preventDefault();
   const input = document.querySelector('input');
   ws.send(input.value);
   outgoingMessage(input.value);
   sendMessage(input.value);
   input.value = '';
+}
+
+function setUser(userId){
+  sessionStorage.setItem("userId", userId);
 }
 
 const sendHttpRequest = (method, url, data) => {
@@ -44,29 +46,43 @@ const sendHttpRequest = (method, url, data) => {
 const sendMessage = () => {
   const newMessage = document.getElementById('message').value;
 
-  sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/1/2', newMessage.toString()
-  ).then(responseData => {
+    if (sessionStorage.getItem('userId') === "1"){
+      sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/1/2', newMessage.toString()
+      ).then(responseData => {
 
-  })
+      })
+    }else{
+      sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/2/1', newMessage.toString()
+      ).then(responseData => {
+
+      })
+    }
 };
 
-
-function getChatLog(){
-    sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1/2').then(responseData => {
-      for (let message of responseData.messages){
-        let cleanMessage = message.content.replace(/['"]+/g, '')
-        if (message.senderId === "1"){ //@todo het ID van de huidige gebruiker moet hier komen.
-          this.outgoingMessage(cleanMessage);
-        } else {
-          this.incomingMessage(cleanMessage);
+function getChatLog(userId){
+    if (userId === 1){
+      sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1/2').then(responseData => {
+        for (let message of responseData.messages){
+          let cleanMessage = message.content.replace(/['"]+/g, '')
+          if (message.senderId === userId){
+            this.outgoingMessage(cleanMessage);
+          } else {
+            this.incomingMessage(cleanMessage);
+          }
         }
-      }
-    });
-}
-
-function addMessageToChat(message){
-  document.getElementById('message').value = '';
-  this.outgoingMessage(message)
+      });
+    }else{
+      sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/2/1').then(responseData => {
+        for (let message of responseData.messages){
+          let cleanMessage = message.content.replace(/['"]+/g, '')
+          if (message.senderId !== userId){ //@todo het ID van de huidige gebruiker moet hier komen.
+            this.outgoingMessage(cleanMessage);
+          } else {
+            this.incomingMessage(cleanMessage);
+          }
+        }
+      });
+    }
 }
 
 function outgoingMessage(message){
