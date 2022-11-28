@@ -1,5 +1,5 @@
 function runWebSocket(){
-  const webSocket = new WebSocket('ws://localhost:1234');
+  const webSocket = new WebSocket('ws://localhost:443');
 
   webSocket.addEventListener('message', data => {
     data.data.text().then(incomingMessage);
@@ -9,10 +9,14 @@ function runWebSocket(){
     const input = document.getElementById('message');
 
     data.preventDefault();
-    webSocket.send(input.value);
-    outgoingMessage(input.value);
-    sendMessage(input.value);
-    input.value = '';
+    if (input.value == ""){
+      alert("Please enter a new value");
+    } else {
+      webSocket.send(input.value);
+      outgoingMessage(input.value);
+      sendMessage(input.value);
+      input.value = '';
+    }
   }
 }
 
@@ -34,7 +38,7 @@ function getChatLog(userId){
         }
       }
     });
-  }else{
+  } else{
     sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/2/1').then(responseData => {
       for (let message of responseData.messages){
         let cleanMessage = message.content.replace(/['"]+/g, '')
@@ -53,7 +57,7 @@ function sendMessage() {
 
   if (sessionStorage.getItem('userId') === "1"){
     sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/1/2', newMessage.toString()).then(responseData => {})
-  }else{
+  } else{
     sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/2/1', newMessage.toString()).then(responseData => {})
   }
 }
@@ -86,27 +90,22 @@ function incomingMessage(message){
 
 const sendHttpRequest = (method, url, data) => {
   return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open(method, url);
-
-    xhr.responseType = 'json';
+    const XmlHttpRequest = new XMLHttpRequest();
+    XmlHttpRequest.open(method, url);
+    XmlHttpRequest.responseType = 'json';
 
     if (data) {
-      xhr.setRequestHeader('Content-Type', 'application/json');
+      XmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
     }
 
-    xhr.onload = () => {
-      if (xhr.status >= 400) {
-        reject(xhr.response);
+    XmlHttpRequest.onload = () => {
+      if (XmlHttpRequest.status >= 400) {
+        reject(XmlHttpRequest.response);
       } else {
-        resolve(xhr.response);
+        resolve(XmlHttpRequest.response);
       }
     };
 
-    xhr.onerror = () => {
-      reject('Something went wrong!');
-    };
-
-    xhr.send(JSON.stringify(data));
+    XmlHttpRequest.send(JSON.stringify(data));
   });
 };

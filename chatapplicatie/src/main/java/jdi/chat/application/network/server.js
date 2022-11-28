@@ -1,11 +1,12 @@
+// ws staat voor WebSocket, maar ws is geïnstalleerd dus deze naam kan niet aangepast worden
 const ws = require('ws');
 
-const wss = new ws.Server({port: 1234});
+const WebSocketServer = new ws.Server({port: 443});
 
-wss.on('connection', client => {
+WebSocketServer.on('connection', client => {
     client.on('message', (message, isBinary) => {
-        [...wss.clients]
-            .filter(c => c !== client)
-            .forEach(c => c.send(isBinary ? message.toString() : message));
+        [...WebSocketServer.clients]
+            .filter(Clients => Clients !== client)
+            .forEach(Clients => Clients.send(isBinary ? message.toString() : message));
     });
 });

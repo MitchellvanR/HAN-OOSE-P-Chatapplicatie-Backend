@@ -4,3 +4,4 @@ target/
 src/main/resources/
 node_modules/
 package-lock.json
+src/main/java/resources/database.properties
