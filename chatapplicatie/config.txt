@@ -1,0 +1,5 @@
+# Server
+serverPort: 8080;
+
+# Database
+getChatHistoryQuery:
