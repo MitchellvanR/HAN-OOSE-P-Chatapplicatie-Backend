@@ -10,20 +10,23 @@ public class testSendMessage {
 
     private Chat sut;
     private AbstractChatDAO mockedChatDAO;
-    private String senderId = "1";
-    private String receiverId = "2";
+    private String senderId;
+    private String receiverId;
+    private String message;
 
     @BeforeEach
     public void setup(){
         this.sut = new Chat(senderId, receiverId);
         this.mockedChatDAO = Mockito.mock(SQLChatDAO.class);
         sut.setChatDAO(mockedChatDAO);
+        this.message = "Hello World";
+        this.senderId = "1";
+        this.receiverId = "2";
     }
 
     @Test
     void testSendMessage() {
         // Arrange
-        String message = "Hello World";
         Mockito.doNothing().when(mockedChatDAO).saveMessage(senderId, receiverId, message);
 
         // Act

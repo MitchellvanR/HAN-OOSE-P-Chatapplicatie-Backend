@@ -13,8 +13,8 @@ public class testChatControllerSendMessage {
     private ArrayList<Chat> chatList;
     private Chat mockedChat;
     private String message;
-    private String senderId = "1";
-    private String receiverId = "2";
+    private String senderId;
+    private String receiverId;
 
     @BeforeEach
     public void setup(){
@@ -22,12 +22,14 @@ public class testChatControllerSendMessage {
         this.mockedChat = Mockito.mock(Chat.class);
         this.chatList = new ArrayList<>();
         this.chatList.add(mockedChat);
+        this.message = "Hello World";
+        this.senderId = "1";
+        this.receiverId = "2";
     }
 
     @Test
     public void testSendMessageChatController(){
         //Arrange
-        message = "Hello World";
         sut.setChats(chatList);
         Mockito.doNothing().when(mockedChat).sendMessage(message);
         Mockito.doReturn(senderId).when(mockedChat).getSenderId();
