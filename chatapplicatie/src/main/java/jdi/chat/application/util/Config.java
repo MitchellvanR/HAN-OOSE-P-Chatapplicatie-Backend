@@ -1,5 +1,7 @@
 package jdi.chat.application.util;
 
+import jdi.chat.application.util.exceptions.ConfigNotFoundException;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -33,8 +35,7 @@ public class Config {
             }
             configScanner.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+            throw new ConfigNotFoundException();
         }
     }
 
