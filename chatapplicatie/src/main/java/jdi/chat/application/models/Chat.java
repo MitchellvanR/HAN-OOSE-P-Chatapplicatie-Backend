@@ -34,4 +34,8 @@ public class Chat {
     public String getReceiverId() {
         return receiver.getId();
     }
+
+    public void setChatDAO(AbstractChatDAO chatDAO) {
+        this.chatDAO = chatDAO;
+    }
 }
