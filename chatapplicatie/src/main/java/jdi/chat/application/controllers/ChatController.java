@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 @Path("/chats")
 public class ChatController {
-    private final ArrayList<Chat> chats = new ArrayList<>();
+    private ArrayList<Chat> chats = new ArrayList<>();
 
     @GET
     @Path("/{senderId}/{receiverId}")
@@ -48,5 +48,9 @@ public class ChatController {
         Chat chat = new Chat(senderId, receiverId);
         chats.add(chat);
         return chat;
+    }
+
+    public void setChats(ArrayList<Chat> chatList) {
+        this.chats = chatList;
     }
 }
