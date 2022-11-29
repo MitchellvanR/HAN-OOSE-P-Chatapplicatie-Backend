@@ -2,16 +2,14 @@ package jdi.chat.application.util;
 
 import jdi.chat.application.util.exceptions.ConfigNotFoundException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class Config {
 
     private static final Config instance = new Config();
 
-    private HashMap<String, String> config;
+    private HashMap<String, String> config = new HashMap<>();
 
     private Config() {
         readConfigFile();
@@ -26,17 +24,11 @@ public class Config {
     }
 
     private void readConfigFile() {
-        try {
-            File configFile = new File("../../../config.txt");
-            Scanner configScanner = new Scanner(configFile);
-            while (configScanner.hasNextLine()) {
-                String configLine = configScanner.nextLine();
-                mapConfigurationLine(configLine);
-            }
-            configScanner.close();
-        } catch (FileNotFoundException e) {
-            throw new ConfigNotFoundException();
-        }
+        InputStream configInputStream = getClass().getClassLoader().getResourceAsStream("configuration/config.txt");
+        if (configInputStream == null) { throw new ConfigNotFoundException(); }
+        InputStreamReader configReader = new InputStreamReader(configInputStream);
+        BufferedReader configBufferedReader = new BufferedReader(configReader);
+        configBufferedReader.lines().forEach(this::mapConfigurationLine);
     }
 
     private void mapConfigurationLine(String configLine) {
