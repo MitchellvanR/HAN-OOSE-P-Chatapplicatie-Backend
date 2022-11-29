@@ -1,6 +1,7 @@
 package jdi.chat.application.controllers;
 
 import jdi.chat.application.models.Chat;
+import jdi.chat.application.models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -21,14 +22,16 @@ public class testChatControllerSendMessage {
         this.mockedChat = Mockito.mock(Chat.class);
         this.chatList = new ArrayList<>();
         this.chatList.add(mockedChat);
-        sut.setChats(chatList);
     }
 
     @Test
     public void testSendMessageChatController(){
         //Arrange
         message = "Hello World";
+        sut.setChats(chatList);
         Mockito.doNothing().when(mockedChat).sendMessage(message);
+        Mockito.doReturn(senderId).when(mockedChat).getSenderId();
+        Mockito.doReturn(receiverId).when(mockedChat).getReceiverId();
 
         //Act
         sut.sendMessage(senderId, receiverId, message);

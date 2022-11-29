@@ -21,7 +21,7 @@ public class testSendMessage {
     }
 
     @Test
-    void sendMessageTest() {
+    void testSendMessage() {
         // Arrange
         String message = "Hello World";
         Mockito.doNothing().when(mockedChatDAO).saveMessage(senderId, receiverId, message);
