@@ -27,6 +27,8 @@ public class User {
         this.id = id;
     }
 
+    public String getId() { return id; }
+
     public boolean isOnline() {
         return online;
     }

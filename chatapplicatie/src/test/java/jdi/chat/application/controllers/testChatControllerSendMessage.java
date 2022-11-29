@@ -1,6 +1,6 @@
-package controllers;
+package jdi.chat.application.controllers;
 
-import models.Chat;
+import jdi.chat.application.models.Chat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -12,6 +12,8 @@ public class testChatControllerSendMessage {
     private ArrayList<Chat> chatList;
     private Chat mockedChat;
     private String message;
+    private String senderId = "1";
+    private String receiverId = "2";
 
     @BeforeEach
     public void setup(){
@@ -29,7 +31,7 @@ public class testChatControllerSendMessage {
         Mockito.doNothing().when(mockedChat).sendMessage(message);
 
         //Act
-        sut.sendMessage(message);
+        sut.sendMessage(senderId, receiverId, message);
 
         //Assert
         Mockito.verify(mockedChat).sendMessage(Mockito.anyString());

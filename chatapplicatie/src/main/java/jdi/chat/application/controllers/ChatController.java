@@ -49,4 +49,7 @@ public class ChatController {
         chats.add(chat);
         return chat;
     }
+
+    public void setChats(ArrayList<Chat> chatList) {
+    }
 }

@@ -1,7 +1,7 @@
-package models;
+package jdi.chat.application.models;
 
-import data.AbstractChatDAO;
-import data.SQLChatDAO;
+import jdi.chat.application.data.AbstractChatDAO;
+import jdi.chat.application.data.SQLChatDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
