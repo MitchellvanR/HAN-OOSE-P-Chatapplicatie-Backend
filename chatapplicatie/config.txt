@@ -1,5 +1,7 @@
 # Server
-serverPort: 8080;
+serverPort: 8080
 
 # Database
-getChatHistoryQuery:
+getChatHistoryQuery: SELECT * FROM bericht WHERE (VerzenderId = ? AND OntvangerId = ?) OR (VerzenderId = ? AND OntvangerId = ?)
+sendMessageQuery: Insert INTO Bericht VALUES ('" + senderId + "', '" + receiverId + "', '" + message + "')
+

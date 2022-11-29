@@ -40,7 +40,10 @@ public class Config {
     }
 
     private void mapConfigurationLine(String configLine) {
-
+        if (!configLine.startsWith("#") && !configLine.isEmpty()) {
+            String[] modifiedConfigLine = configLine.split(":");
+            config.put(modifiedConfigLine[0].trim(), modifiedConfigLine[1].trim());
+        }
     }
 
 }
