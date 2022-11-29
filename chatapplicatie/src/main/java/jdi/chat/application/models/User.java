@@ -1,6 +1,6 @@
-package models;
+package jdi.chat.application.models;
 
-import network.LiveChatServer;
+import jdi.chat.application.network.LiveChatServer;
 
 public class User {
     private String id;
@@ -21,10 +21,6 @@ public class User {
 
     public boolean getOnline(){
         return online;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public void setId(String id) {

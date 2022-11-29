@@ -1,8 +1,8 @@
-package models;
+package jdi.chat.application.models;
 
-import data.AbstractChatDAO;
-import data.SQLChatDAO;
-import data.dto.MessageDTO;
+import jdi.chat.application.data.AbstractChatDAO;
+import jdi.chat.application.data.SQLChatDAO;
+import jdi.chat.application.data.dto.MessageDTO;
 
 import java.util.ArrayList;
 
@@ -19,16 +19,20 @@ public class Chat {
     public ArrayList<MessageDTO> getChatHistory() {
         ArrayList<MessageDTO> chatHistory = chatDAO.getChatHistory(sender.getId(), receiver.getId());
         return chatHistory;
-        // liveChat.connect();
     }
 
     public void sendMessage(String message){
-      String senderId = sender.getId();
-      String receiverId = receiver.getId();
-      chatDAO.saveMessage(senderId, receiverId, message);
-      if (receiver.getOnline()){
-          sender.sendMessage(message);
-      }
+        var senderId = sender.getId();
+        var receiverId = receiver.getId();
+        chatDAO.saveMessage(senderId, receiverId, message);
+    }
+
+    public String getSenderId() {
+        return sender.getId();
+    }
+
+    public String getReceiverId() {
+        return receiver.getId();
     }
 
     public void setChatDAO(AbstractChatDAO chatDAO) {

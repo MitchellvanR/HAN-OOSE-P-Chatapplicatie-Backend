@@ -1,52 +1,46 @@
-package data;
+package jdi.chat.application.data;
 
-import data.dto.MessageDTO;
+import jdi.chat.application.data.dto.MessageDTO;
+import jdi.chat.application.data.exceptions.DatabaseRequestException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-
-import java.io.IOException;
-import java.sql.*;
-import java.util.Properties;
 
 public class SQLChatDAO extends AbstractChatDAO {
 
     @Override
     public ArrayList<MessageDTO> getChatHistory(String senderId, String receiverId) {
         try {
-            String sql = "SELECT * FROM bericht WHERE verzenderId = ? AND ontvangerId = ?";
+            String sql = "SELECT * FROM bericht WHERE (VerzenderId = ? AND OntvangerId = ?) OR (VerzenderId = ? AND OntvangerId = ?)";
             PreparedStatement statement = createConnection().prepareStatement(sql);
             statement.setString(1, senderId);
             statement.setString(2, receiverId);
+            statement.setString(3, receiverId);
+            statement.setString(4, senderId);
             ResultSet resultSet = statement.executeQuery();
 
             ArrayList<MessageDTO> chatHistory = new ArrayList<>();
             while(resultSet.next()) {
-                MessageDTO message = (formatMessage(resultSet.getString("verzenderId"), resultSet.getString("ontvangerId"), resultSet.getString("bericht")));
+                MessageDTO message = formatMessage(resultSet.getString("VerzenderId"), resultSet.getString("OntvangerId"), resultSet.getString("Bericht"));
                 chatHistory.add(message);
             }
+            connection.close();
             return chatHistory;
-        } catch(Exception e) {
-            e.printStackTrace();
-            return null;
+        } catch (Exception e) {
+            throw new DatabaseRequestException();
         }
     }
 
     @Override
     public void saveMessage(String senderId, String receiverId, String message){
         try {
-        ConnectionDAO connectionDAO = new ConnectionDAO();
-
-        Connection connection = connectionDAO.createConnection();
-        String sql = "Insert into Bericht Values ('" + senderId + "', '" + receiverId + "', '" + message + "')";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.executeUpdate();
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
+            String sql = "Insert into Bericht Values ('" + senderId + "', '" + receiverId + "', '" + message + "')";
+            PreparedStatement statement = createConnection().prepareStatement(sql);
+            statement.executeUpdate();
+            connection.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new DatabaseRequestException();
         }
     }
 
