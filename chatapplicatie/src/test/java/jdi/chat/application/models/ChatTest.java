@@ -13,6 +13,7 @@ public class ChatTest {
     private AbstractChatDAO mockedChatDAO;
     private String senderId;
     private String receiverId;
+    private String message;
 
     @BeforeEach
     public void setup() {
@@ -21,17 +22,31 @@ public class ChatTest {
         sut.setChatDAO(mockedChatDAO);
         this.senderId = "1";
         this.receiverId = "2";
+        this.message = "Hello World";
     }
 
     @Test
-    public void testGetChatHistory() {
-        // Arrange
-        Mockito.doNothing().when(mockedChatDAO).getChatHistory(senderId, receiverId);
+    public void testSendMessage() {
+        Mockito.doReturn(senderId).when(sut).getSenderId();
+        Mockito.doReturn(receiverId).when(sut).getReceiverId();
+        Mockito.doNothing().when(mockedChatDAO).saveMessage(senderId, receiverId, message);
 
         // Act
-        sut.getChatHistory();
+        sut.sendMessage(message);
 
         // Assert
-        Mockito.verify(mockedChatDAO).getChatHistory(Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(mockedChatDAO).saveMessage(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
     }
+
+//    @Test
+//    public void testGetChatHistory() {
+//        // Arrange
+//        Mockito.doNothing().when(mockedChatDAO).getChatHistory(senderId, receiverId);
+//
+//        // Act
+//        sut.getChatHistory();
+//
+//        // Assert
+//        Mockito.verify(mockedChatDAO).getChatHistory(Mockito.anyString(), Mockito.anyString());
+//    }
 }
