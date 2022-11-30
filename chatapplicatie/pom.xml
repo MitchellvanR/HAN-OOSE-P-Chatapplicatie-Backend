@@ -63,10 +63,9 @@
     <dependency>
       <groupId>org.sonarsource.javascript</groupId>
       <artifactId>sonar-javascript-plugin</artifactId>
-      <version>6.1.0.11503</version>
+      <version>9.11.1.20218</version>
     </dependency>
-
-
+    
   </dependencies>
 
   <build>
