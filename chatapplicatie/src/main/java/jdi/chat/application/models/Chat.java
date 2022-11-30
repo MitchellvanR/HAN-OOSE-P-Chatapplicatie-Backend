@@ -35,6 +35,10 @@ public class Chat {
         return receiver.getId();
     }
 
+    public void setSender(User sender) { this.sender = sender; }
+
+    public void setReceiver(User receiver) { this.receiver = receiver; }
+
     public void setChatDAO(AbstractChatDAO chatDAO) {
         this.chatDAO = chatDAO;
     }
