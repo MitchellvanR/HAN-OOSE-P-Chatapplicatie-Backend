@@ -24,7 +24,6 @@ public class ChatTest {
     void setup(){
         this.sut = new Chat(senderId, receiverId);
         this.mockedChatDAO = Mockito.mock(SQLChatDAO.class);
-
         this.mockedSender = Mockito.mock(User.class);
         this.mockedReceiver = Mockito.mock(User.class);
         sut.setChatDAO(mockedChatDAO);
