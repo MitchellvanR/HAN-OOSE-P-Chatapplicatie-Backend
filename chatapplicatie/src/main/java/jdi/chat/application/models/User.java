@@ -8,14 +8,6 @@ public class User {
         this.id = id;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void sendMessage(String message){
-        server.sendMessage(message);
-    }
-
     public void setId(String id) {
         this.id = id;
     }
