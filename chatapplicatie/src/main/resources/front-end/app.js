@@ -9,7 +9,7 @@ function runWebSocket(){
     const input = document.getElementById('message');
 
     data.preventDefault();
-    if (input.value == ""){
+    if (input.value === ""){
       alert("Please enter a new value");
     } else {
       webSocket.send(input.value);
@@ -25,7 +25,7 @@ function setUserId(userId){
 }
 
 function getChatLog(userId){
-  runWebSocket()
+  runWebSocket();
 
   if (userId === 1){
     sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1/2').then(responseData => {
@@ -42,7 +42,7 @@ function getChatLog(userId){
     sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/2/1').then(responseData => {
       for (let message of responseData.messages){
         let cleanMessage = message.content.replace(/['"]+/g, '')
-        if (message.senderId !== userId){
+        if (message.senderId === userId){
           this.outgoingMessage(cleanMessage);
         } else {
           this.incomingMessage(cleanMessage);
