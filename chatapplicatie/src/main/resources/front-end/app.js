@@ -9,7 +9,7 @@ function runWebSocket(){
     const input = document.getElementById('message');
 
     data.preventDefault();
-    if (input.value == ""){
+    if (input.value === ""){
       alert("Please enter a new value");
     } else {
       webSocket.send(input.value);

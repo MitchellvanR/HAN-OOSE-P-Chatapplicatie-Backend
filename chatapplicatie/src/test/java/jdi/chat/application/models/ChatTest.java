@@ -6,7 +6,6 @@ import jdi.chat.application.data.dto.MessageDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import java.util.ArrayList;
 import org.junit.jupiter.api.Assertions;
 
@@ -35,6 +34,18 @@ public class ChatTest {
     }
 
     @Test
+    void testGetChatHistory() {
+        // Arrange
+        Mockito.doReturn(mockDTO).when(mockedChatDAO).getChatHistory(senderId, receiverId);
+
+        // Act
+        sut.getChatHistory();
+
+        // Assert
+        Assertions.assertEquals(mockDTO, mockedChatDAO.getChatHistory(senderId, receiverId));
+    }
+
+    @Test
     void testSendMessage() {
         // Arrange
         Mockito.doReturn(senderId).when(mockedSender).getId();
@@ -46,17 +57,5 @@ public class ChatTest {
 
         // Assert
         Mockito.verify(mockedChatDAO).saveMessage(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
-    }
-
-    @Test
-    public void testGetChatHistory() {
-        // Arrange
-        Mockito.doReturn(mockDTO).when(mockedChatDAO).getChatHistory(senderId, receiverId);
-
-        // Act
-        sut.getChatHistory();
-
-        // Assert
-        Assertions.assertEquals(mockDTO, mockedChatDAO.getChatHistory(senderId, receiverId));
     }
 }

@@ -1,16 +1,10 @@
 package jdi.chat.application.controllers;
 
-import jdi.chat.application.data.AbstractChatDAO;
-import jdi.chat.application.data.SQLChatDAO;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.models.Chat;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.lang.reflect.Method;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ChatControllerTest {
@@ -23,7 +17,7 @@ public class ChatControllerTest {
     private ArrayList<MessageDTO> mockDTO;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         this.sut = new ChatController();
         this.mockedChat = Mockito.mock(Chat.class);
         this.chatList = new ArrayList<>();
@@ -35,21 +29,7 @@ public class ChatControllerTest {
     }
 
     @Test
-    public void testSendMessageChatController() {
-        // Arrange
-        Mockito.doNothing().when(mockedChat).sendMessage(message);
-        Mockito.doReturn(senderId).when(mockedChat).getSenderId();
-        Mockito.doReturn(receiverId).when(mockedChat).getReceiverId();
-
-        // Act
-        sut.sendMessage(senderId, receiverId, message);
-
-        // Assert
-        Mockito.verify(mockedChat).sendMessage(Mockito.anyString());
-    }
-
-    @Test
-    public void returnArrayListMessages() {
+    void testGetChatHistoryController() {
         // Arrange
         Mockito.doReturn(mockDTO).when(mockedChat).getChatHistory();
         Mockito.doReturn(senderId).when(mockedChat).getSenderId();
@@ -60,5 +40,19 @@ public class ChatControllerTest {
 
         // Assert
         Mockito.verify(mockedChat).getChatHistory();
+    }
+
+    @Test
+    void testSendMessageChatController() {
+        // Arrange
+        Mockito.doNothing().when(mockedChat).sendMessage(message);
+        Mockito.doReturn(senderId).when(mockedChat).getSenderId();
+        Mockito.doReturn(receiverId).when(mockedChat).getReceiverId();
+
+        // Act
+        sut.sendMessage(senderId, receiverId, message);
+
+        // Assert
+        Mockito.verify(mockedChat).sendMessage(Mockito.anyString());
     }
 }
