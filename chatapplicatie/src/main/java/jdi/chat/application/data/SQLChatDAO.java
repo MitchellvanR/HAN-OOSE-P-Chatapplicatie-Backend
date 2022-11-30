@@ -12,7 +12,7 @@ public class SQLChatDAO extends AbstractChatDAO {
     @Override
     public ArrayList<MessageDTO> getChatHistory(String senderId, String receiverId) {
         try {
-            String sql = "SELECT * FROM Bericht WHERE (VerzenderId = ? AND OntvangerId = ?) OR (VerzenderId = ? AND OntvangerId = ?)";
+            String sql = "SELECT * FROM bericht WHERE (VerzenderId = ? AND OntvangerId = ?) OR (VerzenderId = ? AND OntvangerId = ?)";
             PreparedStatement statement = createConnection().prepareStatement(sql);
             statement.setString(1, senderId);
             statement.setString(2, receiverId);
@@ -25,6 +25,7 @@ public class SQLChatDAO extends AbstractChatDAO {
                 MessageDTO message = formatMessage(resultSet.getString("VerzenderId"), resultSet.getString("OntvangerId"), resultSet.getString("Bericht"));
                 chatHistory.add(message);
             }
+            connection.close();
             return chatHistory;
         } catch (Exception e) {
             throw new DatabaseRequestException();
@@ -37,6 +38,7 @@ public class SQLChatDAO extends AbstractChatDAO {
             String sql = "Insert into Bericht (VerzenderId, OntvangerId, Bericht) Values ('" + senderId + "', '" + receiverId + "', '" + message + "')";
             PreparedStatement statement = createConnection().prepareStatement(sql);
             statement.executeUpdate();
+            connection.close();
         } catch (Exception e) {
             throw new DatabaseRequestException();
         }
