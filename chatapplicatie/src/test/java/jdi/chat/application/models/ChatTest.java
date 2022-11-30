@@ -11,24 +11,31 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ChatTest {
     private Chat sut;
     private AbstractChatDAO mockedChatDAO;
+    private User mockedSender;
+    private User mockedReceiver;
     private String senderId;
     private String receiverId;
     private String message;
 
     @BeforeEach
-    public void setup() {
+    void setup(){
         this.sut = new Chat(senderId, receiverId);
         this.mockedChatDAO = Mockito.mock(SQLChatDAO.class);
+        this.mockedSender = Mockito.mock(User.class);
+        this.mockedReceiver = Mockito.mock(User.class);
         sut.setChatDAO(mockedChatDAO);
+        sut.setReceiver(mockedReceiver);
+        sut.setSender(mockedSender);
+        this.message = "Hello World";
         this.senderId = "1";
         this.receiverId = "2";
-        this.message = "Hello World";
     }
 
     @Test
-    public void testSendMessage() {
-        Mockito.doReturn(senderId).when(sut).getSenderId();
-        Mockito.doReturn(receiverId).when(sut).getReceiverId();
+    void testSendMessage() {
+        // Arrange
+        Mockito.doReturn(senderId).when(mockedSender).getId();
+        Mockito.doReturn(receiverId).when(mockedReceiver).getId();
         Mockito.doNothing().when(mockedChatDAO).saveMessage(senderId, receiverId, message);
 
         // Act
