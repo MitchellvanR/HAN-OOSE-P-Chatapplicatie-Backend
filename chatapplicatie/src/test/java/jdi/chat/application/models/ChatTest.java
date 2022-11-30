@@ -2,11 +2,13 @@ package jdi.chat.application.models;
 
 import jdi.chat.application.data.AbstractChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
+import jdi.chat.application.data.dto.MessageDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import org.junit.jupiter.api.Assertions;
 
 public class ChatTest {
     private Chat sut;
@@ -16,11 +18,13 @@ public class ChatTest {
     private String senderId;
     private String receiverId;
     private String message;
+    private ArrayList<MessageDTO> mockDTO;
 
     @BeforeEach
     void setup(){
         this.sut = new Chat(senderId, receiverId);
         this.mockedChatDAO = Mockito.mock(SQLChatDAO.class);
+
         this.mockedSender = Mockito.mock(User.class);
         this.mockedReceiver = Mockito.mock(User.class);
         sut.setChatDAO(mockedChatDAO);
@@ -45,15 +49,15 @@ public class ChatTest {
         Mockito.verify(mockedChatDAO).saveMessage(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
     }
 
-//    @Test
-//    public void testGetChatHistory() {
-//        // Arrange
-//        Mockito.doNothing().when(mockedChatDAO).getChatHistory(senderId, receiverId);
-//
-//        // Act
-//        sut.getChatHistory();
-//
-//        // Assert
-//        Mockito.verify(mockedChatDAO).getChatHistory(Mockito.anyString(), Mockito.anyString());
-//    }
+    @Test
+    public void testGetChatHistory() {
+        // Arrange
+        Mockito.doReturn(mockDTO).when(mockedChatDAO).getChatHistory(senderId, receiverId);
+
+        // Act
+        sut.getChatHistory();
+
+        // Assert
+        Assertions.assertEquals(mockDTO, mockedChatDAO.getChatHistory(senderId, receiverId));
+    }
 }

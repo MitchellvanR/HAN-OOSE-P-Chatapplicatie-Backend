@@ -20,6 +20,7 @@ public class ChatControllerTest {
     private String message;
     private String senderId;
     private String receiverId;
+    private ArrayList<MessageDTO> mockDTO;
 
     @BeforeEach
     public void setup() {
@@ -30,12 +31,12 @@ public class ChatControllerTest {
         this.message = "Hello World";
         this.senderId = "1";
         this.receiverId = "2";
+        sut.setChats(chatList);
     }
 
     @Test
     public void testSendMessageChatController() {
         // Arrange
-        sut.setChats(chatList);
         Mockito.doNothing().when(mockedChat).sendMessage(message);
         Mockito.doReturn(senderId).when(mockedChat).getSenderId();
         Mockito.doReturn(receiverId).when(mockedChat).getReceiverId();
@@ -47,17 +48,17 @@ public class ChatControllerTest {
         Mockito.verify(mockedChat).sendMessage(Mockito.anyString());
     }
 
-//    @Test
-//    public void returnArrayListMessages() {
-//        // Arrange
-//        Mockito.doNothing().when(chatMock).getChatHistory();
-//        Mockito.doReturn(senderId).when(chatMock).getSenderId();
-//        Mockito.doReturn(receiverId).when(chatMock).getReceiverId();
-//
-//        // Act
-//        sut.getChatHistory(senderId, receiverId);
-//
-//        // Assert
-//        Mockito.verify(chatMock).getChatHistory();
-//    }
+    @Test
+    public void returnArrayListMessages() {
+        // Arrange
+        Mockito.doReturn(mockDTO).when(mockedChat).getChatHistory();
+        Mockito.doReturn(senderId).when(mockedChat).getSenderId();
+        Mockito.doReturn(receiverId).when(mockedChat).getReceiverId();
+
+        // Act
+        sut.getChatHistory(senderId, receiverId);
+
+        // Assert
+        Mockito.verify(mockedChat).getChatHistory();
+    }
 }
