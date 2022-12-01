@@ -3,7 +3,7 @@
     <div class="holder">
 
       <form @submit.prevent="addSkill">
-        <input type="text" placeholder="Enter a skill you have.." v-model="skill" v-validate="'min:5'" name="skill">
+        <input type="text" placeholder="Enter a skill you have.." v-model="skill" name="skill">
       </form>
 
       <ul>
@@ -16,19 +16,22 @@
 </template>
 
 <script>
+import {required} from "vuelidate/lib/validators";
+
 export default {
   name: 'HelloWorld',
   data() {
     return {
-      checked: false,
       skill: '',
       skills: [
         {"skill": "Vue.js"},
         {"skill": "Frontend Developer"}
       ],
-      bgColor: 'yellow',
-      bgWidth: '100%',
-      bgHeight: '30px'
+    }
+  },
+  validations: {
+    form: {
+      skill: { required },
     }
   },
   methods: {
