@@ -29,7 +29,6 @@ function getChatLog(userId){
 
   if (userId === 1){
     sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1').then(responseData => {
-      console.log(responseData.messages)
       for (let message of responseData.messages){
         let cleanMessage = message.message.replace(/['"]+/g, '')
         if (message.senderId === userId){
