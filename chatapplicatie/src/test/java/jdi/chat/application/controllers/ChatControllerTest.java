@@ -1,23 +1,23 @@
 package jdi.chat.application.controllers;
 
+import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.models.Chat;
-import jdi.chat.application.models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import java.util.ArrayList;
 
-public class testChatControllerSendMessage {
+public class ChatControllerTest {
     private ChatController sut;
     private ArrayList<Chat> chatList;
     private Chat mockedChat;
     private String message;
     private String senderId;
     private String receiverId;
+    private ArrayList<MessageDTO> mockDTO;
 
     @BeforeEach
-    public void setup(){
+    void setup() {
         this.sut = new ChatController();
         this.mockedChat = Mockito.mock(Chat.class);
         this.chatList = new ArrayList<>();
@@ -25,20 +25,34 @@ public class testChatControllerSendMessage {
         this.message = "Hello World";
         this.senderId = "1";
         this.receiverId = "2";
+        sut.setChats(chatList);
     }
 
     @Test
-    public void testSendMessageChatController(){
-        //Arrange
-        sut.setChats(chatList);
+    void testGetChatHistoryController() {
+        // Arrange
+        Mockito.doReturn(mockDTO).when(mockedChat).getChatHistory();
+        Mockito.doReturn(senderId).when(mockedChat).getSenderId();
+        Mockito.doReturn(receiverId).when(mockedChat).getReceiverId();
+
+        // Act
+        sut.getChatHistory(senderId, receiverId);
+
+        // Assert
+        Mockito.verify(mockedChat).getChatHistory();
+    }
+
+    @Test
+    void testSendMessageChatController() {
+        // Arrange
         Mockito.doNothing().when(mockedChat).sendMessage(message);
         Mockito.doReturn(senderId).when(mockedChat).getSenderId();
         Mockito.doReturn(receiverId).when(mockedChat).getReceiverId();
 
-        //Act
+        // Act
         sut.sendMessage(senderId, receiverId, message);
 
-        //Assert
+        // Assert
         Mockito.verify(mockedChat).sendMessage(Mockito.anyString());
     }
 }

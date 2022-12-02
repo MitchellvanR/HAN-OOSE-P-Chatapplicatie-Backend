@@ -47,9 +47,4 @@ public class SQLChatDAO extends AbstractChatDAO {
             throw new DatabaseRequestException();
         }
     }
-
-    private MessageDTO formatMessage(String senderId, String receiverId, String content){
-        MessageDTO messageDTO = new MessageDTO(senderId,receiverId, content);
-        return messageDTO;
-    }
 }

@@ -1,0 +1,15 @@
+{
+  "name": "chatapplicatie",
+  "version": "1.0.0",
+  "description": "JDI Chat Application",
+  "main": "src/main/java/jdi/chat/application/network/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/main/java/jdi/chat/application/network/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^8.11.0"
+  }
+}
