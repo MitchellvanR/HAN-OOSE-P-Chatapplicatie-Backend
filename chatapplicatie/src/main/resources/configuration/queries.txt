@@ -1,0 +1,3 @@
+# Database queries (Key: Value)
+getChatHistoryQuery: SELECT * FROM bericht WHERE (VerzenderId = ? AND OntvangerId = ?) OR (VerzenderId = ? AND OntvangerId = ?)
+sendMessageQuery: Insert INTO Bericht (VerzenderId, OntvangerId, Bericht) VALUES (?, ?, ?)

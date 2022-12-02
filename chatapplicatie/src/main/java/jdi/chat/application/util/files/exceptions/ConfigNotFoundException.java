@@ -1,4 +1,4 @@
-package jdi.chat.application.util.exceptions;
+package jdi.chat.application.util.files.exceptions;
 
 public class ConfigNotFoundException extends RuntimeException {
 
