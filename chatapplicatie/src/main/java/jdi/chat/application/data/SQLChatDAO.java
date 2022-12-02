@@ -2,6 +2,7 @@ package jdi.chat.application.data;
 
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
+import jdi.chat.application.util.files.Queries;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +13,7 @@ public class SQLChatDAO extends AbstractChatDAO {
     @Override
     public ArrayList<MessageDTO> getChatHistory(String senderId, String receiverId) {
         try {
-            String sql = "SELECT * FROM bericht WHERE (VerzenderId = ? AND OntvangerId = ?) OR (VerzenderId = ? AND OntvangerId = ?)";
+            String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
             PreparedStatement statement = createConnection().prepareStatement(sql);
             statement.setString(1, senderId);
             statement.setString(2, receiverId);
@@ -35,8 +36,11 @@ public class SQLChatDAO extends AbstractChatDAO {
     @Override
     public void saveMessage(String senderId, String receiverId, String message){
         try {
-            String sql = "Insert into Bericht (VerzenderId, OntvangerId, Bericht) Values ('" + senderId + "', '" + receiverId + "', '" + message + "')";
+            String sql = Queries.getInstance().getQuery("sendMessageQuery");
             PreparedStatement statement = createConnection().prepareStatement(sql);
+            statement.setString(1, senderId);
+            statement.setString(2, receiverId);
+            statement.setString(3, message);
             statement.executeUpdate();
             connection.close();
         } catch (Exception e) {
