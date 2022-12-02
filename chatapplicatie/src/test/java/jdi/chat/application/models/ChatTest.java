@@ -20,7 +20,7 @@ public class ChatTest {
     private ArrayList<MessageDTO> mockDTO;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         this.sut = new Chat(senderId, receiverId);
         this.mockedChatDAO = Mockito.mock(SQLChatDAO.class);
         this.mockedSender = Mockito.mock(User.class);
@@ -33,29 +33,29 @@ public class ChatTest {
         this.receiverId = "2";
     }
 
-//    @Test
-//    void testGetChatHistory() {
-//        // Arrange
-//        Mockito.doReturn(mockDTO).when(mockedChatDAO).getChatHistory(senderId, receiverId);
-//
-//        // Act
-//        sut.getChatHistory();
-//
-//        // Assert
-//        Assertions.assertEquals(mockDTO, mockedChatDAO.getChatHistory(senderId, receiverId));
-//    }
+    @Test
+    void testGetChatHistory() {
+        // Arrange
+        Mockito.doReturn(mockDTO).when(mockedChatDAO).getChatHistory(senderId, receiverId);
 
-//    @Test
-//    void testSendMessage() {
-//        // Arrange
-//        Mockito.doReturn(senderId).when(mockedSender).getId();
-//        Mockito.doReturn(receiverId).when(mockedReceiver).getId();
-//        Mockito.doNothing().when(mockedChatDAO).saveMessage(senderId, receiverId, message);
-//
-//        // Act
-//        sut.sendMessage(message);
-//
-//        // Assert
-//        Mockito.verify(mockedChatDAO).saveMessage(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
-//    }
+        // Act
+        sut.getChatHistory();
+
+        // Assert
+        Assertions.assertEquals(mockDTO, mockedChatDAO.getChatHistory(senderId, receiverId));
+    }
+
+    @Test
+    void testSendMessage() {
+        // Arrange
+        Mockito.doReturn(senderId).when(mockedSender).getId();
+        Mockito.doReturn(receiverId).when(mockedReceiver).getId();
+        Mockito.doNothing().when(mockedChatDAO).saveMessage(senderId, receiverId, message);
+
+        // Act
+        sut.sendMessage(message);
+
+        // Assert
+        Mockito.verify(mockedChatDAO).saveMessage(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+    }
 }

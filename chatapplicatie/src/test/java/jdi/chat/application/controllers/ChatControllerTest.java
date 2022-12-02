@@ -28,31 +28,31 @@ public class ChatControllerTest {
         sut.setChats(chatList);
     }
 
-//    @Test
-//    void testGetChatHistoryController() {
-//        // Arrange
-//        Mockito.doReturn(mockDTO).when(mockedChat).getChatHistory();
-//        Mockito.doReturn(senderId).when(mockedChat).getSenderId();
-//        Mockito.doReturn(receiverId).when(mockedChat).getReceiverId();
-//
-//        // Act
-//        sut.getChatHistory(senderId, receiverId);
-//
-//        // Assert
-//        Mockito.verify(mockedChat).getChatHistory();
-//    }
+    @Test
+    void testGetChatHistoryController() {
+        // Arrange
+        Mockito.doReturn(mockDTO).when(mockedChat).getChatHistory();
+        Mockito.doReturn(senderId).when(mockedChat).getSenderId();
+        Mockito.doReturn(receiverId).when(mockedChat).getReceiverId();
 
-//    @Test
-//    void testSendMessageChatController() {
-//        // Arrange
-//        Mockito.doNothing().when(mockedChat).sendMessage(message);
-//        Mockito.doReturn(senderId).when(mockedChat).getSenderId();
-//        Mockito.doReturn(receiverId).when(mockedChat).getReceiverId();
-//
-//        // Act
-//        sut.sendMessage(senderId, receiverId, message);
-//
-//        // Assert
-//        Mockito.verify(mockedChat).sendMessage(Mockito.anyString());
-//    }
+        // Act
+        sut.getChatHistory(senderId, receiverId);
+
+        // Assert
+        Mockito.verify(mockedChat).getChatHistory();
+    }
+
+    @Test
+    void testSendMessageChatController() {
+        // Arrange
+        Mockito.doNothing().when(mockedChat).sendMessage(message);
+        Mockito.doReturn(senderId).when(mockedChat).getSenderId();
+        Mockito.doReturn(receiverId).when(mockedChat).getReceiverId();
+
+        // Act
+        sut.sendMessage(senderId, receiverId, message);
+
+        // Assert
+        Mockito.verify(mockedChat).sendMessage(Mockito.anyString());
+    }
 }
