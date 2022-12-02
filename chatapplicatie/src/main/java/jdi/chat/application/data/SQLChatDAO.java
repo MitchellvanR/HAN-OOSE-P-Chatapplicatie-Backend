@@ -35,17 +35,12 @@ public class SQLChatDAO extends AbstractChatDAO {
     @Override
     public void saveMessage(String senderId, String receiverId, String message){
         try {
-            String sql = "Insert into Bericht Values ('" + senderId + "', '" + receiverId + "', '" + message + "')";
+            String sql = "Insert into Bericht (VerzenderId, OntvangerId, Bericht) Values ('" + senderId + "', '" + receiverId + "', '" + message + "')";
             PreparedStatement statement = createConnection().prepareStatement(sql);
             statement.executeUpdate();
             connection.close();
         } catch (Exception e) {
             throw new DatabaseRequestException();
         }
-    }
-
-    private MessageDTO formatMessage(String senderId, String receiverId, String content){
-        MessageDTO messageDTO = new MessageDTO(senderId,receiverId, content);
-        return messageDTO;
     }
 }

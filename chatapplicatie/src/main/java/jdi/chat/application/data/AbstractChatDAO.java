@@ -10,8 +10,8 @@ public abstract class AbstractChatDAO extends ConnectionDAO{
 
     public abstract void saveMessage(String senderId, String receiverId, String message);
 
-    private MessageDTO formatMessage(String senderId, String receiverId, String content){
-        // code
-        return null;
+    public MessageDTO formatMessage(String senderId, String receiverId, String content){
+        MessageDTO messageDTO = new MessageDTO(senderId,receiverId, content);
+        return messageDTO;
     }
 }
