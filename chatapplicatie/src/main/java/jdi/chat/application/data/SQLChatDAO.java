@@ -11,19 +11,19 @@ import java.util.ArrayList;
 public class SQLChatDAO extends AbstractChatDAO {
 
     @Override
-    public ArrayList<MessageDTO> getChatHistory(String senderId, String receiverId) {
+    public ArrayList<MessageDTO> getChatHistory(String chatId) {
         try {
             String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
             PreparedStatement statement = createConnection().prepareStatement(sql);
-            statement.setString(1, senderId);
-            statement.setString(2, receiverId);
-            statement.setString(3, receiverId);
-            statement.setString(4, senderId);
+            statement.setString(1, chatId);
             ResultSet resultSet = statement.executeQuery();
 
             ArrayList<MessageDTO> chatHistory = new ArrayList<>();
             while(resultSet.next()) {
-                MessageDTO message = formatMessage(resultSet.getString("VerzenderId"), resultSet.getString("OntvangerId"), resultSet.getString("Bericht"));
+                MessageDTO message = formatMessage(
+                        resultSet.getString("senderId"),
+                        resultSet.getString("message")
+                        );
                 chatHistory.add(message);
             }
             connection.close();
@@ -34,13 +34,13 @@ public class SQLChatDAO extends AbstractChatDAO {
     }
 
     @Override
-    public void saveMessage(String senderId, String receiverId, String message){
+    public void saveMessage(String message, String senderId, String chatId){
         try {
             String sql = Queries.getInstance().getQuery("sendMessageQuery");
             PreparedStatement statement = createConnection().prepareStatement(sql);
-            statement.setString(1, senderId);
-            statement.setString(2, receiverId);
-            statement.setString(3, message);
+            statement.setString(1, message);
+            statement.setString(2, senderId);
+            statement.setString(3, chatId);
             statement.executeUpdate();
             connection.close();
         } catch (Exception e) {

@@ -28,9 +28,9 @@ function getChatLog(userId){
   runWebSocket();
 
   if (userId === 1){
-    sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1/2').then(responseData => {
+    sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1').then(responseData => {
       for (let message of responseData.messages){
-        let cleanMessage = message.content.replace(/['"]+/g, '')
+        let cleanMessage = message.message.replace(/['"]+/g, '')
         if (message.senderId === userId){
           this.outgoingMessage(cleanMessage);
         } else {
@@ -39,9 +39,9 @@ function getChatLog(userId){
       }
     });
   } else{
-    sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/2/1').then(responseData => {
+    sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1').then(responseData => {
       for (let message of responseData.messages){
-        let cleanMessage = message.content.replace(/['"]+/g, '')
+        let cleanMessage = message.message.replace(/['"]+/g, '')
         if (message.senderId === userId){
           this.outgoingMessage(cleanMessage);
         } else {
@@ -56,7 +56,7 @@ function sendMessage() {
   const newMessage = document.getElementById('message').value;
 
   if (sessionStorage.getItem('userId') === "1"){
-    sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/1/2', newMessage.toString()).then(responseData => {})
+    sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/1/1', newMessage.toString()).then(responseData => {})
   } else{
     sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/2/1', newMessage.toString()).then(responseData => {})
   }
