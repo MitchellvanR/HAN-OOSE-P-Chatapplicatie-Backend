@@ -28,6 +28,9 @@ public class SQLChatDAO extends AbstractChatDAO {
                 chatHistory.add(message);
             }
             connection.close();
+            for (MessageDTO message : chatHistory) {
+                System.out.println("[" + message.getSenderId() + "] sent " + message.getMessage());
+            }
             return chatHistory;
         } catch (Exception e) {
             throw new DatabaseRequestException();
@@ -43,7 +46,7 @@ public class SQLChatDAO extends AbstractChatDAO {
             statement.setString(2, senderId);
             statement.setString(3, chatId);
             System.out.println(statement);
-            //statement.executeUpdate();
+            statement.executeUpdate();
             connection.close();
         } catch (Exception e) {
             throw new DatabaseRequestException();
