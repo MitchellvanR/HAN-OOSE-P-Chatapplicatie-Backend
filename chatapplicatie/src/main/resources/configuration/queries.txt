@@ -1,3 +1,6 @@
 # Database queries (Key: Value)
-getChatHistoryQuery: SELECT * FROM bericht WHERE (VerzenderId = ? AND OntvangerId = ?) OR (VerzenderId = ? AND OntvangerId = ?)
-sendMessageQuery: Insert INTO Bericht (VerzenderId, OntvangerId, Bericht) VALUES (?, ?, ?)
+getSymKeyQuery: SELECT symKey FROM chats WHERE (id = ?)
+getChatHistoryQuery: SELECT inVec, senderId, message, DATE(date) as date, TIME(date) as time FROM messages WHERE (chatId = ?) ORDER BY date,time ASC
+sendMessageQuery: INSERT INTO messages (message, senderId, chatId) VALUES (?, ?, ?)
+addUserToChatQuery: INSERT INTO userInChats (userId, chatId) VALUES (?, ?)
+createChatQuery: INSERT INTO chats (id, symKey) VALUES (?, ?)

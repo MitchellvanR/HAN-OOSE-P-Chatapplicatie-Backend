@@ -2,13 +2,11 @@ package jdi.chat.application.data.dto;
 
 public class MessageDTO {
     private String senderId;
-    private String receiverId;
-    private String content;
+    private String message;
 
-    public MessageDTO(String senderId, String receiverId, String content) {
+    public MessageDTO(String senderId, String message) {
         this.senderId = senderId;
-        this.receiverId = receiverId;
-        this.content = content;
+        this.message = message;
     }
 
     public String getSenderId() {
@@ -19,19 +17,7 @@ public class MessageDTO {
         this.senderId = senderId;
     }
 
-    public String getReceiverId() {
-        return receiverId;
-    }
+    public String getMessage() { return message; }
 
-    public void setReceiverId(String receiveId) {
-        this.receiverId = receiveId;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
+    public void setMessage(String message) { this.message = message; }
 }

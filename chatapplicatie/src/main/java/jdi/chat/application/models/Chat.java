@@ -7,37 +7,29 @@ import jdi.chat.application.data.dto.MessageDTO;
 import java.util.ArrayList;
 
 public class Chat {
-    private User sender;
-    private User receiver;
+    private String chatId;
     private AbstractChatDAO chatDAO = new SQLChatDAO();
 
-    public Chat(String senderId, String receiverId) {
-        this.sender = new User(senderId);
-        this.receiver = new User(receiverId);
+    public Chat(String Id) {
+        chatId = Id;
     }
 
     public ArrayList<MessageDTO> getChatHistory() {
-        ArrayList<MessageDTO> chatHistory = chatDAO.getChatHistory(sender.getId(), receiver.getId());
+        ArrayList<MessageDTO> chatHistory = chatDAO.getChatHistory(chatId);
         return chatHistory;
     }
 
-    public void sendMessage(String message){
-        var senderId = sender.getId();
-        var receiverId = receiver.getId();
-        chatDAO.saveMessage(senderId, receiverId, message);
+    public void sendMessage(String message, String senderId){
+        chatDAO.saveMessage(message, senderId, chatId);
     }
 
-    public String getSenderId() {
-        return sender.getId();
+    public String getChatId() {
+        return chatId;
     }
 
-    public String getReceiverId() {
-        return receiver.getId();
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
     }
-
-    public void setSender(User sender) { this.sender = sender; }
-
-    public void setReceiver(User receiver) { this.receiver = receiver; }
 
     public void setChatDAO(AbstractChatDAO chatDAO) {
         this.chatDAO = chatDAO;
