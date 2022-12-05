@@ -4,7 +4,7 @@ import jdi.chat.application.data.dto.MessageDTO;
 
 import java.util.ArrayList;
 
-public abstract class AbstractChatDAO extends ConnectionDAO{
+public abstract class AbstractChatDAO {
 
     public abstract ArrayList<MessageDTO> getChatHistory(String chatId);
 

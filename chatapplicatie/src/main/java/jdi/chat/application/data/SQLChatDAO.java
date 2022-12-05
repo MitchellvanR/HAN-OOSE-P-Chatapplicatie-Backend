@@ -14,7 +14,7 @@ public class SQLChatDAO extends AbstractChatDAO {
     public ArrayList<MessageDTO> getChatHistory(String chatId) {
         try {
             String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
-            PreparedStatement statement = createConnection().prepareStatement(sql);
+            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, chatId);
             ResultSet resultSet = statement.executeQuery();
 
@@ -26,7 +26,6 @@ public class SQLChatDAO extends AbstractChatDAO {
                         );
                 chatHistory.add(message);
             }
-            connection.close();
             return chatHistory;
         } catch (Exception e) {
             throw new DatabaseRequestException();
@@ -37,12 +36,11 @@ public class SQLChatDAO extends AbstractChatDAO {
     public void saveMessage(String message, String senderId, String chatId){
         try {
             String sql = Queries.getInstance().getQuery("sendMessageQuery");
-            PreparedStatement statement = createConnection().prepareStatement(sql);
+            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, message);
             statement.setString(2, senderId);
             statement.setString(3, chatId);
             statement.executeUpdate();
-            connection.close();
         } catch (Exception e) {
             throw new DatabaseRequestException();
         }
