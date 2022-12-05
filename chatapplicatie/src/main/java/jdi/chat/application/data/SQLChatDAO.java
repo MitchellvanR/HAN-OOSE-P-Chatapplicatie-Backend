@@ -22,8 +22,9 @@ public class SQLChatDAO extends AbstractChatDAO {
             while(resultSet.next()) {
                 MessageDTO message = formatMessage(
                         resultSet.getString("senderId"),
-                        resultSet.getString("message")
-                        );
+                        resultSet.getString("message"),
+                        resultSet.getString("time")
+                );
                 chatHistory.add(message);
             }
             return chatHistory;
