@@ -1,3 +1,17 @@
+function getChatLog(userId){
+  runWebSocket();
+
+  sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1').then(responseData => {
+    for (let message of responseData.messages) {
+      if (message.senderId === userId) {
+        this.outgoingMessage(message.message, message.time);
+      } else {
+        this.incomingMessage(message.message, message.time);
+      }
+    }
+  });
+}
+
 function runWebSocket(){
   const webSocket = new WebSocket('ws://localhost:443');
 
@@ -12,31 +26,14 @@ function runWebSocket(){
     if (input.value === ""){
       alert("Please enter a new value");
     } else {
+      let date = new Date();
+
       webSocket.send(input.value);
-      outgoingMessage(input.value);
+      outgoingMessage(input.value, date.getHours() + ':' + date.getMinutes());
       sendMessage(input.value);
       input.value = '';
     }
   }
-}
-
-function setUserId(userId){
-  sessionStorage.setItem("userId", userId);
-}
-
-function getChatLog(userId){
-  runWebSocket();
-
-  sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1').then(responseData => {
-    for (let message of responseData.messages) {
-      let cleanMessage = message.message.replace(/['"]+/g, '')
-      if (message.senderId === userId) {
-        this.outgoingMessage(cleanMessage);
-      } else {
-        this.incomingMessage(cleanMessage);
-      }
-    }
-  });
 }
 
 function sendMessage() {
@@ -49,19 +46,19 @@ function sendMessage() {
   }
 }
 
-function outgoingMessage(message){
+function outgoingMessage(message, time){
   const outgoingMessage = document.getElementById('content');
 
   outgoingMessage.innerHTML += '' +
   '<div class="outgoing_msg"> ' +
     '<div class="sent_msg"> ' +
       '<p>'+ message +'</p>' +
-      '<span class="time_date"> 00:00 AM/PM | Today</span>' +
+      '<span class="time_date_right">'+ time +'</span>' +
     '</div> ' +
   '</div>'
 }
 
-function incomingMessage(message){
+function incomingMessage(message, time){
   const incomingMessage = document.getElementById('content');
 
   incomingMessage.innerHTML += '' +
@@ -69,10 +66,14 @@ function incomingMessage(message){
     '<div class="received_msg"> ' +
       '<div class="received_content_msg"> ' +
         '<p>'+ message +'</p>' +
-        '<span class="time_date"> 00:00 AM/PM | Today</span>' +
+      '<span class="time_date">'+ time +'</span>' +
       '</div> ' +
     '</div>' +
   '</div>'
+}
+
+function setUserId(userId){
+  sessionStorage.setItem("userId", userId);
 }
 
 const sendHttpRequest = (method, url, data) => {
