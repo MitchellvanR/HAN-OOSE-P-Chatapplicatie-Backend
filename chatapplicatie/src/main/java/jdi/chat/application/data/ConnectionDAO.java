@@ -17,7 +17,7 @@ public class ConnectionDAO {
         }
     }
 
-    public Connection createConnection() throws Exception {
+    private Connection createConnection() throws Exception {
         Properties properties = new Properties();
         properties.load(getClass().getClassLoader().getResourceAsStream("database.properties"));
         String url = properties.getProperty("connectionString");
