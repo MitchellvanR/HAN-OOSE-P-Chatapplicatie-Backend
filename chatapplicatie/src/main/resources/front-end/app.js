@@ -27,29 +27,16 @@ function setUserId(userId){
 function getChatLog(userId){
   runWebSocket();
 
-  if (userId === 1){
-    sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1').then(responseData => {
-      for (let message of responseData.messages){
-        let cleanMessage = message.message.replace(/['"]+/g, '')
-        if (message.senderId === userId){
-          this.outgoingMessage(cleanMessage);
-        } else {
-          this.incomingMessage(cleanMessage);
-        }
+  sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1').then(responseData => {
+    for (let message of responseData.messages) {
+      let cleanMessage = message.message.replace(/['"]+/g, '')
+      if (message.senderId === userId) {
+        this.outgoingMessage(cleanMessage);
+      } else {
+        this.incomingMessage(cleanMessage);
       }
-    });
-  } else{
-    sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1').then(responseData => {
-      for (let message of responseData.messages){
-        let cleanMessage = message.message.replace(/['"]+/g, '')
-        if (message.senderId === userId){
-          this.outgoingMessage(cleanMessage);
-        } else {
-          this.incomingMessage(cleanMessage);
-        }
-      }
-    });
-  }
+    }
+  });
 }
 
 function sendMessage() {
