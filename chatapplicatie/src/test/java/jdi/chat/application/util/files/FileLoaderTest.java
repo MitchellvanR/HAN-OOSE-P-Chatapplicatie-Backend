@@ -1,5 +1,6 @@
 package jdi.chat.application.util.files;
 
+import jdi.chat.application.util.files.exceptions.ConfigNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,5 +28,16 @@ class FileLoaderTest {
 
         // Assert
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void testConfigNotFoundExceptionCorrectResponse() {
+        // Arrange
+        var path = "configuration/non-existent-file.txt";
+
+        // Assert
+        assertThrows(ConfigNotFoundException.class, () -> {
+            sut.readConfigFile(path);
+        });
     }
 }
