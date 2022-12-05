@@ -56,7 +56,7 @@ function outgoingMessage(message, time){
   '</div>'
 }
 
-function incomingMessage(message, time){
+function incomingMessage(message, time = getCurrentTime()){
   const incomingMessage = document.getElementById('content');
 
   incomingMessage.innerHTML += '' +
@@ -67,8 +67,6 @@ function incomingMessage(message, time){
       '</div> ' +
     '</div>'
 }
-
-
 
 const sendHttpRequest = (method, url, data) => {
   return new Promise((resolve, reject) => {
