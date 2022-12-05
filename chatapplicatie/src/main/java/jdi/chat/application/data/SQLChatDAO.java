@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class SQLChatDAO extends AbstractChatDAO {
-
     @Override
     public ArrayList<MessageDTO> getChatHistory(String chatId) {
         try {

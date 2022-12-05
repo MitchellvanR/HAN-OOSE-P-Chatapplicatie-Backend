@@ -25,7 +25,7 @@ public class FileLoader {
 
     protected void mapConfigurationLine(String configLine) {
         if (!configLine.startsWith("#") && !configLine.isEmpty()) {
-            String[] modifiedConfigLine = configLine.split(":");
+            String[] modifiedConfigLine = configLine.split("_:");
             configurations.put(modifiedConfigLine[0].trim(), modifiedConfigLine[1].trim());
         }
     }

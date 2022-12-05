@@ -26,10 +26,8 @@ function runWebSocket(){
     if (input.value === ""){
       alert("Please enter a new value");
     } else {
-      let date = new Date();
-
       webSocket.send(input.value);
-      outgoingMessage(input.value, date.getHours() + ':' + date.getMinutes());
+      outgoingMessage(input.value, getCurrentTime());
       sendMessage(input.value);
       input.value = '';
     }
@@ -53,7 +51,7 @@ function outgoingMessage(message, time){
   '<div class="outgoing_msg"> ' +
     '<div class="sent_msg"> ' +
       '<p>'+ message +'</p>' +
-      '<span class="time_date_right">'+ time +'</span>' +
+      '<span class="time_date float_right">'+ time +'</span>' +
     '</div> ' +
   '</div>'
 }
@@ -62,19 +60,15 @@ function incomingMessage(message, time){
   const incomingMessage = document.getElementById('content');
 
   incomingMessage.innerHTML += '' +
-  '<div class="incoming_msg"> ' +
     '<div class="received_msg"> ' +
       '<div class="received_content_msg"> ' +
         '<p>'+ message +'</p>' +
       '<span class="time_date">'+ time +'</span>' +
       '</div> ' +
-    '</div>' +
-  '</div>'
+    '</div>'
 }
 
-function setUserId(userId){
-  sessionStorage.setItem("userId", userId);
-}
+
 
 const sendHttpRequest = (method, url, data) => {
   return new Promise((resolve, reject) => {
@@ -97,3 +91,12 @@ const sendHttpRequest = (method, url, data) => {
     XmlHttpRequest.send(JSON.stringify(data));
   });
 };
+
+function setUserId(userId){
+  sessionStorage.setItem("userId", userId);
+}
+
+function getCurrentTime(){
+  let date = new Date();
+  return date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes();
+}
