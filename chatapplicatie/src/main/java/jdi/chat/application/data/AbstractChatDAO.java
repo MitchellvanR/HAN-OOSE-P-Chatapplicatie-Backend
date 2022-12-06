@@ -10,8 +10,8 @@ public abstract class AbstractChatDAO {
 
     public abstract void saveMessage(String message, String senderId, String chatId);
 
-    public MessageDTO formatMessage(String senderId, String content){
-        MessageDTO messageDTO = new MessageDTO(senderId, content);
+    public MessageDTO formatMessage(String senderId, String content, String time){
+        MessageDTO messageDTO = new MessageDTO(senderId, content, time);
         return messageDTO;
     }
 }

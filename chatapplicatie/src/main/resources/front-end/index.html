@@ -13,13 +13,13 @@
 <body onload="getChatLog(sessionStorage.getItem('userId'))">
 <div class="container mt-5 float">
   <div class="overflow-hidden border w-100">
-    <h3 class="text-center">Gebruiker #1</h3>
+    <h3 class="text-center">Gebruiker #</h3>
     <div class="container">
-      <div class="overflow-auto h-500px" id="content"></div>
+      <div class="overflow-auto h-500px chat_padding" id="content"></div>
       <div class="position-relative border1px">
         <div class="input_style w-100">
           <form id="sendMessageForm">
-            <input type="text" class="w-75 p-1 mb-2" id="message"/>
+            <input type="text" class="w-100 p-1 mb-2" id="message"/>
             <label for="message"></label>
             <button class="custom-btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
           </form>
