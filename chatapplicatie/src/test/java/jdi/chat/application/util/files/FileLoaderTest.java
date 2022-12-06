@@ -3,11 +3,9 @@ package jdi.chat.application.util.files;
 import jdi.chat.application.util.files.exceptions.ConfigNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileLoaderTest {
-
     private FileLoader sut;
 
     @BeforeEach

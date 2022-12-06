@@ -2,11 +2,9 @@ package jdi.chat.application.util.files;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class QueriesTest {
-
     private Queries sut;
 
     @BeforeEach
