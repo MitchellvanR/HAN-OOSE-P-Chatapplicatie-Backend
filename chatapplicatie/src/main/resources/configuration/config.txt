@@ -1,5 +1,5 @@
 # Test
-test: Hello config!
+test_: Hello config!
 
 # Server configuration (Key: Value)
-serverPort: 8080
+serverPort_: 8080
