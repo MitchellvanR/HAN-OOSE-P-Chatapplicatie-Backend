@@ -3,20 +3,18 @@ package jdi.chat.application.models;
 import jdi.chat.application.data.AbstractChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
 import jdi.chat.application.data.dto.MessageDTO;
-
-import java.util.ArrayList;
+import java.util.List;
 
 public class Chat {
     private String chatId;
     private AbstractChatDAO chatDAO = new SQLChatDAO();
 
-    public Chat(String Id) {
-        chatId = Id;
+    public Chat(String id) {
+        chatId = id;
     }
 
-    public ArrayList<MessageDTO> getChatHistory() {
-        ArrayList<MessageDTO> chatHistory = chatDAO.getChatHistory(chatId);
-        return chatHistory;
+    public List<MessageDTO> getChatHistory() {
+        return chatDAO.getChatHistory(chatId);
     }
 
     public void sendMessage(String message, String senderId){

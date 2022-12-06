@@ -36,11 +36,10 @@ function runWebSocket(){
 
 function sendMessage() {
   const newMessage = document.getElementById('message').value;
-
   if (sessionStorage.getItem('userId') === "1"){
-    sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/1/1', newMessage.toString()).then(responseData => {})
+    sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/1/1', newMessage).then();
   } else{
-    sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/2/1', newMessage.toString()).then(responseData => {})
+    sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/2/1', newMessage).then();
   }
 }
 
@@ -85,8 +84,7 @@ const sendHttpRequest = (method, url, data) => {
         resolve(XmlHttpRequest.response);
       }
     };
-
-    XmlHttpRequest.send(JSON.stringify(data));
+    XmlHttpRequest.send(data);
   });
 };
 
