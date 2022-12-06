@@ -8,17 +8,18 @@ import jdi.chat.application.models.Chat;
 import net.minidev.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Path("/chats")
 public class ChatController {
-    private ArrayList<Chat> chats = new ArrayList<>();
+    private List<Chat> chats = new ArrayList<>();
 
     @GET
     @Path("/{chatId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getChatHistory(@PathParam("chatId") String chatId){
-        ArrayList<MessageDTO> chatHistory = openChat(chatId).getChatHistory();
+        List<MessageDTO> chatHistory = openChat(chatId).getChatHistory();
         JSONObject chatHistoryJSON = new JSONObject();
         chatHistoryJSON.put("messages", chatHistory);
         return Response.ok().entity(chatHistoryJSON).build();
@@ -52,7 +53,7 @@ public class ChatController {
         return chat;
     }
 
-    public void setChats(ArrayList<Chat> chatList) {
+    public void setChats(List<Chat> chatList) {
         this.chats = chatList;
     }
 }
