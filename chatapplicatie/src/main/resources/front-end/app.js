@@ -21,10 +21,11 @@ function runWebSocket(){
 
   document.getElementById('sendMessageForm').onsubmit = data => {
     const input = document.getElementById('message');
+    input.classList.remove("border", "border-danger");
 
     data.preventDefault();
     if (input.value === ""){
-      alert("Please enter a new value");
+      input.classList.add("border", "border-danger");
     } else {
       webSocket.send(input.value);
       outgoingMessage(input.value, getCurrentTime());
@@ -38,9 +39,9 @@ function sendMessage() {
   const newMessage = document.getElementById('message').value;
 
   if (sessionStorage.getItem('userId') === "1"){
-    sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/1/1', newMessage.toString()).then(responseData => {})
+    sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/1/1', newMessage).then(responseData => {})
   } else{
-    sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/2/1', newMessage.toString()).then(responseData => {})
+    sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/2/1', newMessage).then(responseData => {})
   }
 }
 
@@ -50,7 +51,7 @@ function outgoingMessage(message, time){
   outgoingMessage.innerHTML += '' +
   '<div class="outgoing_msg"> ' +
     '<div class="sent_msg"> ' +
-      '<p>'+ message +'</p>' +
+      '<p>'+  filterMessage(message) +'</p>' +
       '<span class="time_date float_right">'+ time +'</span>' +
     '</div> ' +
   '</div>'
@@ -62,7 +63,7 @@ function incomingMessage(message, time = getCurrentTime()){
   incomingMessage.innerHTML += '' +
     '<div class="received_msg"> ' +
       '<div class="received_content_msg"> ' +
-        '<p>'+ message +'</p>' +
+        '<p>'+ filterMessage(message) +'</p>' +
       '<span class="time_date">'+ time +'</span>' +
       '</div> ' +
     '</div>'
@@ -74,9 +75,7 @@ const sendHttpRequest = (method, url, data) => {
     XmlHttpRequest.open(method, url);
     XmlHttpRequest.responseType = 'json';
 
-    if (data) {
-      XmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
-    }
+    XmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
 
     XmlHttpRequest.onload = () => {
       if (XmlHttpRequest.status >= 400) {
@@ -92,6 +91,10 @@ const sendHttpRequest = (method, url, data) => {
 
 function setUserId(userId){
   sessionStorage.setItem("userId", userId);
+}
+
+function filterMessage(message){
+  return message.replace(/<\/?[^>]+>/gi, '')
 }
 
 function getCurrentTime(){
