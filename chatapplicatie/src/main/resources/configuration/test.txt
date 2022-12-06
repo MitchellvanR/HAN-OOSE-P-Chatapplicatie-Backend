@@ -1,2 +1,2 @@
 # This is a test config file. This file is required for unit tests to run
-test: Hello world!
+test_: Hello world!
