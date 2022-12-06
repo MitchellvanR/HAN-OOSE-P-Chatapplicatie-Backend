@@ -1,2 +1,5 @@
+# Test
+test: Hello config!
+
 # Server configuration (Key: Value)
 serverPort: 8080
