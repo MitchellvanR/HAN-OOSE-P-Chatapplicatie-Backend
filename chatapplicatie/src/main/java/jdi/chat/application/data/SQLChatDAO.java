@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class SQLChatDAO extends AbstractChatDAO {
-
     @Override
     public ArrayList<MessageDTO> getChatHistory(String chatId) {
         try {
@@ -22,8 +21,9 @@ public class SQLChatDAO extends AbstractChatDAO {
             while(resultSet.next()) {
                 MessageDTO message = formatMessage(
                         resultSet.getString("senderId"),
-                        resultSet.getString("message")
-                        );
+                        resultSet.getString("message"),
+                        resultSet.getString("time")
+                );
                 chatHistory.add(message);
             }
             return chatHistory;

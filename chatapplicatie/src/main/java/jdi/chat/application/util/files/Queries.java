@@ -13,5 +13,4 @@ public class Queries extends FileLoader {
     }
 
     public String getQuery(String queryKey) { return getValue(queryKey); }
-
 }
