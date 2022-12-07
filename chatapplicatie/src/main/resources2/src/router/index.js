@@ -1,21 +1,26 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import ChatApplication from "@/components/ChatApplication";
-import UserMenu from "@/components/UserMenu";
+import VueRouter from 'vue-router'
+import UserMenu from '../views/UserMenu.vue'
+import OpenChat from '../views/OpenChat.vue'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
-    routes: [
-        {
-            path: '/',
-            name: 'UserMenu',
-            component: UserMenu
-        },
-        {
-            path: '/chat',
-            name: 'ChatApplication',
-            component: ChatApplication
-        }
-    ]
+const routes = [
+  {
+    path: '/',
+    name: 'UserMenu',
+    component: UserMenu
+  },
+  {
+    path: '/chat',
+    name: 'OpenChat',
+    component: OpenChat
+  }
+]
+
+const router = new VueRouter({
+  mode: 'history',
+  routes
 })
+
+export default router
