@@ -30,8 +30,10 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response sendMessage(@PathParam("senderId") String senderId, @PathParam("chatId") String chatId, String message){
-        Chat chat = openChat(chatId);
-        chat.sendMessage(message, senderId);
+        if (!message.isEmpty()){
+            Chat chat = openChat(chatId);
+            chat.sendMessage(message, senderId);
+        }
         return Response.ok().build();
     }
 
