@@ -163,7 +163,7 @@
           </executions>
           <configuration>
             <executable>npm</executable>
-            <workingDirectory>src/main/resources2</workingDirectory>
+            <workingDirectory>src/main/resources</workingDirectory>
             <arguments>
               <argument>run</argument>
               <argument>build</argument>
