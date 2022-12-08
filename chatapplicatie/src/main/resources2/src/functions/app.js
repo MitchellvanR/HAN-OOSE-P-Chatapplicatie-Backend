@@ -13,26 +13,7 @@ function getChatLog(userId){
 }
 
 function runWebSocket(){
-    const webSocket = new WebSocket('ws://localhost:443');
 
-    webSocket.addEventListener('message', data => {
-        data.data.text().then(incomingMessage);
-    });
-
-    document.getElementById('sendMessageForm').onsubmit = data => {
-        const input = document.getElementById('message');
-        input.classList.remove("border", "border-danger");
-
-        data.preventDefault();
-        if (input.value === ""){
-            input.classList.add("border", "border-danger");
-        } else {
-            webSocket.send(input.value);
-            outgoingMessage(input.value, getCurrentTime());
-            sendMessage(input.value);
-            input.value = '';
-        }
-    }
 }
 
 function sendMessage() {
