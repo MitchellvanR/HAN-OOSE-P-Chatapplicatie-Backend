@@ -28,8 +28,7 @@ export default {
   methods: {
     getChatLog: function (userId) {
       this.runWebSocket();
-
-      this.sendHttpRequest('GET', 'http://localhost:3000/chat/1').then(responseData => {
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1').then(responseData => {
         for (let message of responseData.messages) {
           if (message.senderId === userId) {
             this.outgoingMessage(message.message, message.time);
@@ -65,9 +64,9 @@ export default {
       const newMessage = document.getElementById('message').value;
 
       if (sessionStorage.getItem('userId') === "1"){
-        this.sendHttpRequest('POST', 'http://localhost:8080/chat/1/1', newMessage).then()
+        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/1/1', newMessage).then()
       } else{
-        this.sendHttpRequest('POST', 'http://localhost:8080/chat/2/1', newMessage).then()
+        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/2/1', newMessage).then()
       }
     },
     outgoingMessage: function (message, time) {
@@ -108,7 +107,7 @@ export default {
           }
         };
 
-        XmlHttpRequest.send(JSON.stringify(data));
+        XmlHttpRequest.send(data);
       });
     },
     filterMessage: function (message) {
@@ -123,9 +122,12 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
 .h-500px { height: 500px;}
 .border1px {border-top: 1px solid #c4c4c4;}
+.chat_padding {
+  padding-right: 25px;
+}
 
 .input_style input {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
@@ -147,6 +149,21 @@ export default {
   top: 11px;
   width: 33px;
 }
+.outgoing_msg{
+  overflow:hidden;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  padding: 0 0 0 10px;
+}
+
+.received_msg {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  vertical-align: top;
+  width: 92%;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
 
 .sent_msg p {
   background: #05728f none repeat scroll 0 0;
@@ -155,6 +172,20 @@ export default {
   margin: 0; color:#fff;
   padding: 5px 10px 5px 12px;
   width:100%;
+}
+.sent_msg {
+  float: right;
+  width: 46%;
+}
+
+.time_date {
+  color: #747474;
+  display: block;
+  font-size: 12px;
+}
+
+.float_right {
+  float: right;
 }
 
 .received_content_msg p {
@@ -166,4 +197,6 @@ export default {
   padding: 5px 10px 5px 12px;
   width: 100%;
 }
+
+.received_content_msg { width: 57%;}
 </style>
