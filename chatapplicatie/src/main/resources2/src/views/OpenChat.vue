@@ -65,9 +65,9 @@ export default {
       const newMessage = document.getElementById('message').value;
 
       if (sessionStorage.getItem('userId') === "1"){
-        this.sendHttpRequest('POST', 'http://localhost:3000/chat1/1', newMessage).then()
+        this.sendHttpRequest('POST', 'http://localhost:8080/chat/1/1', newMessage).then()
       } else{
-        this.sendHttpRequest('POST', 'http://localhost:3000/chat/2/1', newMessage).then()
+        this.sendHttpRequest('POST', 'http://localhost:8080/chat/2/1', newMessage).then()
       }
     },
     outgoingMessage: function (message, time) {

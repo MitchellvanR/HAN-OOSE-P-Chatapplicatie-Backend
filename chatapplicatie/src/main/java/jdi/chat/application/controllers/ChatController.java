@@ -10,7 +10,7 @@ import net.minidev.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-@Path("/chats")
+@Path("/chat")
 public class ChatController {
     private List<Chat> chats = new ArrayList<>();
 
@@ -19,9 +19,12 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getChatHistory(@PathParam("chatId") String chatId){
+        System.out.println("f1akka");
+
         List<MessageDTO> chatHistory = openChat(chatId).getChatHistory();
         JSONObject chatHistoryJSON = new JSONObject();
         chatHistoryJSON.put("messages", chatHistory);
+        System.out.println("fakka");
         return Response.ok().entity(chatHistoryJSON).build();
     }
 
