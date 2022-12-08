@@ -42,7 +42,7 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void addUserToChat(@PathParam("chatId") String chatId, @PathParam("userId") String userId){
         Chat chat = openChat(chatId);
-        chat.addUser(userId);
+        chat.addUserToChat(userId);
     }
 
     private Chat openChat(String chatId) {

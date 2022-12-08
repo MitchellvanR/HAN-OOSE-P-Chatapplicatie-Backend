@@ -73,6 +73,6 @@ class ChatControllerTest {
         sut.addUserToChat(chatId, userId);
 
         // Assert
-        Mockito.verify(mockedChat).addUser(Mockito.anyString());
+        Mockito.verify(mockedChat).addUserToChat(Mockito.anyString());
     }
 }

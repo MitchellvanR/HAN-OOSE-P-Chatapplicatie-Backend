@@ -21,7 +21,7 @@ public class Chat {
         chatDAO.saveMessage(message, senderId, chatId);
     }
 
-    public void addUser(String userId) { chatDAO.addUserToChat(chatId, userId); }
+    public void addUserToChat(String userId) { chatDAO.addUserToChat(chatId, userId); }
 
     public String getChatId() {
         return chatId;
