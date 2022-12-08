@@ -6,6 +6,7 @@ import jdi.chat.application.util.files.Queries;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SQLChatDAO extends AbstractChatDAO {
@@ -44,5 +45,19 @@ public class SQLChatDAO extends AbstractChatDAO {
         } catch (Exception e) {
             throw new DatabaseRequestException();
         }
+    }
+
+    @Override
+    public void addUserToChat(String chatId, String userId) {
+        try {
+            String sql = Queries.getInstance().getQuery("addUserToChatQuery");
+            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+            statement.setString(1, userId);
+            statement.setString(2, chatId);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            throw new DatabaseRequestException();
+        }
+
     }
 }

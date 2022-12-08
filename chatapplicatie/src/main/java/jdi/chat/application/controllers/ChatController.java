@@ -37,6 +37,14 @@ public class ChatController {
         return Response.ok().build();
     }
 
+    @POST
+    @Path("/{chatId}/addUser/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void addUserToChat(@PathParam("chatId") String chatId, @PathParam("userId") String userId){
+        Chat chat = openChat(chatId);
+        chat.addUser(userId);
+    }
+
     private Chat openChat(String chatId) {
         if (chats.isEmpty()) { return createNewChat(chatId); }
         for (Chat chat : chats) {
