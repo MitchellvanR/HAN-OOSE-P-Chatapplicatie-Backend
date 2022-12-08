@@ -1,33 +1,33 @@
-package jdi.chat.application.controllers;
-
-import jdi.chat.application.data.dto.MessageDTO;
-import jdi.chat.application.models.Chat;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import java.util.ArrayList;
-
-public class ChatControllerTest {
-    private ChatController sut;
-    private ArrayList<Chat> chatList;
-    private Chat mockedChat;
-    private String message;
-    private String senderId;
-    private String receiverId;
-    private ArrayList<MessageDTO> mockDTO;
-
-    @BeforeEach
-    void setup() {
-        this.sut = new ChatController();
-        this.mockedChat = Mockito.mock(Chat.class);
-        this.chatList = new ArrayList<>();
-        this.chatList.add(mockedChat);
-        this.message = "Hello World";
-        this.senderId = "1";
-        this.receiverId = "2";
-        sut.setChats(chatList);
-    }
-
+//package jdi.chat.application.controllers;
+//
+//import jdi.chat.application.data.dto.MessageDTO;
+//import jdi.chat.application.models.Chat;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
+//import org.mockito.Mockito;
+//import java.util.ArrayList;
+//
+//public class ChatControllerTest {
+//    private ChatController sut;
+//    private ArrayList<Chat> chatList;
+//    private Chat mockedChat;
+//    private String message;
+//    private String senderId;
+//    private String receiverId;
+//    private ArrayList<MessageDTO> mockDTO;
+//
+//    @BeforeEach
+//    void setup() {
+//        this.sut = new ChatController();
+//        this.mockedChat = Mockito.mock(Chat.class);
+//        this.chatList = new ArrayList<>();
+//        this.chatList.add(mockedChat);
+//        this.message = "Hello World";
+//        this.senderId = "1";
+//        this.receiverId = "2";
+//        sut.setChats(chatList);
+//    }
+//
 //    @Test
 //    void testGetChatHistoryController() {
 //        // Arrange
@@ -41,7 +41,7 @@ public class ChatControllerTest {
 //        // Assert
 //        Mockito.verify(mockedChat).getChatHistory();
 //    }
-
+//
 //    @Test
 //    void testSendMessageChatController() {
 //        // Arrange
@@ -55,4 +55,4 @@ public class ChatControllerTest {
 //        // Assert
 //        Mockito.verify(mockedChat).sendMessage(Mockito.anyString());
 //    }
-}
+//}

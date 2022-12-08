@@ -8,49 +8,52 @@ import jdi.chat.application.models.Chat;
 import net.minidev.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Path("/chats")
 public class ChatController {
-    private ArrayList<Chat> chats = new ArrayList<>();
+    private List<Chat> chats = new ArrayList<>();
 
     @GET
-    @Path("/{senderId}/{receiverId}")
+    @Path("/{chatId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getChatHistory(@PathParam("senderId") String senderId, @PathParam("receiverId") String receiverId){
-        ArrayList<MessageDTO> chatHistory = openChat(senderId, receiverId).getChatHistory();
+    public Response getChatHistory(@PathParam("chatId") String chatId){
+        List<MessageDTO> chatHistory = openChat(chatId).getChatHistory();
         JSONObject chatHistoryJSON = new JSONObject();
         chatHistoryJSON.put("messages", chatHistory);
         return Response.ok().entity(chatHistoryJSON).build();
     }
 
     @POST
-    @Path("/{senderId}/{receiverId}")
+    @Path("/{senderId}/{chatId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response sendMessage(@PathParam("senderId") String senderId, @PathParam("receiverId") String receiverId, String message){
-        Chat chat = openChat(senderId, receiverId);
-        chat.sendMessage(message);
+    public Response sendMessage(@PathParam("senderId") String senderId, @PathParam("chatId") String chatId, String message){
+        if (!message.isEmpty()){
+            Chat chat = openChat(chatId);
+            chat.sendMessage(message, senderId);
+        }
         return Response.ok().build();
     }
 
-    private Chat openChat(String senderId, String receiverId) {
-        if (chats.isEmpty()) { return createNewChat(senderId, receiverId); }
+    private Chat openChat(String chatId) {
+        if (chats.isEmpty()) { return createNewChat(chatId); }
         for (Chat chat : chats) {
-            if (chat.getSenderId().equals(senderId) && chat.getReceiverId().equals(receiverId)) {
+            if (chat.getChatId().equals(chatId)) {
                 return chat;
             }
         }
-        return createNewChat(senderId, receiverId);
+        return createNewChat(chatId);
     }
 
-    private Chat createNewChat(String senderId, String receiverId) {
-        Chat chat = new Chat(senderId, receiverId);
+    private Chat createNewChat(String chatId) {
+        Chat chat = new Chat(chatId);
         chats.add(chat);
         return chat;
     }
 
-    public void setChats(ArrayList<Chat> chatList) {
+    public void setChats(List<Chat> chatList) {
         this.chats = chatList;
     }
 }
