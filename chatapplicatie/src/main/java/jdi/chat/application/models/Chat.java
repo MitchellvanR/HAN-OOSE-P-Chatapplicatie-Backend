@@ -27,11 +27,7 @@ public class Chat {
         return chatId;
     }
 
-    public void setChatId(String chatId) {
-        this.chatId = chatId;
-    }
+    public void setChatId(String chatId) { this.chatId = chatId; }
 
-    public void setChatDAO(AbstractChatDAO chatDAO) {
-        this.chatDAO = chatDAO;
-    }
+    public void setChatDAO(AbstractChatDAO chatDAO) { this.chatDAO = chatDAO; }
 }
