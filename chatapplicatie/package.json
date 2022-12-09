@@ -2,14 +2,19 @@
   "name": "chatapplicatie",
   "version": "1.0.0",
   "description": "JDI Chat Application",
-  "main": "src/main/java/jdi/chat/application/network/server.js",
+  "main": "src/main/resources/configuration/network/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/main/java/jdi/chat/application/network/server.js"
+    "test": "./node_modules/.bin/mocha PATH_OF_YOUR_JS_TEST_FILES --exit"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.1.0",
+    "mock-socket": "^9.1.5",
     "ws": "^8.11.0"
+  },
+  "devDependencies": {
+    "nyc": "^15.1.0"
   }
 }

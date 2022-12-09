@@ -10,3 +10,5 @@ WebSocketServer.on('connection', client => {
             .forEach(Clients => Clients.send(isBinary ? message.toString() : message));
     });
 });
+
+module.exports = WebSocketServer;
