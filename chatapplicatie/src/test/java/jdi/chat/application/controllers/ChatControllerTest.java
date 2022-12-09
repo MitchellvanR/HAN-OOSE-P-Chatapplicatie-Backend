@@ -14,7 +14,7 @@ class ChatControllerTest {
     private Chat mockedChat;
     private String message;
     private String chatId;
-    private String senderId;
+    private String userId;
     private ArrayList<MessageDTO> mockDTO;
     @BeforeEach
     void setup() {
@@ -23,19 +23,21 @@ class ChatControllerTest {
         this.mockedChat = Mockito.mock(Chat.class);
         this.mockDTO = new ArrayList<>();
         this.message = "Hello World";
-        this.senderId = "1";
+        this.userId = "1";
         this.chatId = "1";
 
         ArrayList<Chat> chatList = new ArrayList<>();
         chatList.add(mockedChat);
         sut.setChats(chatList);
+
+        Mockito.doReturn(chatId).when(mockedChat).getChatId();
     }
 
     @Test
     void testGetChatHistorySUCCESS() {
         // Arrange
         Mockito.doReturn(mockDTO).when(mockedChat).getChatHistory();
-        Mockito.doReturn(chatId).when(mockedChat).getChatId();
+
 
         // Act
         sut.getChatHistory(chatId);
@@ -47,21 +49,30 @@ class ChatControllerTest {
     @Test
     void testSendMessageSUCCESS() {
         // Arrange
-        Mockito.doNothing().when(mockedChat).sendMessage(message, senderId);
-        Mockito.doReturn(chatId).when(mockedChat).getChatId();
+        Mockito.doNothing().when(mockedChat).sendMessage(message, userId);
 
         // Act
-        sut.sendMessage(chatId, senderId, message);
+        sut.sendMessage(chatId, userId, message);
 
         // Assert
-        Mockito.verify(mockedChat).sendMessage(message, senderId);
+        Mockito.verify(mockedChat).sendMessage(message, userId);
     }
+
     @Test
     void testSendMessageFAILED() {
-        // Arrange
-        Mockito.doReturn(chatId).when(mockedChat).getChatId();
+        // Act
+        int actual = sut.sendMessage(chatId, userId, "").getStatus();
 
         // Assert
-        assertEquals(Response.Status.OK.getStatusCode(), sut.sendMessage(chatId, senderId, "").getStatus());
+        assertEquals(Response.Status.OK.getStatusCode(), actual);
+    }
+
+    @Test
+    void testAddUserToChat() {
+        // Act
+        sut.addUserToChat(chatId, userId);
+
+        // Assert
+        Mockito.verify(mockedChat).addUserToChat(Mockito.anyString());
     }
 }
