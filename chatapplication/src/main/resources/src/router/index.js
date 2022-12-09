@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import UserMenu from '../views/UserMenu.vue'
-import OpenChat from '../views/OpenChat.vue'
+import UserMenu from '../views/menu.vue'
+import OpenChat from '../views/chat.vue'
 
 Vue.use(VueRouter)
 

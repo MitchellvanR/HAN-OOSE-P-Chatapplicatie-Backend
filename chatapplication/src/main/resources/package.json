@@ -1,8 +1,12 @@
 {
-  "name": "resources",
+  "name": "chatapplication",
+  "description": "JDI Chat Application",
   "version": "0.1.0",
   "private": true,
+  "main": "src/server.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"

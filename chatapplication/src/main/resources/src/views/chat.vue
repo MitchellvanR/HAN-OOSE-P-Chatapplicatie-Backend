@@ -1,29 +1,30 @@
 <template>
-  <div class="container mt-5">
-    <div class="overflow-hidden border w-100">
-      <h3 class="text-center">Gebruiker #</h3>
-      <div class="container">
-        <div class="overflow-auto h-500px" id="content"></div>
-        <div class="position-relative border1px">
-          <div class="input_style w-100">
-            <form id="sendMessageForm">
-              <input type="text" class="w-75 p-1 mb-2" id="message"/>
-              <label for="message"></label>
-              <button class="custom-btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-            </form>
-          </div>
+  <div id="frame" class="mt-3">
+    <div class="content border">
+      <div class="contact-profile mb-3">
+        <div class="row">
+          <b>Jaap (receiver)</b>
         </div>
+      </div>
+      <div class="messages" id="test">
+        <ul id="content">
+        </ul>
+      </div>
+      <div class="message-input border-top border-dark p-2">
+        <form id="sendMessageForm" class="wrap">
+          <input type="text" id="message" placeholder="Write your message..." />
+          <button class="btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+          <button class="btn" type="button"><i class="fa fa-paperclip" aria-hidden="true"></i></button>
+        </form>
       </div>
     </div>
   </div>
 </template>
-
 <script>
-
 export default {
   name: 'ChatApplication',
   mounted() {
-    this.getChatLog(sessionStorage.getItem('userId'))
+    this.getChatLog(sessionStorage.getItem('userId'));
   },
   methods: {
     getChatLog: function (userId) {
@@ -73,23 +74,21 @@ export default {
       const outgoingMessage = document.getElementById('content');
 
       outgoingMessage.innerHTML += '' +
-          '<div class="outgoing_msg"> ' +
-          '<div class="sent_msg"> ' +
-          '<p>'+  this.filterMessage(message) +'</p>' +
-          '<span class="time_date float_right">'+ time +'</span>' +
-          '</div> ' +
-          '</div>'
+          '<li class="replies">' +
+            '<small class="float-right margin-right-5px">'+ time +'</small>' +
+            '<br>' +
+            '<p> '+ this.filterMessage(message) +' </p>' +
+          '</li>'
     },
     incomingMessage: function (message, time = this.getCurrentTime()) {
       const incomingMessage = document.getElementById('content');
-
       incomingMessage.innerHTML += '' +
-          '<div class="received_msg"> ' +
-          '<div class="received_content_msg"> ' +
-          '<p>'+ this.filterMessage(message) +'</p>' +
-          '<span class="time_date">'+ time +'</span>' +
-          '</div> ' +
-          '</div>'
+          '<li class="sent mb-1">' +
+          '<small class="margin-left-5px">'+ time +'</small>' +
+          '<br>' +
+          '<p> '+ this.filterMessage(message) +' </p>' +
+          '</li>'
+
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {
@@ -118,85 +117,29 @@ export default {
       return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();    },
   }
 }
-
-
 </script>
 
-<style>
-.h-500px { height: 500px;}
-.border1px {border-top: 1px solid #c4c4c4;}
-.chat_padding {
-  padding-right: 25px;
+
+<style scoped>
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #000000 #e6eaea;
 }
 
-.input_style input {
-  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-  border: medium none;
-  color: #4c4c4c;
-  font-size: 15px;
-  min-height: 48px;
-}
-.custom-btn {
-  background: #05728f none repeat scroll 0 0;
-  border: medium none;
-  border-radius: 50%;
-  color: #fff;
-  cursor: pointer;
-  font-size: 17px;
-  height: 33px;
-  position: absolute;
-  right: 0;
-  top: 11px;
-  width: 33px;
-}
-.outgoing_msg{
-  overflow:hidden;
-  margin-top: 5px;
-  margin-bottom: 15px;
-  padding: 0 0 0 10px;
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 16px;
 }
 
-.received_msg {
-  display: inline-block;
-  padding: 0 0 0 10px;
-  vertical-align: top;
-  width: 92%;
-  margin-top: 5px;
-  margin-bottom: 15px;
+*::-webkit-scrollbar-track {
+  background: #e6eaea;
 }
 
-.sent_msg p {
-  background: #05728f none repeat scroll 0 0;
-  border-radius: 3px;
-  font-size: 14px;
-  margin: 0; color:#fff;
-  padding: 5px 10px 5px 12px;
-  width:100%;
+*::-webkit-scrollbar-thumb {
+  background-color: #000000;
+  border-radius: 10px;
+  border: 3px solid #e6eaea;
 }
-.sent_msg {
-  float: right;
-  width: 46%;
-}
-
-.time_date {
-  color: #747474;
-  display: block;
-  font-size: 12px;
-}
-
-.float_right {
-  float: right;
-}
-
-.received_content_msg p {
-  background: #ebebeb none repeat scroll 0 0;
-  border-radius: 3px;
-  color: #646464;
-  font-size: 14px;
-  margin: 0;
-  padding: 5px 10px 5px 12px;
-  width: 100%;
-}
-
-.received_content_msg { width: 57%;}
 </style>
