@@ -3,7 +3,7 @@
     <div class="content border">
       <div class="contact-profile mb-3">
         <div class="row">
-          <b>Jaap (receiver)</b>
+          <b>naam reciever komt hier</b>
         </div>
       </div>
       <div class="messages" id="test">
@@ -74,7 +74,7 @@ export default {
       const outgoingMessage = document.getElementById('content');
 
       outgoingMessage.innerHTML += '' +
-          '<li class="replies">' +
+          '<li class="replies mb-3">' +
             '<small class="float-right margin-right-5px">'+ time +'</small>' +
             '<br>' +
             '<p> '+ this.filterMessage(message) +' </p>' +
@@ -83,7 +83,7 @@ export default {
     incomingMessage: function (message, time = this.getCurrentTime()) {
       const incomingMessage = document.getElementById('content');
       incomingMessage.innerHTML += '' +
-          '<li class="sent mb-1">' +
+          '<li class="sent mb-3">' +
           '<small class="margin-left-5px">'+ time +'</small>' +
           '<br>' +
           '<p> '+ this.filterMessage(message) +' </p>' +
