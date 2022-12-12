@@ -1,7 +1,7 @@
 <template>
   <div id="frame" class="mt-3">
     <div class="content border">
-      <div class="contact-profile mb-3">
+      <div class="contact-profile">
         <div class="row">
           <b>naam reciever komt hier</b>
         </div>
@@ -23,6 +23,7 @@
 <script>
 export default {
   name: 'ChatApplication',
+  // webSocket: null,
   mounted() {
     this.getChatLog(sessionStorage.getItem('userId'));
   },
@@ -39,8 +40,30 @@ export default {
         }
       });
     },
+
+    // createWebSocket: function () {
+    //   this.webSocket = new WebSocket('ws://localhost:443');
+    // },
+    // closeWebSocket: function () {
+    //   this.webSocket.close();
+    //   this.webSocket = null;
+    // },
+
     runWebSocket: function () {
-      const webSocket = new WebSocket('ws://localhost:443');
+      let webSocket = new WebSocket('ws://localhost:443');
+      if (webSocket.readyState === WebSocket.OPEN) {
+        webSocket.close();
+        webSocket = null;
+      } else {
+        webSocket = new WebSocket('ws://localhost:443')
+      }
+
+      // if (this.webSocket === null) {
+      //   this.createWebSocket();
+      // } else {
+      //   this.closeWebSocket();
+      // }
+      console.log(webSocket);
 
       webSocket.addEventListener('message', data => {
         data.data.text().then(this.incomingMessage);

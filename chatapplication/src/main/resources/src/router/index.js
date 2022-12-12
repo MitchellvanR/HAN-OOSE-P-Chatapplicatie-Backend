@@ -9,7 +9,7 @@ const routes = [
   {
     path: '/',
     name: 'UserMenu',
-    component: UserMenu
+    component: UserMenu,
   },
   {
     path: '/chat',
