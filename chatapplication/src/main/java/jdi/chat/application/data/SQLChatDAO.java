@@ -45,4 +45,18 @@ public class SQLChatDAO extends AbstractChatDAO {
             throw new DatabaseRequestException();
         }
     }
+
+    @Override
+    public void addUserToChat(String chatId, String userId) {
+        try {
+            String sql = Queries.getInstance().getQuery("addUserToChatQuery");
+            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+            statement.setString(1, userId);
+            statement.setString(2, chatId);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            throw new DatabaseRequestException();
+        }
+
+    }
 }
