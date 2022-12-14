@@ -10,6 +10,7 @@
   <properties>
     <maven.compiler.source>15</maven.compiler.source>
     <maven.compiler.target>15</maven.compiler.target>
+    <sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
   </properties>
 
   <dependencies>
@@ -60,7 +61,18 @@
       <version>2.4.8</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.sonarsource.javascript</groupId>
+      <artifactId>sonar-javascript-plugin</artifactId>
+      <version>9.11.1.20218</version>
+    </dependency>
 
+    <dependency>
+      <groupId>org.jacoco</groupId>
+      <artifactId>jacoco-maven-plugin</artifactId>
+      <version>0.8.8</version>
+    </dependency>
+    
   </dependencies>
 
   <build>
@@ -69,19 +81,22 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.4</version>
+        <version>0.8.8</version>
         <configuration>
           <destFile>${basedir}/target/jacoco.exec</destFile>
           <dataFile>${basedir}/target/jacoco.exec</dataFile>
         </configuration>
         <executions>
           <execution>
+            <id>prepare-agent</id>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
+            <phase>test-compile</phase>
           </execution>
           <execution>
             <id>report</id>
+            <phase>test</phase>
             <goals>
               <goal>report</goal>
             </goals>
