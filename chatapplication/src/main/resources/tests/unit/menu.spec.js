@@ -1,12 +1,20 @@
-import { mount } from 'vue-test-utils';
-import { expect } from "chai";
-import menu from '@/views/menu'
+import { mount } from '@vue/test-utils';
+import menu from '@/views/menu';
 
 describe('menu.vue', () => {
-    it('Is called UserMenu', () => {
-        const wrapper = mount(menu);
+    // De stubs: ['router-link'] is nodig omdat er anders warnings worden gegeven dat de router-link niet herkend wordt!
+    const wrapper = mount(menu, {
+        stubs: ['router-link']
+    });
 
-        // Assert result
-        expect(wrapper.name()).to.equal('UserMenu');
+    it('check if component exist', () => {
+        expect(wrapper.findComponent(menu).exists()).toBe(true);
+    })
+
+    it('check if button user1 is clicked', () => {
+        wrapper.vm.navigate = jest.fn();
+        const button = wrapper.find('#user1');
+        button.trigger('click');
+        expect(wrapper.vm.navigate).toHaveBeenCalled();
     })
 })

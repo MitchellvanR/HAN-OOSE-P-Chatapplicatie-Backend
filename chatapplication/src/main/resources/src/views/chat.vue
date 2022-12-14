@@ -22,7 +22,7 @@
 </template>
 <script>
 export default {
-  name: 'ChatApplication',
+  name: 'OpenChat',
   // webSocket: null,
   mounted() {
     this.getChatLog(sessionStorage.getItem('userId'));
