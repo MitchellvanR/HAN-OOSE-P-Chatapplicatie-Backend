@@ -27,6 +27,12 @@ export default {
   mounted() {
     this.getChatLog(sessionStorage.getItem('userId'));
   },
+  destroyed() {
+    if (this.webSocket.readyState === WebSocket.OPEN) {
+      this.webSocket.close();
+      this.webSocket = null;
+    }
+  },
   methods: {
     getChatLog: function (userId) {
       this.runWebSocket();
@@ -41,31 +47,10 @@ export default {
       });
     },
 
-    // createWebSocket: function () {
-    //   this.webSocket = new WebSocket('ws://localhost:443');
-    // },
-    // closeWebSocket: function () {
-    //   this.webSocket.close();
-    //   this.webSocket = null;
-    // },
-
     runWebSocket: function () {
-      let webSocket = new WebSocket('ws://localhost:443');
-      if (webSocket.readyState === WebSocket.OPEN) {
-        webSocket.close();
-        webSocket = null;
-      } else {
-        webSocket = new WebSocket('ws://localhost:443')
-      }
+      this.webSocket = new WebSocket('ws://localhost:443');
 
-      // if (this.webSocket === null) {
-      //   this.createWebSocket();
-      // } else {
-      //   this.closeWebSocket();
-      // }
-      console.log(webSocket);
-
-      webSocket.addEventListener('message', data => {
+      this.webSocket.addEventListener('message', data => {
         data.data.text().then(this.incomingMessage);
       });
 
@@ -77,7 +62,7 @@ export default {
         if (input.value === ""){
           input.classList.add("border", "border-danger");
         } else {
-          webSocket.send(input.value);
+          this.webSocket.send(input.value);
           this.outgoingMessage(input.value, this.getCurrentTime());
           this.sendMessage(input.value);
           input.value = '';
