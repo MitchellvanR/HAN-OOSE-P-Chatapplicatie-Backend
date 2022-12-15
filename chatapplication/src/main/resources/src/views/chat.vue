@@ -23,7 +23,6 @@
 <script>
 export default {
   name: 'OpenChat',
-  // webSocket: null,
   mounted() {
     this.getChatLog(sessionStorage.getItem('userId'));
   },
