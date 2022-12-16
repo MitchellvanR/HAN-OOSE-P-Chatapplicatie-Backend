@@ -1,5 +1,6 @@
 package jdi.chat.application.controllers;
 
+import com.google.protobuf.Empty;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -22,6 +23,7 @@ public class ChatController {
         List<MessageDTO> chatHistory = openChat(chatId).getChatHistory();
         JSONObject chatHistoryJSON = new JSONObject();
         chatHistoryJSON.put("messages", chatHistory);
+        chatHistoryJSON.put("chatId", chatId);
         return Response.ok().entity(chatHistoryJSON).build();
     }
 
@@ -32,7 +34,10 @@ public class ChatController {
     public Response sendMessage(@PathParam("senderId") String senderId, @PathParam("chatId") String chatId, String message){
         if (!message.isEmpty()){
             Chat chat = openChat(chatId);
-            chat.sendMessage(message, senderId);
+            String cleanMessage = message.substring(1, message.length() - 1);
+            String[] messageAndIv = cleanMessage.split("\\^");
+            System.out.println("Sending message");
+            chat.sendMessage(messageAndIv[0], senderId, messageAndIv[1]);
         }
         return Response.ok().build();
     }

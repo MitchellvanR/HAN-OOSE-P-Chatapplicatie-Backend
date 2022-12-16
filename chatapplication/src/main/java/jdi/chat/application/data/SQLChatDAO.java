@@ -22,7 +22,8 @@ public class SQLChatDAO extends AbstractChatDAO {
                 MessageDTO message = formatMessage(
                         resultSet.getString("senderId"),
                         resultSet.getString("message"),
-                        resultSet.getString("time")
+                        resultSet.getString("time"),
+                        resultSet.getString("iv")
                 );
                 chatHistory.add(message);
             }
@@ -33,13 +34,14 @@ public class SQLChatDAO extends AbstractChatDAO {
     }
 
     @Override
-    public void saveMessage(String message, String senderId, String chatId){
+    public void saveMessage(String message, String senderId, String chatId, String iv){
         try {
             String sql = Queries.getInstance().getQuery("sendMessageQuery");
             PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, message);
             statement.setString(2, senderId);
             statement.setString(3, chatId);
+            statement.setString(4, iv);
             statement.executeUpdate();
         } catch (Exception e) {
             throw new DatabaseRequestException();
