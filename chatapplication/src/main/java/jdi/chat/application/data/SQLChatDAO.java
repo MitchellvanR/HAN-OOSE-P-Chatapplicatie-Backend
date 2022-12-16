@@ -57,6 +57,62 @@ public class SQLChatDAO extends AbstractChatDAO {
         } catch (Exception e) {
             throw new DatabaseRequestException();
         }
+    }
 
+    @Override
+    public String findLatestMessage(String chatId) {
+        try {
+            String sql = Queries.getInstance().getQuery("findLatestMessageQuery");
+            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+            statement.setString(1, chatId);
+            ResultSet resultSet = statement.executeQuery();
+
+            String latestMessage = "";
+            while(resultSet.next()){
+                latestMessage = resultSet.getString("message");
+            }
+
+            return latestMessage;
+        } catch (Exception e) {
+            throw new DatabaseRequestException();
+        }
+    }
+
+    @Override
+    public ArrayList<String> getChatIdFromUserId(String userId) {
+        try {
+            String sql = Queries.getInstance().getQuery("getChatId");
+            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+            statement.setString(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            ArrayList<String> chatIds = new ArrayList<>();
+            while(resultSet.next()){
+                String chatId = resultSet.getString("chatId");
+                chatIds.add(chatId);
+            }
+            return chatIds;
+        } catch (Exception e) {
+            throw new DatabaseRequestException();
+        }
+    }
+
+    @Override
+    public String getUserHelplineChatId(String userId) {
+        try {
+            String sql = Queries.getInstance().getQuery("getUserHelplineChatId");
+            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+            statement.setString(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            String chatId = "";
+            while(resultSet.next()){
+                chatId = resultSet.getString("id");
+            }
+
+            return chatId;
+        } catch (Exception e) {
+            throw new DatabaseRequestException();
+        }
     }
 }

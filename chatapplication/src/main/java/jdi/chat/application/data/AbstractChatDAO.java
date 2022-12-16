@@ -13,6 +13,13 @@ public abstract class AbstractChatDAO {
     public abstract void addUserToChat(String chatId, String userId);
 
     public MessageDTO formatMessage(String senderId, String content, String time){
-        return new MessageDTO(senderId, content, time);
+        MessageDTO messageDTO = new MessageDTO(senderId, content, time);
+        return messageDTO;
     }
+
+    public abstract String findLatestMessage(String chatId);
+
+    public abstract ArrayList<String> getChatIdFromUserId(String userId);
+
+    public abstract String getUserHelplineChatId (String userId);
 }

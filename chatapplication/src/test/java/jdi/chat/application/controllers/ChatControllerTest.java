@@ -40,7 +40,7 @@ class ChatControllerTest {
 
 
         // Act
-        sut.getChatHistory(chatId);
+        sut.getChatHistory(chatId, false);
 
         // Assert
         Mockito.verify(mockedChat).getChatHistory();
@@ -52,7 +52,7 @@ class ChatControllerTest {
         Mockito.doNothing().when(mockedChat).sendMessage(message, userId);
 
         // Act
-        sut.sendMessage(chatId, userId, message);
+        sut.sendMessage(chatId, userId, false, message);
 
         // Assert
         Mockito.verify(mockedChat).sendMessage(message, userId);
@@ -61,7 +61,7 @@ class ChatControllerTest {
     @Test
     void testSendMessageFAILED() {
         // Act
-        int actual = sut.sendMessage(chatId, userId, "").getStatus();
+        int actual = sut.sendMessage(chatId, userId, false, "").getStatus();
 
         // Assert
         assertEquals(Response.Status.OK.getStatusCode(), actual);
@@ -70,7 +70,7 @@ class ChatControllerTest {
     @Test
     void testAddUserToChat() {
         // Act
-        sut.addUserToChat(chatId, userId);
+        sut.addUserToChat(chatId, userId, false);
 
         // Assert
         Mockito.verify(mockedChat).addUserToChat(Mockito.anyString());
