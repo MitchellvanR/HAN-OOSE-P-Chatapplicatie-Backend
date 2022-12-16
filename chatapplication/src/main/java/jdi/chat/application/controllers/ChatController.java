@@ -34,8 +34,10 @@ public class ChatController {
     public Response sendMessage(@PathParam("senderId") String senderId, @PathParam("chatId") String chatId, String message){
         if (!message.isEmpty()){
             Chat chat = openChat(chatId);
-            String cleanMessage = message.substring(1, message.length() - 1);
-            String[] messageAndIv = cleanMessage.split("\\^");
+            if (message.charAt(0) == '"') {
+                message = message.substring(1, message.length() - 1);
+            }
+            String[] messageAndIv = message.split("\\^");
             System.out.println("Sending message");
             chat.sendMessage(messageAndIv[0], senderId, messageAndIv[1]);
         }
