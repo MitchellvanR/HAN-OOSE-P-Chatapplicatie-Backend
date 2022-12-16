@@ -84,7 +84,7 @@ export default {
 
     encrypt: async function (message) {
       this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
-      await this.delay(10);
+      await this.delay(30);
       await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
       let iv = this.generateIv();
       sessionStorage.setItem("sendIv", iv.toString());
@@ -154,9 +154,9 @@ export default {
       let saveSecret = String(numberFromString % 2158);
       sessionStorage.setItem("secret", saveSecret);
       this.addUser(1);
-      await this.delay(10);
+      await this.delay(30);
       this.addUserToChat(1, 1);
-      await this.delay(10);
+      await this.delay(30);
       this.savePublicKey(1, saveSecret);
     },
 
@@ -166,6 +166,7 @@ export default {
         sessionStorage.setItem("chatId", responseData.chatId)
         for (let message of responseData.messages) {
           this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
+          await this.delay(30);
           await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
           let decryptedMessage = await this.decrypt(cryptoKey, message.message, message.iv);
           if (message.senderId === sessionStorage.getItem('userId')) {
@@ -182,7 +183,7 @@ export default {
 
       this.webSocket.addEventListener('message', async data => {
         this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
-        await this.delay(10);
+        await this.delay(30);
         await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
         let dataSet = await this.websocketDecrypt(await data.data.text().then())
         dataSet.text().then(this.incomingMessage);
