@@ -18,7 +18,7 @@ export default {
 
   methods: {
     getHelplineChats: function() {
-      sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/helplineList').then(responseData => {
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/helplineList').then(responseData => {
         let ul = document.getElementById("helpline-chat-list");
         for (let helplineChat of responseData.helplineChats) {
           ul.innerHTML +=
