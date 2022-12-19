@@ -13,60 +13,54 @@
 </template>
 
 <script>
+import reusableFunctions from '../components/reusableFunctions.vue';
+
 export default {
   name: "openChatlist",
 
   mounted() {
     this.getUserChatInterface(sessionStorage.getItem('userId'));
+
+  },
+
+  Components: {
+    reusableFunctions
   },
 
   methods: {
-    getUserChatInterface: function (userId) {
+    getUserChatInterface: function(userId) {
       this.getUserChats(userId);
       this.makeHelplineButton(userId);
     },
-
     getUserChats: function (userId) {
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/' + userId).then(responseData => {
+      console.log("1")
+      reusableFunctions.methods.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + userId).then(responseData => {
+        console.log("2")
         let ul = document.getElementById("chat-list");
         for (let chatId of responseData.chatIds) {
           ul.innerHTML +=
-              '<form action="http://localhost:63342/prolog-jdi/chatapplicatie/front-end/index.html"> ' +
-              '<button type="submit" onclick="setChatId(' + chatId + '); setHelpline(0)">' + 'Chatnummer: ' + chatId + '</button>' +
+              '<form action="chat"> ' +
+              '<router-link to="/chat" custom v-slot="{ navigate }">' +
+              '<button @click="navigate" role="link" class="btn btn-outline-primary" v-on:click="reusableFunctions.methods.setChatId(' + chatId + '); reusableFunctions.methods.setHelpline(0)">' + 'ChatNummer: ' + chatId + '</button>' +
+              '</router-link>';
               '</form>';
         }
+        console.log("5")
       });
     },
-
     makeHelplineButton: function (userId) {
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/helpline/' + userId).then(responseData => {
-        let div = document.getElementById("helpline-button");
+      console.log("3")
+      reusableFunctions.methods.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline' + userId).then(responseData => {
+        console.log("4")
+        // let div = document.getElementById("helpline-button");
         console.log(responseData.chatId)
-        div.innerHTML +=
-            '<form action="http://localhost:63342/prolog-jdi/chatapplicatie/front-end/index.html">' +
-            '<button type="submit" onclick="setChatId(' + responseData.chatId + '); setHelpline(1)">Helpline</button>' +
-            '</form>';
+        // div.innerHTML +=
+
+            // '<form action="http://localhost:63342/prolog-jdi/chatapplicatie/front-end/index.html">' +
+            // '<button type="submit" onclick="setChatId(' + responseData.chatId + '); setHelpline(1)">Helpline</button>' +
+            // '</form>';
       });
     },
-    sendHttpRequest: function (method, url, data) {
-      return new Promise((resolve, reject) => {
-        const XmlHttpRequest = new XMLHttpRequest();
-        XmlHttpRequest.open(method, url);
-        XmlHttpRequest.responseType = 'json';
-
-        XmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
-
-        XmlHttpRequest.onload = () => {
-          if (XmlHttpRequest.status >= 400) {
-            reject(XmlHttpRequest.response);
-          } else {
-            resolve(XmlHttpRequest.response);
-          }
-        };
-
-        XmlHttpRequest.send(data);
-      });
-    }
   }
 }
 </script>
