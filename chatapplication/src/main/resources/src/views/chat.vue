@@ -3,7 +3,7 @@
     <div class="content border">
       <div class="contact-profile">
         <div class="row">
-          <strong><u>Naam Ontvanger</u></strong>
+          <strong><u>Receiver</u></strong>
         </div>
       </div>
       <div class="messages" id="messages">
