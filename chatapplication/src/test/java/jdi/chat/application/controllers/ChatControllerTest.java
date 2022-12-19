@@ -47,6 +47,19 @@ class ChatControllerTest {
     }
 
     @Test
+    void testGetChatHistoryChatNotExistingCorrectResponseStatus() {
+        // Arrange
+        var nonExistingChatId = "4";
+        var expected = 200;
+
+        // Act
+        var actual = sut.getChatHistory(nonExistingChatId).getStatus();
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void testSendMessageSUCCESS() {
         // Arrange
         Mockito.doNothing().when(mockedChat).sendMessage(message, userId);
