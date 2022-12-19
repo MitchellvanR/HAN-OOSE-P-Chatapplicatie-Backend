@@ -153,7 +153,7 @@ export default {
 
     getChatLog: function () {
       this.runWebSocket();
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/chats/1').then(async responseData => {
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/1').then(async responseData => {
         sessionStorage.setItem("chatId", responseData.chatId)
         for (let message of responseData.messages) {
           this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
@@ -190,22 +190,22 @@ export default {
     },
 
     addUser: function(userId){
-  this.sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/security/' + userId).then(res =>{ return res})
+  this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + userId).then(res =>{ return res})
     },
     savePublicKey: function (userId, secret){
       let publicKey = this.formulatePublicKey(secret).toString();
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/security/' + userId + '/' + String(publicKey)).then(res => {return res})
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + userId + '/' + String(publicKey)).then(res => {return res})
     },
 
     getOtherPublicKey: function (userId, chatId){
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplicatie/security/' + userId + '/getOtherKey/' + chatId).then(responseData => {
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/security/' + userId + '/getOtherKey/' + chatId).then(responseData => {
         let publicKey = responseData.publicKey;
         sessionStorage.setItem("otherPublicKey", publicKey);
       });
       },
 
     addUserToChat: function (userId, chatId){
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/' + chatId + '/addUser/' + userId).then(res => {return res})
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + chatId + '/addUser/' + userId).then(res => {return res})
     },
 
     isInputEmpty: function() {
@@ -230,9 +230,9 @@ export default {
 
     sendMessage: function (encryptedMessage) {
       if (sessionStorage.getItem('userId') === "1"){
-        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/1/1', encryptedMessage).then(res => { return res; });
+        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/1/1', encryptedMessage).then(res => { return res; });
       } else{
-        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplicatie/chats/2/1', encryptedMessage).then(res => { return res; });
+        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication /chats/2/1', encryptedMessage).then(res => { return res; });
       }
     },
 

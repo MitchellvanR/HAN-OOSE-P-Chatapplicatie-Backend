@@ -38,7 +38,6 @@ public class ChatController {
                 message = message.substring(1, message.length() - 1);
             }
             String[] messageAndIv = message.split("\\^");
-            System.out.println("Sending message");
             chat.sendMessage(messageAndIv[0], senderId, messageAndIv[1]);
         }
         return Response.ok().build();
