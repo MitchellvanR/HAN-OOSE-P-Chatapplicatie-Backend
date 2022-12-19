@@ -3,10 +3,10 @@
     <div class="content border">
       <div class="contact-profile">
         <div class="row">
-          <b>naam receiver komt hier</b>
+          <strong><u>Receiver</u></strong>
         </div>
       </div>
-      <div class="messages" id="test">
+      <div class="messages" id="messages">
         <ul id="content">
         </ul>
       </div>
@@ -166,9 +166,13 @@ export default {
             this.incomingMessage(decryptedMessage, message.time);
           }
         }
+        this.scrollToBottom()
       });
     },
-
+    scrollToBottom: function (){
+      const element = document.getElementById('messages');
+      element.scrollTop = element.scrollHeight;
+    },
     runWebSocket: function () {
       this.webSocket = new WebSocket('ws://localhost:443');
 
@@ -229,13 +233,13 @@ export default {
 
 
     sendMessage: function (encryptedMessage) {
+      this.scrollToBottom();
       if (sessionStorage.getItem('userId') === "1"){
         this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/1/1', encryptedMessage).then(res => { return res; });
       } else{
         this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication /chats/2/1', encryptedMessage).then(res => { return res; });
       }
     },
-
     outgoingMessage: function (message, time) {
       const outgoingMessage = document.getElementById('content');
 
@@ -256,7 +260,7 @@ export default {
           '</li>'
 
     },
-    sendHttpRequest: function(method, url, data) {
+    sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {
         const XmlHttpRequest = new XMLHttpRequest();
         XmlHttpRequest.open(method, url);
@@ -274,7 +278,6 @@ export default {
         XmlHttpRequest.send(JSON.stringify(data));
       });
     },
-
     filterMessage: function (message) {
       return message.replace(/<\/?[^>]+>/gi, '')
     },
