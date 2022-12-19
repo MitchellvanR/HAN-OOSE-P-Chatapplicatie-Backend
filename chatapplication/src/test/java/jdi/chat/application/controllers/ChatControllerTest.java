@@ -1,6 +1,7 @@
 package jdi.chat.application.controllers;
 
 import jakarta.ws.rs.core.Response;
+import jdi.chat.application.data.SQLChatDAO;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.models.Chat;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,13 +51,15 @@ class ChatControllerTest {
     void testGetChatHistoryChatNotExistingCorrectResponseStatus() {
         // Arrange
         var nonExistingChatId = "4";
-        var expected = 200;
+        var mockedDao = Mockito.mock(SQLChatDAO.class);
+        mockedChat.setChatDAO(mockedDao);
+
+        Mockito.doReturn("").when(mockedChat).getChatHistory();
 
         // Act
-        var actual = sut.getChatHistory(nonExistingChatId).getStatus();
+        sut.getChatHistory(nonExistingChatId);
 
         // Assert
-        assertEquals(expected, actual);
     }
 
     @Test
@@ -88,4 +91,5 @@ class ChatControllerTest {
         // Assert
         Mockito.verify(mockedChat).addUserToChat(Mockito.anyString());
     }
+
 }
