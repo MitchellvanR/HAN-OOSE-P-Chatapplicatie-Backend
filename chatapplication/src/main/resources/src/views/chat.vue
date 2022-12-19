@@ -74,7 +74,7 @@ export default {
     },
     sendMessage: function () {
       const newMessage = document.getElementById('message').value;
-      this.scrollToBottom()
+      this.scrollToBottom();
 
       if (sessionStorage.getItem('userId') === "1"){
         this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/1/1', newMessage).then()
