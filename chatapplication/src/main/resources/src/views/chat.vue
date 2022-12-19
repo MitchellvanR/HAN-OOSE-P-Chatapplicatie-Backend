@@ -236,29 +236,26 @@ export default {
       }
     },
 
-    outgoingMessage: function(message, time){
-  const outgoingMessage = document.getElementById('content');
+    outgoingMessage: function (message, time) {
+      const outgoingMessage = document.getElementById('content');
 
-  outgoingMessage.innerHTML += '' +
-      '<div class="outgoing_msg"> ' +
-      '<div class="sent_msg"> ' +
-      '<p>'+  this.filterMessage(message) +'</p>' +
-      '<span class="time_date float_right">'+ time +'</span>' +
-      '</div> ' +
-      '</div>'
-},
+      outgoingMessage.innerHTML += '' +
+          '<li class="replies mb-3">' +
+          '<small class="float-right margin-right-5px">'+ time +'</small>' +
+          '<br>' +
+          '<p> '+ this.filterMessage(message) +' </p>' +
+          '</li>'
+    },
+    incomingMessage: function (message, time = this.getCurrentTime()) {
+      const incomingMessage = document.getElementById('content');
+      incomingMessage.innerHTML += '' +
+          '<li class="sent mb-3">' +
+          '<small class="margin-left-5px">'+ time +'</small>' +
+          '<br>' +
+          '<p> '+ this.filterMessage(message) +' </p>' +
+          '</li>'
 
-    incomingMessage: function (message, time = this.getCurrentTime()){
-  const incomingMessage = document.getElementById('content');
-
-  incomingMessage.innerHTML += '' +
-      '<div class="received_msg"> ' +
-      '<div class="received_content_msg"> ' +
-      '<p>'+ this.filterMessage(message) +'</p>' +
-      '<span class="time_date">'+ time +'</span>' +
-      '</div> ' +
-      '</div>'
-},
+    },
     sendHttpRequest: function(method, url, data) {
       return new Promise((resolve, reject) => {
         const XmlHttpRequest = new XMLHttpRequest();
