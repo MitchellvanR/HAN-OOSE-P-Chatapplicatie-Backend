@@ -71,11 +71,7 @@ export default {
     sendMessage: function () {
       const newMessage = document.getElementById('message').value;
 
-      if (sessionStorage.getItem('userId') === "1"){
-        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/1/1', newMessage).then()
-      } else{
-        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/2/1', newMessage).then()
-      }
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + sessionStorage.getItem('userId') + '/1', newMessage).then()
     },
     outgoingMessage: function (message, time) {
       const outgoingMessage = document.getElementById('content');
