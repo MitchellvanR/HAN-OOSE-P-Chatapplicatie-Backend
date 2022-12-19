@@ -15,7 +15,6 @@
           <input type="text" id="message" placeholder="Write your message..." />
           <button class="btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
           <button class="btn" type="button"><i class="fa fa-paperclip" aria-hidden="true"></i></button>
-
         </form>
       </div>
     </div>
