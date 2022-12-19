@@ -3,10 +3,10 @@
     <div class="content border">
       <div class="contact-profile">
         <div class="row">
-          <b>naam reciever komt hier</b>
+          <strong><u>Naam Ontvanger</u></strong>
         </div>
       </div>
-      <div class="messages" id="test">
+      <div class="messages" id="messages">
         <ul id="content">
         </ul>
       </div>
@@ -15,6 +15,7 @@
           <input type="text" id="message" placeholder="Write your message..." />
           <button class="btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
           <button class="btn" type="button"><i class="fa fa-paperclip" aria-hidden="true"></i></button>
+
         </form>
       </div>
     </div>
@@ -43,9 +44,13 @@ export default {
             this.incomingMessage(message.message, message.time);
           }
         }
+        this.scrollToBottom()
       });
     },
-
+    scrollToBottom: function (){
+      const element = document.getElementById('messages');
+      element.scrollTop = element.scrollHeight;
+    },
     runWebSocket: function () {
       this.webSocket = new WebSocket('ws://localhost:443');
 
@@ -70,6 +75,7 @@ export default {
     },
     sendMessage: function () {
       const newMessage = document.getElementById('message').value;
+      this.scrollToBottom()
 
       if (sessionStorage.getItem('userId') === "1"){
         this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/1/1', newMessage).then()
