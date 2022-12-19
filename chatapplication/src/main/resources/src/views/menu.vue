@@ -3,6 +3,15 @@
     <div class="container mt-5">
         <p class="display-4">Chatapplicatie Configuratie</p>
         <hr>
+      <div class="position-relative border1px">
+        <div class="input_style w-100">
+          <form id="secret-form">
+            <input type="text" id="secret" v-model= "secret" placeholder="Insert password here..."/>
+            <label for="secret"></label>
+            <button type="button" @click.prevent="saveSecret(secret)">Submit</button>
+          </form>
+        </div>
+      </div>
         <div class="row">
           <div class="col-6 m-2">
             <div class="row mb-2">
@@ -32,11 +41,23 @@
 
 <script>
 export default {
+  data() {
+    return {secret: ""};
+  },
   name: 'UserMenu',
   methods: {
     setUserId: function (userId) {
       sessionStorage.setItem("userId", userId);
-    }
+    },
+
+    saveSecret: async function (secret) {
+      let numberFromString = Number(0);
+      for (let i = 0; i < secret.length; i++) {
+        numberFromString += secret.charCodeAt(i) * 513;
+      }
+      let saveSecret = String(numberFromString % 2158);
+      sessionStorage.setItem("secret", saveSecret);
+    },
   }
 }
 </script>
