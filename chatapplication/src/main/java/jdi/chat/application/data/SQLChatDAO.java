@@ -11,21 +11,27 @@ import java.util.ArrayList;
 
 public class SQLChatDAO extends AbstractChatDAO {
     @Override
-    public ArrayList<MessageDTO> getChatHistory(String chatId) throws SQLException {
+    public ArrayList<MessageDTO> getChatHistory(String chatId) {
         String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
-        PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
-        statement.setString(1, chatId);
-        ResultSet resultSet = statement.executeQuery();
-        ArrayList<MessageDTO> chatHistory = new ArrayList<>();
-        while (resultSet.next()) {
-            MessageDTO message = formatMessage(
-                    resultSet.getString("senderId"),
-                    resultSet.getString("message"),
-                    resultSet.getString("time")
-            );
-            chatHistory.add(message);
+        ResultSet resultSet = null;
+        try (
+                PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+        ) {
+            statement.setString(1, chatId);
+            resultSet = statement.executeQuery();
+            ArrayList<MessageDTO> chatHistory = new ArrayList<>();
+            while (resultSet.next()) {
+                MessageDTO message = formatMessage(
+                        resultSet.getString("senderId"),
+                        resultSet.getString("message"),
+                        resultSet.getString("time")
+                );
+                chatHistory.add(message);
+            }
+            return chatHistory;
+        } catch (Exception e) {
+            throw new DatabaseRequestException();
         }
-        return chatHistory;
     }
 
     @Override
