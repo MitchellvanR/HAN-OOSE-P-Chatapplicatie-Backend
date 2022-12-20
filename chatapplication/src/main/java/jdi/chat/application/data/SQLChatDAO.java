@@ -4,16 +4,20 @@ import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class SQLChatDAO extends AbstractChatDAO {
+
+    private ConnectionDAO connectionDAO = ConnectionDAO.getInstance();
+
     @Override
     public ArrayList<MessageDTO> getChatHistory(String chatId) {
         try {
             String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
-            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+            PreparedStatement statement = connectionDAO.getConnection().prepareStatement(sql);
             statement.setString(1, chatId);
             ResultSet resultSet = statement.executeQuery();
 
@@ -36,7 +40,7 @@ public class SQLChatDAO extends AbstractChatDAO {
     public void saveMessage(String message, String senderId, String chatId){
         try {
             String sql = Queries.getInstance().getQuery("sendMessageQuery");
-            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+            PreparedStatement statement = connectionDAO.getConnection().prepareStatement(sql);
             statement.setString(1, message);
             statement.setString(2, senderId);
             statement.setString(3, chatId);
@@ -50,13 +54,17 @@ public class SQLChatDAO extends AbstractChatDAO {
     public void addUserToChat(String chatId, String userId) {
         try {
             String sql = Queries.getInstance().getQuery("addUserToChatQuery");
-            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+            PreparedStatement statement = connectionDAO.getConnection().prepareStatement(sql);
             statement.setString(1, userId);
             statement.setString(2, chatId);
             statement.executeUpdate();
         } catch (Exception e) {
             throw new DatabaseRequestException();
         }
-
     }
+
+    public void setConnectionDAO(ConnectionDAO connectionDAO) {
+        this.connectionDAO = connectionDAO;
+    }
+
 }
