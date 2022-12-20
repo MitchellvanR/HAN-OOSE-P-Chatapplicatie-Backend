@@ -42,7 +42,6 @@ class ChatControllerTest {
         // Arrange
         Mockito.doReturn(mockDTO).when(mockedChat).getChatHistory();
 
-
         // Act
         sut.getChatHistory(chatId);
 
