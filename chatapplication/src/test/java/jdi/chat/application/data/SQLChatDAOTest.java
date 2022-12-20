@@ -1,6 +1,7 @@
 package jdi.chat.application.data;
 
 import jdi.chat.application.data.dto.MessageDTO;
+import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,6 +71,21 @@ class SQLChatDAOTest {
         assertEquals(expected.get(0).getSenderId(), actual.get(0).getSenderId());
         assertEquals(expected.get(0).getMessage(), actual.get(0).getMessage());
         assertEquals(expected.get(0).getTime(), actual.get(0).getTime());
+    }
+
+    @Test
+    void testGetChatHistoryDatabaseRequestException() {
+        // Arrange
+        var chatId = "1";
+
+        // Act
+        Exception e = assertThrows(DatabaseRequestException.class, () -> {
+            sut.getChatHistory(chatId);
+        });
+        var actual = e.getMessage();
+
+        // Assert
+        assertTrue(actual.contains("database connection"));
     }
 
 }
