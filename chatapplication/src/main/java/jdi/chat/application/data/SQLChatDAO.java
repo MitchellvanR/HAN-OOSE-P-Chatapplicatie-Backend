@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class SQLChatDAO extends AbstractChatDAO {
     @Override
-    public ArrayList<MessageDTO> getChatHistory(String chatId) {
+    public ArrayList<MessageDTO> getChatHistory(String chatId) throws SQLException {
         String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
         ResultSet resultSet = null;
         try (
@@ -29,8 +29,11 @@ public class SQLChatDAO extends AbstractChatDAO {
                 chatHistory.add(message);
             }
             return chatHistory;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new DatabaseRequestException();
+        } finally {
+            assert resultSet != null;
+            resultSet.close();
         }
     }
 

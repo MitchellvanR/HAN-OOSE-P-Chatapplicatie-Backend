@@ -3,6 +3,9 @@ package jdi.chat.application.models;
 import jdi.chat.application.data.AbstractChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
 import jdi.chat.application.data.dto.MessageDTO;
+import jdi.chat.application.data.exceptions.DatabaseRequestException;
+
+import java.sql.SQLException;
 import java.util.List;
 
 public class Chat {
@@ -14,7 +17,11 @@ public class Chat {
     }
 
     public List<MessageDTO> getChatHistory() {
-        return chatDAO.getChatHistory(chatId);
+        try {
+            return chatDAO.getChatHistory(chatId);
+        } catch (SQLException e) {
+            throw new DatabaseRequestException();
+        }
     }
 
     public void sendMessage(String message, String senderId){
