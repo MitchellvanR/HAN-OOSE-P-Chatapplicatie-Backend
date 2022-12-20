@@ -29,5 +29,4 @@ public class ConnectionDAO {
     public static ConnectionDAO getInstance() { return instance; }
     public Connection getConnection() { return connection; }
 
-    public void setConnection(Connection connection) { this.connection = connection; }
 }

@@ -33,9 +33,6 @@ class SQLChatDAOTest {
         mockedStatement = Mockito.mock(PreparedStatement.class);
         queries = Queries.getInstance();
 
-        System.out.println(mockedConnection.toString());
-
-        mockedConnectionDAO.setConnection(mockedConnection);
         when(mockedConnectionDAO.getConnection()).thenReturn(mockedConnection);
 
         sut.setConnectionDAO(mockedConnectionDAO);
@@ -54,7 +51,7 @@ class SQLChatDAOTest {
         expected.add(new MessageDTO(senderId, message, time));
 
         try {
-            when(mockedConnection.prepareStatement(anyString())).thenReturn(mockedStatement);
+            when(mockedConnection.prepareStatement(queries.getQuery("getChatHistoryQuery"))).thenReturn(mockedStatement);
             doReturn(mockedResults).when(mockedStatement).executeQuery();
 
             when(mockedResults.next()).thenReturn(true).thenReturn(false);
