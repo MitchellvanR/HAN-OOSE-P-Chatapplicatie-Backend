@@ -27,6 +27,7 @@ public class SQLChatDAO extends AbstractChatDAO {
             }
             return chatHistory;
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DatabaseRequestException();
         } finally {
             assert resultSet != null;
@@ -42,7 +43,8 @@ public class SQLChatDAO extends AbstractChatDAO {
             statement.setString(2, senderId);
             statement.setString(3, chatId);
             statement.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            e.printStackTrace();
             throw new DatabaseRequestException();
         }
     }
@@ -54,7 +56,8 @@ public class SQLChatDAO extends AbstractChatDAO {
             statement.setString(1, userId);
             statement.setString(2, chatId);
             statement.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            e.printStackTrace();
             throw new DatabaseRequestException();
         }
 
