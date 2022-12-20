@@ -14,19 +14,16 @@ public class SQLChatDAO extends AbstractChatDAO {
     public ArrayList<MessageDTO> getChatHistory(String chatId) throws SQLException {
         String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
         ResultSet resultSet = null;
-        try (
-                PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
-        ) {
+        try (PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql)) {
             statement.setString(1, chatId);
             resultSet = statement.executeQuery();
             ArrayList<MessageDTO> chatHistory = new ArrayList<>();
             while (resultSet.next()) {
-                MessageDTO message = formatMessage(
-                        resultSet.getString("senderId"),
-                        resultSet.getString("message"),
-                        resultSet.getString("time")
-                );
-                chatHistory.add(message);
+                chatHistory.add(formatMessage(
+                    resultSet.getString("senderId"),
+                    resultSet.getString("message"),
+                    resultSet.getString("time")
+                ));
             }
             return chatHistory;
         } catch (SQLException e) {
