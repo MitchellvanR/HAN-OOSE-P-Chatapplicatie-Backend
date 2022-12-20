@@ -11,9 +11,8 @@ import java.util.ArrayList;
 public class SQLChatDAO extends AbstractChatDAO {
     @Override
     public ArrayList<MessageDTO> getChatHistory(String chatId) {
-        try {
-            String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
-            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+        String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
+        try (PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql)) {
             statement.setString(1, chatId);
             ResultSet resultSet = statement.executeQuery();
 
@@ -34,9 +33,8 @@ public class SQLChatDAO extends AbstractChatDAO {
 
     @Override
     public void saveMessage(String message, String senderId, String chatId){
-        try {
-            String sql = Queries.getInstance().getQuery("sendMessageQuery");
-            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+        String sql = Queries.getInstance().getQuery("sendMessageQuery");
+        try (PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql)) {
             statement.setString(1, message);
             statement.setString(2, senderId);
             statement.setString(3, chatId);
@@ -48,9 +46,8 @@ public class SQLChatDAO extends AbstractChatDAO {
 
     @Override
     public void addUserToChat(String chatId, String userId) {
-        try {
-            String sql = Queries.getInstance().getQuery("addUserToChatQuery");
-            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+        String sql = Queries.getInstance().getQuery("addUserToChatQuery");
+        try (PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);) {
             statement.setString(1, userId);
             statement.setString(2, chatId);
             statement.executeUpdate();
