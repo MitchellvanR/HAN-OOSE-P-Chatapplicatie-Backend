@@ -12,10 +12,11 @@ public class SQLChatDAO extends AbstractChatDAO {
     @Override
     public ArrayList<MessageDTO> getChatHistory(String chatId) {
         String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
-        try (PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql)) {
+        try (
+                PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+                ResultSet resultSet = statement.executeQuery()
+        ) {
             statement.setString(1, chatId);
-            ResultSet resultSet = statement.executeQuery();
-
             ArrayList<MessageDTO> chatHistory = new ArrayList<>();
             while(resultSet.next()) {
                 MessageDTO message = formatMessage(
