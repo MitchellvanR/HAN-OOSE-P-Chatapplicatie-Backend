@@ -6,30 +6,26 @@ import jdi.chat.application.util.files.Queries;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SQLChatDAO extends AbstractChatDAO {
     @Override
-    public ArrayList<MessageDTO> getChatHistory(String chatId) {
+    public ArrayList<MessageDTO> getChatHistory(String chatId) throws SQLException {
         String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
-        try (
-                PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
-                ResultSet resultSet = statement.executeQuery()
-        ) {
-            statement.setString(1, chatId);
-            ArrayList<MessageDTO> chatHistory = new ArrayList<>();
-            while(resultSet.next()) {
-                MessageDTO message = formatMessage(
-                        resultSet.getString("senderId"),
-                        resultSet.getString("message"),
-                        resultSet.getString("time")
-                );
-                chatHistory.add(message);
-            }
-            return chatHistory;
-        } catch (Exception e) {
-            throw new DatabaseRequestException();
+        PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+        statement.setString(1, chatId);
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<MessageDTO> chatHistory = new ArrayList<>();
+        while (resultSet.next()) {
+            MessageDTO message = formatMessage(
+                    resultSet.getString("senderId"),
+                    resultSet.getString("message"),
+                    resultSet.getString("time")
+            );
+            chatHistory.add(message);
         }
+        return chatHistory;
     }
 
     @Override
