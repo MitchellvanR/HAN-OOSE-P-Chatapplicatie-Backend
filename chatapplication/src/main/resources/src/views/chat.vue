@@ -237,7 +237,7 @@ export default {
       if (sessionStorage.getItem('userId') === "1"){
         this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/1/1', encryptedMessage).then(res => { return res; });
       } else{
-        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication /chats/2/1', encryptedMessage).then(res => { return res; });
+        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/2/1', encryptedMessage).then(res => { return res; });
       }
     },
     outgoingMessage: function (message, time) {
