@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class SQLChatDAO extends AbstractChatDAO {
+public class SQLChatDAO implements IChatDAO {
     @Override
     public ArrayList<MessageDTO> getChatHistory(String chatId) throws SQLException {
         String sql = Queries.getInstance().getQuery("getChatHistoryQuery");

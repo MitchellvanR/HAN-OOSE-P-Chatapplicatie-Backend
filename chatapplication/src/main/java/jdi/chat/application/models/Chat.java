@@ -1,6 +1,6 @@
 package jdi.chat.application.models;
 
-import jdi.chat.application.data.AbstractChatDAO;
+import jdi.chat.application.data.IChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Chat {
     private String chatId;
-    private AbstractChatDAO chatDAO = new SQLChatDAO();
+    private IChatDAO chatDAO = new SQLChatDAO();
 
     public Chat(String id) {
         chatId = id;
@@ -36,5 +36,5 @@ public class Chat {
 
     public void setChatId(String chatId) { this.chatId = chatId; }
 
-    public void setChatDAO(AbstractChatDAO chatDAO) { this.chatDAO = chatDAO; }
+    public void setChatDAO(IChatDAO chatDAO) { this.chatDAO = chatDAO; }
 }
