@@ -26,7 +26,7 @@ import reusableFunctions from '../components/reusableFunctions.vue';
 export default {
   name: 'OpenChat',
   mounted() {
-    this.getChatLog(sessionStorage.getItem('userId'), 1, sessionStorage.getItem("helpline"));
+    this.getChatLog(sessionStorage.getItem('userId'), sessionStorage.getItem('chatId'));
   },
   Components: {
     reusableFunctions
@@ -38,9 +38,11 @@ export default {
     }
   },
   methods: {
-    getChatLog: function (userId, chatId, helpline) {
-      this.runWebSocket();
-      reusableFunctions.methods.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + chatId + '/'+ helpline).then(responseData => {
+    getChatLog: function (userId, chatId) {
+      console.log(userId);
+      console.log("chatid:" + chatId);
+        this.runWebSocket();
+      reusableFunctions.methods.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + chatId).then(responseData => {
         for (let message of responseData.messages) {
           if (message.senderId === userId) {
             this.outgoingMessage(message.message, message.time);
@@ -76,8 +78,10 @@ export default {
       const newMessage = document.getElementById('message').value;
       let userId = sessionStorage.getItem('userId');
       let chatId = sessionStorage.getItem('chatId');
+      console.log(userId)
+
       if (sessionStorage.getItem('userId') === "1"){
-        reusableFunctions.methods.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + userId + '/' + chatId + '/false', newMessage).then()
+        reusableFunctions.methods.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + userId + '/' + chatId, newMessage).then()
       }
     },
     outgoingMessage: function (message, time) {

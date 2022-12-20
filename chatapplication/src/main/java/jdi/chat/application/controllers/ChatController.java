@@ -16,33 +16,33 @@ public class ChatController {
     private List<Chat> chats = new ArrayList<>();
 
     @GET
-    @Path("/{chatId}/{helpline}")
+    @Path("/{chatId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getChatHistory(@PathParam("chatId") String chatId, @PathParam("helpline") boolean helpline) {
-        List<MessageDTO> chatHistory = openChat(chatId, helpline).getChatHistory();
+    public Response getChatHistory(@PathParam("chatId") String chatId) {
+        List<MessageDTO> chatHistory = openChat(chatId).getChatHistory();
         JSONObject chatHistoryJSON = new JSONObject();
         chatHistoryJSON.put("messages", chatHistory);
         return Response.ok().entity(chatHistoryJSON).build();
     }
 
     @POST
-    @Path("/{senderId}/{chatId}/{helpline}")
+    @Path("/{senderId}/{chatId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response sendMessage(@PathParam("senderId") String senderId, @PathParam("chatId") String chatId,  @PathParam("helpline") boolean helpline, String message){
+    public Response sendMessage(@PathParam("senderId") String senderId, @PathParam("chatId") String chatId, String message){
         if (!message.isEmpty()){
-            Chat chat = openChat(chatId, helpline);
+            Chat chat = openChat(chatId);
             chat.sendMessage(message, senderId);
         }
         return Response.ok().build();
     }
 
     @POST
-    @Path("/{chatId}/{helpline}/addUser/{userId}")
+    @Path("/{chatId}/addUser/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void addUserToChat(@PathParam("chatId") String chatId, @PathParam("userId") String userId,  @PathParam("helpline") boolean helpline){
-        Chat chat = openChat(chatId, helpline);
+    public void addUserToChat(@PathParam("chatId") String chatId, @PathParam("userId") String userId){
+        Chat chat = openChat(chatId);
         chat.addUserToChat(userId);
     }
 
@@ -103,18 +103,18 @@ public class ChatController {
         }
     }
 
-    private Chat openChat(String chatId, boolean helpline) {
-        if (chats.isEmpty()) { return createNewChat(chatId, helpline); }
+    private Chat openChat(String chatId) {
+        if (chats.isEmpty()) { return createNewChat(chatId); }
         for (Chat chat : chats) {
             if (chat.getChatId().equals(chatId)) {
                 return chat;
             }
         }
-        return createNewChat(chatId, helpline);
+        return createNewChat(chatId);
     }
 
-    private Chat createNewChat(String chatId, boolean helpline) {
-        Chat chat = new Chat(chatId, helpline);
+    private Chat createNewChat(String chatId) {
+        Chat chat = new Chat(chatId);
         chats.add(chat);
         return chat;
     }

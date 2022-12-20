@@ -31,11 +31,12 @@ export default {
     setUserId: function (userId) {
       sessionStorage.setItem("userId", userId);
     },
-    setChatId: function (userId) {
-      sessionStorage.setItem("userId", userId);
+    setChatId: function (chatId) {
+      console.log(chatId)
+      sessionStorage.setItem("chatId", chatId);
     },
-    setHelpline: function (userId) {
-      sessionStorage.setItem("userId", userId);
+    setHelpline: function (helpline) {
+      sessionStorage.setItem("helpline", helpline);
     }
   }
 }

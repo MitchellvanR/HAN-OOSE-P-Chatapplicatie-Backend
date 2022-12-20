@@ -15,9 +15,6 @@
               <div class="row">
                 <router-link to="/chat" custom v-slot="{ navigate }"><button @click="navigate" id="user2" role="link" class="btn btn-outline-primary" v-on:click="setUserId(2)">Gebruiker #2 (Jaap)</button></router-link>
               </div>
-              <div>
-
-              </div>
             </form>
           </div>
           <div class="col-4 m-2">
