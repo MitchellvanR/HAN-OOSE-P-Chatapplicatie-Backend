@@ -7,3 +7,4 @@ getChatHistoryQuery_: SELECT inVec, senderId, message, DATE(date) as date, DATE_
 sendMessageQuery_: INSERT INTO `prolog-jdi`.messages (message, senderId, chatId, inVec) VALUES (?, ?, ?, '')
 addUserToChatQuery_: INSERT INTO `prolog-jdi`.userInChats (userId, chatId) VALUES (?, ?)
 createChatQuery_: INSERT INTO `prolog-jdi`.chats (id, symKey) VALUES (?, ?)
+getChatIdQuery_: SELECT chatId FROM `prolog-jdi`.usersinchats WHERE userId = ?

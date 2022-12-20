@@ -45,6 +45,17 @@ public class ChatController {
         chat.addUserToChat(userId);
     }
 
+    @GET
+    @Path("/user/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getChatIds(@PathParam("userId") String userId) {
+        ArrayList<String> chatIds = Chat.getChatIdFromUserId(userId);
+        JSONObject chatIdsJSON = new JSONObject();
+        chatIdsJSON.put("chatIds", chatIds);
+        return Response.ok().entity(chatIdsJSON).build();
+    }
+
     private Chat openChat(String chatId) {
         if (chats.isEmpty()) { return createNewChat(chatId); }
         for (Chat chat : chats) {

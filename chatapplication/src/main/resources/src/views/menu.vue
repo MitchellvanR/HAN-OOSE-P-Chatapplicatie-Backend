@@ -10,10 +10,10 @@
             </div>
             <form id="user">
               <div class="row mb-2">
-                <router-link id="user1" to="/chat" custom v-slot="{ navigate }"><button @click="navigate" role="link" class="btn btn-outline-primary" v-on:click="setUserId(1)">Gebruiker #1 (Mitch)</button></router-link>
+                <router-link id="user1" to="/chatlist" custom v-slot="{ navigate }"><button @click="navigate" role="link" class="btn btn-outline-primary" v-on:click="setUserId(1)">Gebruiker #1 (Mitch)</button></router-link>
               </div>
               <div class="row">
-                <router-link to="/chat" custom v-slot="{ navigate }"><button @click="navigate" id="user2" role="link" class="btn btn-outline-primary" v-on:click="setUserId(2)">Gebruiker #2 (Jaap)</button></router-link>
+                <router-link to="/chatlist" custom v-slot="{ navigate }"><button @click="navigate" id="user2" role="link" class="btn btn-outline-primary" v-on:click="setUserId(2)">Gebruiker #2 (Jaap)</button></router-link>
               </div>
             </form>
           </div>

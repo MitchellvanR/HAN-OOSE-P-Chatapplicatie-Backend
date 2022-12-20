@@ -15,4 +15,6 @@ public abstract class AbstractChatDAO {
     public MessageDTO formatMessage(String senderId, String content, String time){
         return new MessageDTO(senderId, content, time);
     }
+
+    public abstract ArrayList<String> getChatIdFromUserId(String userId);
 }

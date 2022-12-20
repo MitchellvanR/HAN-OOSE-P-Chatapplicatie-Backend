@@ -3,11 +3,13 @@ package jdi.chat.application.models;
 import jdi.chat.application.data.AbstractChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
 import jdi.chat.application.data.dto.MessageDTO;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Chat {
     private String chatId;
-    private AbstractChatDAO chatDAO = new SQLChatDAO();
+    private static AbstractChatDAO chatDAO = new SQLChatDAO();
 
     public Chat(String id) {
         chatId = id;
@@ -22,6 +24,10 @@ public class Chat {
     }
 
     public void addUserToChat(String userId) { chatDAO.addUserToChat(chatId, userId); }
+
+    public static ArrayList<String> getChatIdFromUserId(String userId) {
+        return chatDAO.getChatIdFromUserId(userId);
+    }
 
     public String getChatId() {
         return chatId;
