@@ -21,10 +21,15 @@
   </div>
 </template>
 <script>
+import reusableFunctions from '../components/reusableFunctions.vue';
+
 export default {
   name: 'OpenChat',
   mounted() {
-    this.getChatLog(sessionStorage.getItem('userId'));
+    this.getChatLog(sessionStorage.getItem('userId'), 1, sessionStorage.getItem("helpline"));
+  },
+  Components: {
+    reusableFunctions
   },
   destroyed() {
     if (this.webSocket.readyState === WebSocket.OPEN) {
@@ -33,9 +38,9 @@ export default {
     }
   },
   methods: {
-    getChatLog: function (userId) {
+    getChatLog: function (userId, chatId, helpline) {
       this.runWebSocket();
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/1').then(responseData => {
+      reusableFunctions.methods.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + chatId + '/'+ helpline).then(responseData => {
         for (let message of responseData.messages) {
           if (message.senderId === userId) {
             this.outgoingMessage(message.message, message.time);
@@ -45,7 +50,6 @@ export default {
         }
       });
     },
-
     runWebSocket: function () {
       this.webSocket = new WebSocket('ws://localhost:443');
 
@@ -70,11 +74,10 @@ export default {
     },
     sendMessage: function () {
       const newMessage = document.getElementById('message').value;
-
+      let userId = sessionStorage.getItem('userId');
+      let chatId = sessionStorage.getItem('chatId');
       if (sessionStorage.getItem('userId') === "1"){
-        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/1/1', newMessage).then()
-      } else{
-        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/2/1', newMessage).then()
+        reusableFunctions.methods.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + userId + '/' + chatId + '/false', newMessage).then()
       }
     },
     outgoingMessage: function (message, time) {
@@ -96,25 +99,6 @@ export default {
           '<p> '+ this.filterMessage(message) +' </p>' +
           '</li>'
 
-    },
-    sendHttpRequest: function (method, url, data) {
-      return new Promise((resolve, reject) => {
-        const XmlHttpRequest = new XMLHttpRequest();
-        XmlHttpRequest.open(method, url);
-        XmlHttpRequest.responseType = 'json';
-
-        XmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
-
-        XmlHttpRequest.onload = () => {
-          if (XmlHttpRequest.status >= 400) {
-            reject(XmlHttpRequest.response);
-          } else {
-            resolve(XmlHttpRequest.response);
-          }
-        };
-
-        XmlHttpRequest.send(data);
-      });
     },
     filterMessage: function (message) {
       return message.replace(/<\/?[^>]+>/gi, '')

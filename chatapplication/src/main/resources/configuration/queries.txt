@@ -5,8 +5,8 @@ test_: Hello query!
 getSymKeyQuery_: SELECT symKey FROM `prolog-jdi`.chats WHERE (id = ?)
 getChatHistoryQuery_: SELECT inVec, senderId, message, DATE(date) as date, DATE_FORMAT(date, '%H:%i') AS `time` FROM `prolog-jdi`.messages WHERE (chatId = ?) ORDER BY date,time ASC
 sendMessageQuery_: INSERT INTO `prolog-jdi`.messages (message, senderId, chatId) VALUES (?, ?, ?)
-addUserToChatQuery_: INSERT INTO `prolog-jdi`.userInChats (userId, chatId) VALUES (?, ?)
+addUserToChatQuery_: INSERT INTO `prolog-jdi`.usersinchats (userId, chatId) VALUES (?, ?)
 createChatQuery_: INSERT INTO `prolog-jdi`.chats (id, symKey) VALUES (?, ?)
 findLatestMessageQuery_: SELECT message FROM `prolog-jdi`.messages WHERE chatId = ? ORDER BY date DESC LIMIT 1
-getChatId_: SELECT chatId FROM `prolog-jdi`.userinchats WHERE userId = ?
-getUserHelplineChatId_: SELECT id FROM `prolog-jdi`.chats WHERE type = 1 AND id IN (SELECT chatId FROM userinchats WHERE userId = ?)
+getChatId_: SELECT chatId FROM `prolog-jdi`.usersinchats WHERE userId = ?
+getUserHelplineChatId_: SELECT id FROM `prolog-jdi`.chats WHERE type = 1 AND id IN (SELECT chatId FROM usersinchats WHERE userId = ?)
