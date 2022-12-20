@@ -43,8 +43,6 @@ export default {
     }
   },
   methods: {
-    // Encryption
-
     formulatePublicKey: function (secret) {
       return (ground ** BigInt(secret)) % prime;
     },
@@ -137,7 +135,6 @@ export default {
     },
 
     websocketDecrypt: async function (data) {
-
       let messageAndIvArray = data.split("^");
       let message = messageAndIvArray[0];
       let iv = messageAndIvArray[1];
@@ -194,7 +191,7 @@ export default {
     },
 
     addUser: function(userId){
-  this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + userId).then(res =>{ return res})
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + userId).then(res =>{ return res})
     },
     savePublicKey: function (userId, secret){
       let publicKey = this.formulatePublicKey(secret).toString();
@@ -206,7 +203,7 @@ export default {
         let publicKey = responseData.publicKey;
         sessionStorage.setItem("otherPublicKey", publicKey);
       });
-      },
+    },
 
     addUserToChat: function (userId, chatId){
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + chatId + '/addUser/' + userId).then(res => {return res})
@@ -229,8 +226,6 @@ export default {
       document.getElementById('message').classList.remove("border", "border-danger");
       document.getElementById('message').value = '';
     },
-
-
 
     sendMessage: function (encryptedMessage) {
       this.scrollToBottom();
@@ -258,7 +253,6 @@ export default {
           '<br>' +
           '<p> '+ this.filterMessage(message) +' </p>' +
           '</li>'
-
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {
