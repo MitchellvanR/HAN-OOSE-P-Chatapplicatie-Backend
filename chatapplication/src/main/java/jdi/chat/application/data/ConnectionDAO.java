@@ -13,7 +13,7 @@ public class ConnectionDAO {
         try {
             connection = createConnection();
         } catch (Exception e) {
-            throw new DatabaseRequestException();
+            throw new DatabaseRequestException(e);
         }
     }
 

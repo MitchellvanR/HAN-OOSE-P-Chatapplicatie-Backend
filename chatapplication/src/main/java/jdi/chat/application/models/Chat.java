@@ -20,8 +20,7 @@ public class Chat {
         try {
             return chatDAO.getChatHistory(chatId);
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseRequestException();
+            throw new DatabaseRequestException(e);
         }
     }
 
