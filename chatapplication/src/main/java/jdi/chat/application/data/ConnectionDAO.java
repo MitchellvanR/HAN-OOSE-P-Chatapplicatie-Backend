@@ -7,8 +7,8 @@ import java.sql.DriverManager;
 import java.util.Properties;
 
 public class ConnectionDAO {
-    @Inject
-    protected Connection connection;
+
+    private Connection connection;
 
     public ConnectionDAO() {
         try {
@@ -28,7 +28,5 @@ public class ConnectionDAO {
     }
 
     public Connection getConnection() { return connection; }
-
-    public void setConnection(Connection connection) { this.connection = connection; }
 
 }
