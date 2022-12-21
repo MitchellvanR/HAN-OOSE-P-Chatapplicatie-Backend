@@ -44,7 +44,7 @@ export default {
             this.incomingMessage(message.message, message.time);
           }
         }
-        this.scrollToBottom()
+        this.scrollToBottom();
       });
     },
     runWebSocket: function () {
