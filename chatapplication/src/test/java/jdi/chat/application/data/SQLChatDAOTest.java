@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -64,7 +65,12 @@ class SQLChatDAOTest {
         }
 
         // Act
-        var actual = sut.getChatHistory(chatId);
+        ArrayList<MessageDTO> actual = null;
+        try {
+            actual = sut.getChatHistory(chatId);
+        } catch (SQLException e) {
+            fail(e.getMessage());
+        }
 
         // Assert
         assertEquals(expected.get(0).getSenderId(), actual.get(0).getSenderId());

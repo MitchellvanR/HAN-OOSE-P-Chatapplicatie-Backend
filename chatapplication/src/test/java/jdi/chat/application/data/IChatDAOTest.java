@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AbstractChatDAOTest {
+class IChatDAOTest {
 
-    private AbstractChatDAO sut = new AbstractChatDAO() {
+    private IChatDAO sut = new IChatDAO() {
         @Override
         public ArrayList<MessageDTO> getChatHistory(String chatId) { return null; }
 
