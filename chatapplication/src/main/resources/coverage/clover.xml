@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1671010856755" clover="3.2.0">
-  <project timestamp="1671010856755" name="All files">
-    <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="0" coveredelements="0" complexity="0" loc="0" ncloc="0" packages="0" files="0" classes="0"/>
+<coverage generated="1671630965877" clover="3.2.0">
+  <project timestamp="1671630965877" name="All files">
+    <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1" elements="3" coveredelements="3" complexity="0" loc="2" ncloc="2" packages="1" files="1" classes="1"/>
+    <file name="menu.vue" path="C:\openjdk-17.0.2_windows-x64_bin\DEA\src\prolog-jdi\chatapplication\src\main\resources\src\views\menu.vue">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="1" count="6" type="stmt"/>
+      <line num="32" count="1" type="stmt"/>
+    </file>
   </project>
 </coverage>
