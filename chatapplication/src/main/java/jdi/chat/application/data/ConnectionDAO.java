@@ -1,13 +1,14 @@
 package jdi.chat.application.data;
 
+import jakarta.inject.Inject;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
 
 public class ConnectionDAO {
+    @Inject
     protected Connection connection;
-    private static final ConnectionDAO instance = new ConnectionDAO();
 
     public ConnectionDAO() {
         try {
@@ -26,7 +27,8 @@ public class ConnectionDAO {
         return connection;
     }
 
-    public static ConnectionDAO getInstance() { return instance; }
     public Connection getConnection() { return connection; }
+
+    public void setConnection(Connection connection) { this.connection = connection; }
 
 }

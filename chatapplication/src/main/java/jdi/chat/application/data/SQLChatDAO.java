@@ -1,5 +1,6 @@
 package jdi.chat.application.data;
 
+import jakarta.inject.Inject;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
@@ -10,7 +11,8 @@ import java.util.ArrayList;
 
 public class SQLChatDAO extends AbstractChatDAO {
 
-    private ConnectionDAO connectionDAO = ConnectionDAO.getInstance();
+    @Inject
+    private ConnectionDAO connectionDAO;
 
     @Override
     public ArrayList<MessageDTO> getChatHistory(String chatId) {
