@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import UserMenu from '../views/menu.vue'
 import OpenChat from '../views/chat.vue'
-import Chatlist from "@/views/chatlist.vue";
+import Chatlist from "@/views/chatList.vue";
 
 Vue.use(VueRouter)
 
