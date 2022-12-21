@@ -45,6 +45,16 @@ public class ChatController {
         chat.addUserToChat(userId);
     }
 
+    @POST
+    @Path("/newChat/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addChatToDatabase(@PathParam("userId") String userId, String type){
+        Chat chat = new Chat();
+        System.out.println("function called, chat created");
+        chat.addChatToDatabase(userId, type);
+        return Response.ok().build();
+    }
+
     private Chat openChat(String chatId) {
         if (chats.isEmpty()) { return createNewChat(chatId); }
         for (Chat chat : chats) {

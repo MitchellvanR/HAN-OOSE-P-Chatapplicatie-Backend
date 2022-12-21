@@ -29,6 +29,17 @@
             </div>
           </div>
         </div>
+        <div class="row">
+            <div class="row mb-2">
+              <b class="text-left">Maak een nieuwe chat</b>
+            </div>
+            <form id="newChatForm" class="wrap">
+              <div class="row mb-2">
+                <input type="text" id="userId" placeholder="Enter userId" />
+                <button class="btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+              </div>
+            </form>
+        </div>
     </div>
   </div>
 </template>
@@ -36,11 +47,53 @@
 <script>
 export default {
   name: 'UserMenu',
+  mounted() {
+    this.createChat();
+  },
   methods: {
     setUserId: function (userId) {
       sessionStorage.setItem("userId", userId);
+    },
+    createChat: function (){
+      document.getElementById('newChatForm').onsubmit = data =>
+      {
+        const input = document.getElementById('userId');
+        input.classList.remove("border", "border-danger");
+
+        data.preventDefault();
+        if (input.value === ""){
+          input.classList.add("border", "border-danger");
+        } else {
+          //is het een int validatie
+          this.addChatToDatabase(input.value);
+          input.value = '';
+        }
+      }
+    },
+    addChatToDatabase: function (id) {
+      sessionStorage.setItem('userId', "1"); // mock
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id, "standaard").then()
+    },
+    sendHttpRequest: function (method, url, data) {
+      return new Promise((resolve, reject) => {
+        const XmlHttpRequest = new XMLHttpRequest();
+        XmlHttpRequest.open(method, url);
+        XmlHttpRequest.responseType = 'json';
+
+        XmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
+
+        XmlHttpRequest.onload = () => {
+          if (XmlHttpRequest.status >= 400) {
+            reject(XmlHttpRequest.response);
+          } else {
+            resolve(XmlHttpRequest.response);
+          }
+        };
+
+        XmlHttpRequest.send(data);
+      });
     }
-  }
+  },
 }
 </script>
 

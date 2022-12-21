@@ -59,4 +59,18 @@ public class SQLChatDAO extends AbstractChatDAO {
         }
 
     }
+
+    @Override
+    public void addChatToDatabase(String userId, String type){
+        System.out.println("sending query to database");
+        try {
+            String sql = Queries.getInstance().getQuery("createChatQuery");
+            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+            statement.setString(1, userId);
+            statement.setString(2, type);
+            statement.executeQuery(sql);
+        } catch (Exception e) {
+            throw new DatabaseRequestException();
+        }
+    }
 }

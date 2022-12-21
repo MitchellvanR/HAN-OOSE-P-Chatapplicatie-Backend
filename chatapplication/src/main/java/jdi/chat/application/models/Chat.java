@@ -13,6 +13,8 @@ public class Chat {
         chatId = id;
     }
 
+    public Chat(){}
+
     public List<MessageDTO> getChatHistory() {
         return chatDAO.getChatHistory(chatId);
     }
@@ -30,4 +32,6 @@ public class Chat {
     public void setChatId(String chatId) { this.chatId = chatId; }
 
     public void setChatDAO(AbstractChatDAO chatDAO) { this.chatDAO = chatDAO; }
+
+    public void addChatToDatabase(String userId, String type){ chatDAO.addChatToDatabase(userId, type); }
 }
