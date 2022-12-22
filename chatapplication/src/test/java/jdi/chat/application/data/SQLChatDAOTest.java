@@ -20,7 +20,6 @@ import static org.mockito.Mockito.when;
 class SQLChatDAOTest {
 
     private SQLChatDAO sut;
-    private ConnectionDAO mockedConnectionDAO;
     private Connection mockedConnection;
     private PreparedStatement mockedStatement;
     private Queries queries;
@@ -29,14 +28,12 @@ class SQLChatDAOTest {
     @BeforeEach
     void setup() {
         sut = new SQLChatDAO();
-        mockedConnectionDAO = Mockito.mock(ConnectionDAO.class);
-        mockedConnection = Mockito.mock(Connection.class);
-        mockedStatement = Mockito.mock(PreparedStatement.class);
         queries = Queries.getInstance();
 
-        when(mockedConnectionDAO.getConnection()).thenReturn(mockedConnection);
+        mockedConnection = Mockito.mock(Connection.class);
+        mockedStatement = Mockito.mock(PreparedStatement.class);
 
-        sut.setConnectionDAO(mockedConnectionDAO);
+        sut.setConnection(mockedConnection);
     }
 
     @Test
