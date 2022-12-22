@@ -34,7 +34,8 @@ export default {
   mounted() {
     this.savePublicKey(sessionStorage.getItem('userId'), sessionStorage.getItem('secret'));
     this.delay(30);
-    this.getChatLog(sessionStorage.getItem('userId'));
+    sessionStorage.setItem('chatId', '1');
+    this.getChatLog();
   },
   destroyed() {
     if (this.webSocket.readyState === WebSocket.OPEN) {

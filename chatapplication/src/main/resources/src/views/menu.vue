@@ -55,7 +55,7 @@ export default {
       for (let i = 0; i < secret.length; i++) {
         numberFromString += secret.charCodeAt(i) * 513;
       }
-      let saveSecret = String(numberFromString % 2158);
+      let saveSecret = String(numberFromString % 997);
       sessionStorage.setItem("secret", saveSecret);
     },
   }

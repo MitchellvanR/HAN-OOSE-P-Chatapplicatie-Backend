@@ -3,13 +3,13 @@ package jdi.chat.application.controllers;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jdi.chat.application.data.AbstractSecurityDAO;
+import jdi.chat.application.data.ISecurityDAO;
 import jdi.chat.application.data.SQLSecurityDAO;
 import net.minidev.json.JSONObject;
 
 @Path("/security")
 public class SecurityController {
-    AbstractSecurityDAO securityDAO = new SQLSecurityDAO();
+    ISecurityDAO securityDAO = new SQLSecurityDAO();
 
     @POST
     @Path("/{userId}")

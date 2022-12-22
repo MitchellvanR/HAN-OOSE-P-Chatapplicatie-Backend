@@ -6,7 +6,7 @@ import jdi.chat.application.util.files.Queries;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class SQLSecurityDAO extends AbstractSecurityDAO{
+public class SQLSecurityDAO implements ISecurityDAO{
     @Override
     public void addUser(String userId) {
         try {
@@ -15,7 +15,7 @@ public class SQLSecurityDAO extends AbstractSecurityDAO{
             statement.setString(1, userId);
             statement.executeUpdate();
         } catch (Exception e) {
-            throw new DatabaseRequestException();
+            throw new DatabaseRequestException(e);
         }
     }
 
@@ -28,7 +28,7 @@ public class SQLSecurityDAO extends AbstractSecurityDAO{
             statement.setString(2, userId);
             statement.executeUpdate();
         } catch (Exception e) {
-            throw new DatabaseRequestException();
+            throw new DatabaseRequestException(e);
         }
     }
 
@@ -43,7 +43,7 @@ public class SQLSecurityDAO extends AbstractSecurityDAO{
             resultSet.next();
             return resultSet.getString(1);
         } catch (Exception e){
-            throw new DatabaseRequestException();
+            throw new DatabaseRequestException(e);
         }
     }
 }
