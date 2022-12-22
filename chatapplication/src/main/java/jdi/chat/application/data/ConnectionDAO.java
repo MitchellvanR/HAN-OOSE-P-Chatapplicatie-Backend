@@ -16,11 +16,13 @@ public class ConnectionDAO {
         try {
             connection = createConnection();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new DatabaseRequestException(e);
         }
     }
 
-    private Connection createConnection() throws IOException, SQLException {
+    private Connection createConnection() throws IOException, SQLException, ClassNotFoundException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
         Properties properties = new Properties();
         properties.load(getClass().getClassLoader().getResourceAsStream("database.properties"));
         String url = properties.getProperty("connectionString");
