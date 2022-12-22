@@ -7,7 +7,17 @@
         </div>
       </div>
       <div class="messages" id="messages">
-        <ul id="content">
+        <ul id="content" v-for="message in data" :key="message">
+          <li v-if="message.senderId === sessionStorage.getItem('userId')" class="replies mb-3">
+            <small class="float-right margin-right-5px">{{message.time}}</small>
+            <br>
+            <p>{{message.message}}</p>
+          </li>
+          <li v-else class="sent mb-3">
+            <small class="margin-left-5px">{{message.time}}</small>
+            <br>
+            <p>{{message.message}}</p>
+          </li>
         </ul>
       </div>
       <div class="message-input border-top border-dark p-2">
@@ -23,8 +33,13 @@
 <script>
 export default {
   name: 'OpenChat',
+  data() {
+    return {
+      data: [],
+    }
+  },
   mounted() {
-    this.getChatLog(sessionStorage.getItem('userId'));
+    this.getChatLog();
   },
   destroyed() {
     if (this.webSocket.readyState === WebSocket.OPEN) {
@@ -33,16 +48,10 @@ export default {
     }
   },
   methods: {
-    getChatLog: function (userId) {
+    getChatLog: function () {
       this.runWebSocket();
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/1').then(responseData => {
-        for (let message of responseData.messages) {
-          if (message.senderId === userId) {
-            this.outgoingMessage(message.message, message.time);
-          } else {
-            this.incomingMessage(message.message, message.time);
-          }
-        }
+        this.data.push(...responseData.messages);
         this.scrollToBottom()
       });
     },
@@ -54,7 +63,10 @@ export default {
       this.webSocket = new WebSocket('ws://localhost:443');
 
       this.webSocket.addEventListener('message', data => {
+        console.log(data)
         data.data.text().then(this.incomingMessage);
+        // this.data.push(...responseData.messages);
+
       });
 
       document.getElementById('sendMessageForm').onsubmit = data => {
@@ -66,7 +78,14 @@ export default {
           input.classList.add("border", "border-danger");
         } else {
           this.webSocket.send(input.value);
-          this.outgoingMessage(input.value, this.getCurrentTime());
+          let sad = {
+            message: {
+              message: input.value,
+              time: this.getCurrentTime(),
+            }
+          }
+          this.data.push(...sad);
+
           this.sendMessage(input.value);
           input.value = '';
         }
@@ -81,26 +100,6 @@ export default {
       } else{
         this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/2/1', newMessage).then()
       }
-    },
-    outgoingMessage: function (message, time) {
-      const outgoingMessage = document.getElementById('content');
-
-      outgoingMessage.innerHTML += '' +
-          '<li class="replies mb-3">' +
-            '<small class="float-right margin-right-5px">'+ time +'</small>' +
-            '<br>' +
-            '<p> '+ this.filterMessage(message) +' </p>' +
-          '</li>'
-    },
-    incomingMessage: function (message, time = this.getCurrentTime()) {
-      const incomingMessage = document.getElementById('content');
-      incomingMessage.innerHTML += '' +
-          '<li class="sent mb-3">' +
-          '<small class="margin-left-5px">'+ time +'</small>' +
-          '<br>' +
-          '<p> '+ this.filterMessage(message) +' </p>' +
-          '</li>'
-
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {
