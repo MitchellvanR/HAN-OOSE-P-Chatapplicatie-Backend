@@ -6,6 +6,6 @@ import java.sql.SQLException;
 
 public interface IConnectionDAO {
 
-    Connection createConnection() throws SQLException, IOException;
+    Connection createConnection() throws SQLException, IOException, ClassNotFoundException;
 
 }

@@ -15,7 +15,6 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
     @Override
     public ArrayList<MessageDTO> getChatHistory(String chatId) throws SQLException {
         connectToDatabase();
-        System.out.println("[Server] Kom ik hier überhaupt wel?");
         String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -31,10 +30,11 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
             }
             return chatHistory;
         } catch (SQLException e) {
-            System.out.println("[Server] An error occurred while trying to fetch chat history");
             throw new DatabaseRequestException(e);
         } finally {
-            if (resultSet != null) { resultSet.close(); }
+            if (resultSet != null) {
+                resultSet.close();
+            }
         }
     }
 
@@ -66,7 +66,8 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
     }
 
     @Override
-    public Connection createConnection() throws SQLException, IOException {
+    public Connection createConnection() throws SQLException, IOException, ClassNotFoundException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
         Properties properties = new Properties();
         properties.load(getClass().getClassLoader().getResourceAsStream("database.properties"));
         String url = properties.getProperty("connectionString");
@@ -80,9 +81,7 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
     public void setConnection() {
         try {
             connection = createConnection();
-        } catch (SQLException | IOException e) {
-            System.out.println("[Server] An error occurred while creating connection to the database");
-            e.printStackTrace();
+        } catch (SQLException | IOException | ClassNotFoundException e) {
             throw new DatabaseRequestException(e);
         }
     }
