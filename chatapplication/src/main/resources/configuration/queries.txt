@@ -3,7 +3,8 @@ test_: Hello query!
 
 # Database queries (Key: Value)
 getSymKeyQuery_: SELECT symKey FROM `prolog-jdi`.chats WHERE (id = ?)
-getChatHistoryQuery_: SELECT inVec, senderId, message, DATE(date) as date, DATE_FORMAT(date, '%H:%i') AS `time` FROM `prolog-jdi`.messages WHERE (chatId = ?) ORDER BY date,time ASC
+getChatHistoryQuery_: SELECT senderId, message, DATE(date) as date, DATE_FORMAT(date, '%H:%i') AS `time` FROM `prolog-jdi`.messages WHERE (chatId = ?) ORDER BY date,time ASC
+getUsersInChat_: SELECT DISTINCT userId FROM usersInChats WHERE (chatId = ?)
 sendMessageQuery_: INSERT INTO `prolog-jdi`.messages (message, senderId, chatId) VALUES (?, ?, ?)
-addUserToChatQuery_: INSERT INTO `prolog-jdi`.userInChats (userId, chatId) VALUES (?, ?)
+addUserToChatQuery_: INSERT INTO `prolog-jdi`.usersInChats (userId, chatId) VALUES (?, ?)
 createChatQuery_: CALL createNewChatAndReturnId(?, ?)

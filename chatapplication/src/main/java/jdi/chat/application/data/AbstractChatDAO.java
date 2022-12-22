@@ -16,4 +16,6 @@ public abstract class AbstractChatDAO {
         return new MessageDTO(senderId, content, time);
     }
     public abstract String addChatToDatabase(String userId, String type);
+
+    public abstract ArrayList<String> getUsersInChat(String chatId);
 }

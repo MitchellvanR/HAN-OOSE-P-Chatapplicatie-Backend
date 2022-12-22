@@ -36,7 +36,7 @@
             <form id="newChatForm" class="wrap">
               <div class="row mb-2">
                 <input type="text" id="userId" placeholder="Enter userId" />
-                <button class="btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                <button class="btn" type="submit"><i class="fa fa-check" aria-hidden="true"></i></button>
               </div>
             </form>
         </div>

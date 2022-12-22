@@ -42,7 +42,11 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void addUserToChat(@PathParam("chatId") String chatId, @PathParam("userId") String userId){
         Chat chat = openChat(chatId);
-        chat.addUserToChat(userId);
+        ArrayList<String> users = chat.getUsers();
+        Chat groupChat = new Chat();
+        groupChat.addChatToDatabase(users.get(0), "groep");
+        groupChat.addUserToChat(users.get(1));
+        groupChat.addUserToChat(userId);
     }
 
     @POST
@@ -50,7 +54,7 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addChatToDatabase(@PathParam("userId") String userId){
-        String type = "standaard";
+        String type = "standaard"; //mock
         Chat chat = new Chat();
         chat.addChatToDatabase(userId, type);
         return Response.ok().build();

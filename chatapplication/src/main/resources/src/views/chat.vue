@@ -15,6 +15,16 @@
           <input type="text" id="message" placeholder="Write your message..." />
           <button class="btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
           <button class="btn" type="button"><i class="fa fa-paperclip" aria-hidden="true"></i></button>
+          <button class="btn" type="button" @click="openForm()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+          <div class="form-popup" id="addUser">
+            <form id="addUserForm" class="wrap">
+              <div class="row mb-2">
+                <input type="text" id="userId" placeholder="Enter userId" />
+                <button class="btn" type="submit"><i class="fa fa-check" aria-hidden="true"></i></button>
+                <button class="btn" type="button" @click="closeForm()"><i class="fa fa-times" aria-hidden="true"></i></button>
+              </div>
+            </form>
+          </div>
         </form>
       </div>
     </div>
@@ -25,6 +35,7 @@ export default {
   name: 'OpenChat',
   mounted() {
     this.getChatLog(sessionStorage.getItem('userId'));
+    this.addUser();
   },
   destroyed() {
     if (this.webSocket.readyState === WebSocket.OPEN) {
@@ -44,6 +55,37 @@ export default {
           }
         }
       });
+    },
+
+    addUser: function () {
+      document.getElementById('addUserForm').onsubmit = data =>
+      {
+        const input = document.getElementById('userId');
+        input.classList.remove("border", "border-danger");
+
+        data.preventDefault();
+        if (input.value === ""){
+          input.classList.add("border", "border-danger");
+        } else {
+          //is het een int validatie
+          this.addUserToChat(input.value);
+          input.value = '';
+        }
+      }
+    },
+
+    addUserToChat: function () {
+      sessionStorage.setItem('userId', "3"); // mock
+      sessionStorage.setItem('chatId', "1"); //mock
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + sessionStorage.getItem('chatId') + '/addUser/' + sessionStorage.getItem('userId')).then()
+    },
+
+    openForm: function () {
+      document.getElementById("addUser").style.display = "block";
+    },
+
+    closeForm: function () {
+      document.getElementById("addUser").style.display = "none";
     },
 
     runWebSocket: function () {
@@ -144,5 +186,9 @@ export default {
   background-color: #000000;
   border-radius: 10px;
   border: 3px solid #e6eaea;
+}
+
+.form-popup {
+  display: none;
 }
 </style>

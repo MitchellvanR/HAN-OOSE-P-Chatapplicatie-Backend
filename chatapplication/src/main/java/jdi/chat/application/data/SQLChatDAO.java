@@ -75,4 +75,23 @@ public class SQLChatDAO extends AbstractChatDAO {
             throw new DatabaseRequestException();
         }
     }
+
+    @Override
+    public ArrayList<String> getUsersInChat(String chatId) {
+        try {
+            String sql = Queries.getInstance().getQuery("getUsersInChat");
+            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+            statement.setString(1, chatId);
+            ResultSet resultSet = statement.executeQuery();
+
+            ArrayList<String> usersInChat = new ArrayList<>();
+            while(resultSet.next()) {
+               String user = resultSet.getString(1);
+               usersInChat.add(user);
+            }
+            return usersInChat;
+        } catch (Exception e) {
+            throw new DatabaseRequestException();
+        }
+    }
 }

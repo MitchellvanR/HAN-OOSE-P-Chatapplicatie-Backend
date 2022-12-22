@@ -3,6 +3,8 @@ package jdi.chat.application.models;
 import jdi.chat.application.data.AbstractChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
 import jdi.chat.application.data.dto.MessageDTO;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Chat {
@@ -34,4 +36,6 @@ public class Chat {
     public void setChatDAO(AbstractChatDAO chatDAO) { this.chatDAO = chatDAO; }
 
     public void addChatToDatabase(String userId, String type){ setChatId(chatDAO.addChatToDatabase(userId, type)); }
+
+    public ArrayList<String> getUsers(){ return chatDAO.getUsersInChat(getChatId()); }
 }
