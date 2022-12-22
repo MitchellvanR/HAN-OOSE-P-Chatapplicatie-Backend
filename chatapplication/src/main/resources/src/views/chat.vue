@@ -7,8 +7,8 @@
         </div>
       </div>
       <div class="messages" id="messages">
-        <ul id="content" v-for="message in data" :key="message">
-          <li v-if="message.senderId === sessionStorage.getItem('userId')" class="replies mb-3">
+        <ul v-for="(message, index) in array" :key="index">
+          <li v-if="message.senderId === userId" class="replies mb-3">
             <small class="float-right margin-right-5px">{{message.time}}</small>
             <br>
             <p>{{message.message}}</p>
@@ -35,7 +35,8 @@ export default {
   name: 'OpenChat',
   data() {
     return {
-      data: [],
+      array: [],
+      userId: sessionStorage.getItem('userId'),
     }
   },
   mounted() {
@@ -50,10 +51,10 @@ export default {
   methods: {
     getChatLog: function () {
       this.runWebSocket();
+
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/1').then(responseData => {
-        this.data.push(...responseData.messages);
-        this.scrollToBottom()
-      });
+        this.array.push(...responseData.messages);
+      }).then(() => this.scrollToBottom());
     },
     scrollToBottom: function (){
       const element = document.getElementById('messages');
@@ -61,12 +62,15 @@ export default {
     },
     runWebSocket: function () {
       this.webSocket = new WebSocket('ws://localhost:443');
+      const that = this;
 
       this.webSocket.addEventListener('message', data => {
-        console.log(data)
-        data.data.text().then(this.incomingMessage);
-        // this.data.push(...responseData.messages);
-
+        data.array.text().then(function(result) {
+          that.data.push({
+            message: result,
+            time: that.getCurrentTime()
+          });
+        });
       });
 
       document.getElementById('sendMessageForm').onsubmit = data => {
@@ -78,13 +82,12 @@ export default {
           input.classList.add("border", "border-danger");
         } else {
           this.webSocket.send(input.value);
-          let sad = {
-            message: {
-              message: input.value,
-              time: this.getCurrentTime(),
-            }
-          }
-          this.data.push(...sad);
+
+          this.array.push({
+            message: input.value,
+            senderId: this.userId,
+            time: this.getCurrentTime()
+          });
 
           this.sendMessage(input.value);
           input.value = '';
@@ -94,7 +97,7 @@ export default {
     sendMessage: function () {
       const newMessage = document.getElementById('message').value;
       this.scrollToBottom();
-
+      //TODO GEEN USERID MEER
       if (sessionStorage.getItem('userId') === "1"){
         this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/1/1', newMessage).then()
       } else{
@@ -120,16 +123,12 @@ export default {
         XmlHttpRequest.send(data);
       });
     },
-    filterMessage: function (message) {
-      return message.replace(/<\/?[^>]+>/gi, '')
-    },
     getCurrentTime: function () {
       let date = new Date();
       return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();    },
   }
 }
 </script>
-
 
 <style scoped>
 /* ===== Scrollbar CSS ===== */
