@@ -21,14 +21,6 @@
   </div>
 </template>
 <script>
-/* global BigInt */
-
-const prime = BigInt("32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559");
-const ground = BigInt("2");
-const encoder = new TextEncoder();
-const decoder = new TextDecoder();
-let cryptoKey;
-
 export default {
   name: 'OpenChat',
   mounted() {
@@ -44,12 +36,20 @@ export default {
     }
   },
   methods: {
+    // Deze comment (global BigInt) is nodig om BigInts in deze file werkend te krijgen. Zonder deze comment werken ze dus niet.
+    /* global BigInt */
+
+    prime: BigInt("32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559"),
+    ground: BigInt("2"),
+    encoder: new TextEncoder(),
+    decoder: new TextDecoder(),
+    cryptoKey: new CryptoKey(),
     formulatePublicKey: function (secret) {
-      return (ground ** BigInt(secret)) % prime;
+      return (this.ground ** BigInt(secret)) % this.prime;
     },
 
     formulatePrivateKey: function (otherPublicKey, secret) {
-      return (BigInt(otherPublicKey) ** BigInt(secret)) % prime;
+      return (BigInt(otherPublicKey) ** BigInt(secret)) % this.prime;
     },
 
     getSecret: function () {
@@ -58,13 +58,13 @@ export default {
 
     importCryptoKey: async function (value) {
       let key = this.formulatePrivateKey(value, this.getSecret());
-      let bufferOne = encoder.encode(key);
+      let bufferOne = this.encoder.encode(key);
       let bufferTwo = new Uint8Array(32)
       for (let i = 0; i < bufferTwo.length; i++) {
         bufferTwo[i] = bufferOne[i];
       }
 
-      cryptoKey = await window.crypto.subtle.importKey(
+      this.cryptoKey = await window.crypto.subtle.importKey(
           "raw",
           bufferTwo,
           "AES-CBC",
@@ -78,11 +78,11 @@ export default {
     },
 
     encodeMessage: function (message) {
-      return encoder.encode(message);
+      return this.encoder.encode(message);
     },
 
     decodeMessage: function (message) {
-      return decoder.decode(message);
+      return this.decoder.decode(message);
     },
 
     encrypt: async function (message) {
@@ -97,7 +97,7 @@ export default {
             name: "AES-CBC",
             iv: iv,
           },
-          cryptoKey,
+          this.cryptoKey,
           encodedMessage
       );
 
@@ -139,7 +139,7 @@ export default {
       let messageAndIvArray = data.split("^");
       let message = messageAndIvArray[0];
       let iv = messageAndIvArray[1];
-      let correctData = await this.decrypt(cryptoKey, message, iv)
+      let correctData = await this.decrypt(this.cryptoKey, message, iv)
       let dataArray = [correctData];
       return new Blob(dataArray);
     },
@@ -157,7 +157,7 @@ export default {
           this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
           await this.delay(30);
           await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
-          let decryptedMessage = await this.decrypt(cryptoKey, message.message, message.iv);
+          let decryptedMessage = await this.decrypt(this.cryptoKey, message.message, message.iv);
           if (message.senderId === sessionStorage.getItem('userId')) {
             this.outgoingMessage(decryptedMessage, message.time);
           } else {
