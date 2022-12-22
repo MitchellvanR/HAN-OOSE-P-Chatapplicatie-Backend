@@ -72,9 +72,10 @@ export default {
     },
     addChatToDatabase: function (id) {
       sessionStorage.setItem('userId', "1"); // mock
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id, "standaard").then()
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id).then(console.log("HTTP Request sent"))
     },
     sendHttpRequest: function (method, url, data) {
+      console.log(url);
       return new Promise((resolve, reject) => {
         const XmlHttpRequest = new XMLHttpRequest();
         XmlHttpRequest.open(method, url);
@@ -90,7 +91,7 @@ export default {
           }
         };
 
-        XmlHttpRequest.send(data);
+        XmlHttpRequest.send(JSON.stringify(data));
       });
     }
   },

@@ -48,9 +48,11 @@ public class ChatController {
     @POST
     @Path("/newChat/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addChatToDatabase(@PathParam("userId") String userId, String type){
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addChatToDatabase(@PathParam("userId") String userId){
+        System.out.println("HTTP Request received and method called");
+        String type = "Standaard";
         Chat chat = new Chat();
-        System.out.println("function called, chat created");
         chat.addChatToDatabase(userId, type);
         return Response.ok().build();
     }
