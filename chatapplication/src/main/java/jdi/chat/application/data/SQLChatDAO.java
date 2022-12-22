@@ -29,8 +29,9 @@ public class SQLChatDAO implements IChatDAO {
         } catch (SQLException e) {
             throw new DatabaseRequestException(e);
         } finally {
-            assert resultSet != null;
-            resultSet.close();
+            if (resultSet != null) {
+                resultSet.close();
+            }
         }
     }
 
