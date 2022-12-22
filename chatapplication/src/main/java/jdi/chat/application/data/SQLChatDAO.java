@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 public class SQLChatDAO implements IChatDAO, IConnectionDAO {
-    private Connection connection;
+    private static Connection connection;
 
     @Override
     public ArrayList<MessageDTO> getChatHistory(String chatId) throws SQLException {
@@ -75,7 +75,7 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
     }
 
     public void setConnection(Connection connection) {
-        this.connection = connection;
+        SQLChatDAO.connection = connection;
     }
 
     public void setConnection() {
