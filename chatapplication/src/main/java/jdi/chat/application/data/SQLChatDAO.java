@@ -1,5 +1,6 @@
 package jdi.chat.application.data;
 
+import jakarta.validation.constraints.Null;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
@@ -29,7 +30,7 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
                 ));
             }
             return chatHistory;
-        } catch (SQLException e) {
+        } catch (NullPointerException | SQLException e) {
             throw new DatabaseRequestException(e);
         } finally {
             if (resultSet != null) {
