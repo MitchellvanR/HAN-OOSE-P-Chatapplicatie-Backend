@@ -33,5 +33,5 @@ public class Chat {
 
     public void setChatDAO(AbstractChatDAO chatDAO) { this.chatDAO = chatDAO; }
 
-    public void addChatToDatabase(String userId, String type){ chatDAO.addChatToDatabase(userId, type); }
+    public void addChatToDatabase(String userId, String type){ setChatId(chatDAO.addChatToDatabase(userId, type)); }
 }

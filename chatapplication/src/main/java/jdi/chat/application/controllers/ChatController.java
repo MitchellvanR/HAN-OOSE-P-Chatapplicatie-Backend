@@ -50,8 +50,7 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addChatToDatabase(@PathParam("userId") String userId){
-        System.out.println("HTTP Request received and method called");
-        String type = "Standaard";
+        String type = "standaard";
         Chat chat = new Chat();
         chat.addChatToDatabase(userId, type);
         return Response.ok().build();

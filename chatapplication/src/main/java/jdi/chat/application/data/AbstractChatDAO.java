@@ -15,5 +15,5 @@ public abstract class AbstractChatDAO {
     public MessageDTO formatMessage(String senderId, String content, String time){
         return new MessageDTO(senderId, content, time);
     }
-    public abstract void addChatToDatabase(String userId, String type);
+    public abstract String addChatToDatabase(String userId, String type);
 }

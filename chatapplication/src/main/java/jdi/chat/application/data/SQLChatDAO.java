@@ -4,6 +4,7 @@ import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
 
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -40,8 +41,6 @@ public class SQLChatDAO extends AbstractChatDAO {
             statement.setString(1, message);
             statement.setString(2, senderId);
             statement.setString(3, chatId);
-            System.out.println(sql);
-            System.out.println(statement);
             statement.executeUpdate();
         } catch (Exception e) {
             throw new DatabaseRequestException();
@@ -63,17 +62,15 @@ public class SQLChatDAO extends AbstractChatDAO {
     }
 
     @Override
-    public void addChatToDatabase(String userId, String type){
+    public String addChatToDatabase(String userId, String type){
         try {
-            System.out.println("Building Query with: " + userId + ", " + type);
             String sql = Queries.getInstance().getQuery("createChatQuery");
-            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+            CallableStatement statement = ConnectionDAO.getInstance().getConnection().prepareCall(sql);
             statement.setString(1, userId);
             statement.setString(2, type);
-            System.out.println("Query built, sending to database: " + sql);
-            System.out.println(statement);
-            statement.executeQuery(sql);
-            System.out.println("Query sent to database");
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getString(1);
         } catch (Exception e) {
             throw new DatabaseRequestException();
         }
