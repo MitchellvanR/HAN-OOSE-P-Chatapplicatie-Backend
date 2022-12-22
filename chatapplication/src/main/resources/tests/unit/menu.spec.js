@@ -25,36 +25,6 @@ describe('menu.vue', () => {
         expect(wrapper.name()).toEqual('UserMenu');
     });
 
-    it("check if button user 1 is clicked", () => {
-        const event = jest.fn();
-        const button = wrapper.find('#user1');
-
-        button.vm.$on("click", event);
-        expect(event).toHaveBeenCalledTimes(0);
-        button.trigger("click");
-        expect(event).toHaveBeenCalledTimes(1);
-    });
-
-    it("check if button user 2 is clicked", () => {
-        const event = jest.fn();
-        const button = wrapper.find('#user2');
-
-        button.vm.$on("click", event);
-        expect(event).toHaveBeenCalledTimes(0);
-        button.trigger("click");
-        expect(event).toHaveBeenCalledTimes(1);
-    });
-
-    it("check if button administrator is clicked", () => {
-        const event = jest.fn();
-        const button = wrapper.find('#administrator');
-
-        button.vm.$on("click", event);
-        expect(event).toHaveBeenCalledTimes(0);
-        button.trigger("click");
-        expect(event).toHaveBeenCalledTimes(1);
-    });
-
     it('check if setUserId is called after click button user 1', async () => {
         const listener = sinon.spy();
         const wrapper = shallowMount(menu);
