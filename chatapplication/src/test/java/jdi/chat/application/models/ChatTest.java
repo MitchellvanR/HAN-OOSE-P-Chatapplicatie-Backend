@@ -21,9 +21,8 @@ public class ChatTest {
     private ArrayList<MessageDTO> mockedDTO;
     @BeforeEach
     void setup() {
-        sut = new Chat("0");
-
         chatId = "0";
+        sut = new Chat(chatId);
         mockedChatDao = Mockito.mock(SQLChatDAO.class);
         sut.setChatDAO(mockedChatDao);
         message = "Test";
