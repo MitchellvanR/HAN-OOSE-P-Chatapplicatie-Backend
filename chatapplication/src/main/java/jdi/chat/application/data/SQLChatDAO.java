@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class SQLChatDAO extends AbstractChatDAO {
+public class SQLChatDAO implements IChatDAO {
     @Override
     public ArrayList<MessageDTO> getChatHistory(String chatId) {
         try {
@@ -28,7 +28,7 @@ public class SQLChatDAO extends AbstractChatDAO {
             }
             return chatHistory;
         } catch (Exception e) {
-            throw new DatabaseRequestException();
+            throw new DatabaseRequestException(e);
         }
     }
 
@@ -42,7 +42,7 @@ public class SQLChatDAO extends AbstractChatDAO {
             statement.setString(3, chatId);
             statement.executeUpdate();
         } catch (Exception e) {
-            throw new DatabaseRequestException();
+            throw new DatabaseRequestException(e);
         }
     }
 
@@ -55,7 +55,7 @@ public class SQLChatDAO extends AbstractChatDAO {
             statement.setString(2, chatId);
             statement.executeUpdate();
         } catch (Exception e) {
-            throw new DatabaseRequestException();
+            throw new DatabaseRequestException(e);
         }
     }
 
@@ -74,7 +74,7 @@ public class SQLChatDAO extends AbstractChatDAO {
             }
             return chatIds;
         } catch (Exception e) {
-            throw new DatabaseRequestException();
+            throw new DatabaseRequestException(e);
         }
     }
 }

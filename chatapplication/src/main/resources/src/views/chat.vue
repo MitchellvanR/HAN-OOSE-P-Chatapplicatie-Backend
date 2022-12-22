@@ -52,13 +52,10 @@ export default {
     getChatLog: function () {
       this.runWebSocket();
 
+      this.validateSession();
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/1').then(responseData => {
         this.array.push(...responseData.messages);
       }).then(() => this.scrollToBottom());
-    },
-    scrollToBottom: function (){
-      const element = document.getElementById('messages');
-      element.scrollTop = element.scrollHeight;
     },
     runWebSocket: function () {
       this.webSocket = new WebSocket('ws://localhost:443');
@@ -109,9 +106,7 @@ export default {
         const XmlHttpRequest = new XMLHttpRequest();
         XmlHttpRequest.open(method, url);
         XmlHttpRequest.responseType = 'json';
-
         XmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
-
         XmlHttpRequest.onload = () => {
           if (XmlHttpRequest.status >= 400) {
             reject(XmlHttpRequest.response);
@@ -119,16 +114,26 @@ export default {
             resolve(XmlHttpRequest.response);
           }
         };
-
         XmlHttpRequest.send(data);
       });
     },
+    validateSession: function (){
+      if (!sessionStorage.getItem("userId")){
+        window.location.href = "/";
+      }
+    },
     getCurrentTime: function () {
       let date = new Date();
-      return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();    },
+      return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    },
+    scrollToBottom: function (){
+      const element = document.getElementById('messages');
+      element.scrollTop = element.scrollHeight;
+    },
   }
 }
 </script>
+
 
 <style scoped>
 /* ===== Scrollbar CSS ===== */
