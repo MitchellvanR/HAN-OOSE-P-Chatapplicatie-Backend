@@ -150,8 +150,8 @@ export default {
 
     getChatLog: function () {
       this.runWebSocket();
+      this.validateSession();
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/1').then(async responseData => {
-        sessionStorage.setItem("chatId", responseData.chatId)
         for (let message of responseData.messages) {
           this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
           await this.delay(30);
@@ -163,12 +163,8 @@ export default {
             this.incomingMessage(decryptedMessage, message.time);
           }
         }
-        this.scrollToBottom()
+        this.scrollToBottom();
       });
-    },
-    scrollToBottom: function (){
-      const element = document.getElementById('messages');
-      element.scrollTop = element.scrollHeight;
     },
     runWebSocket: function () {
       this.webSocket = new WebSocket('ws://localhost:443');
@@ -239,29 +235,27 @@ export default {
       const outgoingMessage = document.getElementById('content');
 
       outgoingMessage.innerHTML += '' +
-          '<li class="replies mb-3">' +
+        '<li class="replies mb-3">' +
           '<small class="float-right margin-right-5px">'+ time +'</small>' +
           '<br>' +
           '<p> '+ this.filterMessage(message) +' </p>' +
-          '</li>'
+        '</li>'
     },
     incomingMessage: function (message, time = this.getCurrentTime()) {
       const incomingMessage = document.getElementById('content');
       incomingMessage.innerHTML += '' +
-          '<li class="sent mb-3">' +
+        '<li class="sent mb-3">' +
           '<small class="margin-left-5px">'+ time +'</small>' +
           '<br>' +
           '<p> '+ this.filterMessage(message) +' </p>' +
-          '</li>'
+        '</li>'
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {
         const XmlHttpRequest = new XMLHttpRequest();
         XmlHttpRequest.open(method, url);
         XmlHttpRequest.responseType = 'json';
-
         XmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
-
         XmlHttpRequest.onload = () => {
           if (XmlHttpRequest.status >= 400) {
             reject(XmlHttpRequest.response);
@@ -272,12 +266,22 @@ export default {
         XmlHttpRequest.send(JSON.stringify(data));
       });
     },
+    validateSession: function (){
+      if (!sessionStorage.getItem("userId")){
+        window.location.href = "/";
+      }
+    },
     filterMessage: function (message) {
       return message.replace(/<\/?[^>]+>/gi, '')
     },
     getCurrentTime: function () {
       let date = new Date();
-      return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();    },
+      return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    },
+    scrollToBottom: function (){
+      const element = document.getElementById('messages');
+      element.scrollTop = element.scrollHeight;
+    },
   }
 }
 </script>
