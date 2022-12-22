@@ -1,9 +1,13 @@
 <template>
   <div class="background">
     <div class="container mt-5">
-        <p class="display-4">Chatapplicatie Configuratie</p>
+
+      <div class="row">
+        <p class="display-4">Chat Menu</p>
+        <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Note! This is page is used for mocking purposes.</small>
         <hr>
-        <div class="row">
+      </div>
+      <div class="row">
           <div class="col-6 m-2">
             <div class="row mb-2">
               <b class="text-left">Selecteer een gebruiker:</b>
