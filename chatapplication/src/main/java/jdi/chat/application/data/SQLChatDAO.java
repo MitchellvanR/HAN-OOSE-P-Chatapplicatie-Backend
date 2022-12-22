@@ -85,8 +85,8 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
     }
 
     private void connectToDatabase() {
-        if (SQLChatDAO.connection == null) {
-            SQLChatDAO.connection = createConnection();
+        if (connection == null) {
+            connection = createConnection();
         }
     }
 }
