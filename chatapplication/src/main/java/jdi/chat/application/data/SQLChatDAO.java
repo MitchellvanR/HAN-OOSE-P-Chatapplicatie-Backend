@@ -1,6 +1,5 @@
 package jdi.chat.application.data;
 
-import jakarta.validation.constraints.Null;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
@@ -67,12 +66,17 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
     }
 
     @Override
-    public Connection createConnection() throws SQLException, IOException, ClassNotFoundException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Properties properties = new Properties();
-        properties.load(getClass().getClassLoader().getResourceAsStream("database.properties"));
-        String url = properties.getProperty("connectionString");
-        return DriverManager.getConnection(url);
+    public Connection createConnection() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Properties properties = new Properties();
+            properties.load(getClass().getClassLoader().getResourceAsStream("database.properties"));
+            String url = properties.getProperty("connectionString");
+            return DriverManager.getConnection(url);
+        } catch (SQLException | IOException | ClassNotFoundException e) {
+            throw new DatabaseRequestException(e);
+        }
+
     }
 
     public void setConnection(Connection connection) {
@@ -80,11 +84,7 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
     }
 
     public void setConnection() {
-        try {
-            connection = createConnection();
-        } catch (SQLException | IOException | ClassNotFoundException e) {
-            throw new DatabaseRequestException(e);
-        }
+        connection = createConnection();
     }
 
     private void connectToDatabase() {
