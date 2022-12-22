@@ -18,6 +18,7 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
         String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, chatId);
             resultSet = statement.executeQuery();
             ArrayList<MessageDTO> chatHistory = new ArrayList<>();
@@ -29,7 +30,7 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
                 ));
             }
             return chatHistory;
-        } catch (NullPointerException | SQLException e) {
+        } catch (SQLException e) {
             throw new DatabaseRequestException(e);
         } finally {
             if (resultSet != null) {
@@ -79,16 +80,16 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
 
     }
 
-    public void setConnection(Connection connection) {
+    public static void setConnection(Connection connection) {
         SQLChatDAO.connection = connection;
     }
 
     public void setConnection() {
-        connection = createConnection();
+        SQLChatDAO.connection = createConnection();
     }
 
     private void connectToDatabase() {
-        if (connection == null) {
+        if (SQLChatDAO.connection == null) {
             setConnection();
         }
     }
