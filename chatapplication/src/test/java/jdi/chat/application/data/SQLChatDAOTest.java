@@ -33,7 +33,7 @@ class SQLChatDAOTest {
         mockedConnection = Mockito.mock(Connection.class);
         mockedStatement = Mockito.mock(PreparedStatement.class);
 
-        sut.setConnection(mockedConnection);
+        SQLChatDAO.setConnection(mockedConnection);
     }
 
     @Test
@@ -76,7 +76,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void testGetChatHistoryDatabaseRequestException() {
+    void testGetChatHistoryDatabaseRequestExceptionWhenStatementIsNull() {
         // Arrange
         var chatId = "1";
 
@@ -89,5 +89,4 @@ class SQLChatDAOTest {
         // Assert
         assertTrue(actual.contains("database connection"));
     }
-
 }

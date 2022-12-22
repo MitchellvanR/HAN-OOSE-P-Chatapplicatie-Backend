@@ -30,8 +30,6 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
                 ));
             }
             return chatHistory;
-        } catch (SQLException e) {
-            throw new DatabaseRequestException(e);
         } finally {
             if (resultSet != null) {
                 resultSet.close();
