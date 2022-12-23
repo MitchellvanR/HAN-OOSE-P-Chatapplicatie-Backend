@@ -24,8 +24,8 @@ public class Chat {
         }
     }
 
-    public void sendMessage(String message, String senderId){
-        chatDAO.saveMessage(message, senderId, chatId);
+    public void sendMessage(String message, String senderId, String iv){
+        chatDAO.saveMessage(message, senderId, chatId, iv);
     }
 
     public void addUserToChat(String userId) { chatDAO.addUserToChat(chatId, userId); }
