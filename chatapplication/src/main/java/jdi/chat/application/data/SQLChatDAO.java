@@ -58,6 +58,7 @@ public class SQLChatDAO extends SQLConnection implements IChatDAO {
         connectToDatabase();
         String sql = Queries.getInstance().getQuery("addUserToChatQuery");
         try (PreparedStatement statement = connection.prepareStatement(sql);) {
+            if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, userId);
             statement.setString(2, chatId);
             statement.executeUpdate();

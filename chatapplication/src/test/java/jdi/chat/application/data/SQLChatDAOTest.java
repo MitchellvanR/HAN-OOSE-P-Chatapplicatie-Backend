@@ -162,4 +162,21 @@ class SQLChatDAOTest {
         assertTrue(actual.contains("database connection"));
     }
 
+    @Test
+    void testAddUserToChatHappyFlow() {
+        // Arrange
+        var chatId = "1";
+        var userId = "1";
+
+        // Act
+        try {
+            when(mockedConnection.prepareStatement(queries.getQuery("addUserToChatQuery"))).thenReturn(mockedStatement);
+            sut.addUserToChat(chatId, userId);
+        // Assert
+            verify(mockedStatement).executeUpdate();
+        } catch (SQLException e) {
+            fail("An exception was thrown in success test case: " + e.getMessage());
+        }
+    }
+
 }
