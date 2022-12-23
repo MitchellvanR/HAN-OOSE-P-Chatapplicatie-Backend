@@ -5,6 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.sql.SQLException;
+
+import static org.junit.jupiter.api.Assertions.fail;
+
 public class SecurityControllerTest {
     private SecurityController sut;
     private String userId;
@@ -51,12 +55,18 @@ public class SecurityControllerTest {
     @Test
     void getOtherPublicKeyTest(){
         // Arrange
-        Mockito.doReturn(empty).when(mockedSecurityDAO).getOtherPublicKey(userId, chatId);
+        try {
+            Mockito.doReturn(empty).when(mockedSecurityDAO).getOtherPublicKey(userId, chatId);
 
-        // Act
-        sut.getOtherPublicKey(userId, chatId);
+            // Act
+            sut.getOtherPublicKey(userId, chatId);
 
-        // Assert
-        Mockito.verify(mockedSecurityDAO).getOtherPublicKey(userId, chatId);
+            // Assert
+            Mockito.verify(mockedSecurityDAO).getOtherPublicKey(userId, chatId);
+        } catch (SQLException e) {
+            fail("An exception was thrown in test case: " + e.getMessage());
+        }
+
+
     }
 }

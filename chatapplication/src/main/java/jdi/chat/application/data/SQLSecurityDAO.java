@@ -35,17 +35,22 @@ public class SQLSecurityDAO extends SQLConnection implements ISecurityDAO {
     }
 
     @Override
-    public String getOtherPublicKey(String userId, String chatId) {
+    public String getOtherPublicKey(String userId, String chatId) throws SQLException {
         connectToDatabase();
         String sql = Queries.getInstance().getQuery("getOtherPublicKeyQuery");
+        ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, chatId);
             statement.setString(2, userId);
-            ResultSet resultSet = statement.executeQuery();
+            resultSet = statement.executeQuery();
             resultSet.next();
             return resultSet.getString(1);
         } catch (Exception e){
             throw new DatabaseRequestException(e);
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
         }
     }
 }
