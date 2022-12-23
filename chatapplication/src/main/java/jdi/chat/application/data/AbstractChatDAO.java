@@ -18,4 +18,6 @@ public abstract class AbstractChatDAO {
     public abstract String addChatToDatabase(String userId, String type);
 
     public abstract ArrayList<String> getUsersInChat(String chatId);
+
+    public abstract String getChatType(String chatId);
 }

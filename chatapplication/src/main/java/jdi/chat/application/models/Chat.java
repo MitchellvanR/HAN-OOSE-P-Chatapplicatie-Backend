@@ -10,6 +10,7 @@ import java.util.List;
 public class Chat {
     private String chatId;
     private AbstractChatDAO chatDAO = new SQLChatDAO();
+    private String chatType;
 
     public Chat(String id) {
         chatId = id;
@@ -38,4 +39,8 @@ public class Chat {
     public void addChatToDatabase(String userId, String type){ setChatId(chatDAO.addChatToDatabase(userId, type)); }
 
     public ArrayList<String> getUsers(){ return chatDAO.getUsersInChat(getChatId()); }
+
+    public void defineChatType(){ chatType = chatDAO.getChatType(chatId); }
+
+    public String getChatType() { return chatType; }
 }
