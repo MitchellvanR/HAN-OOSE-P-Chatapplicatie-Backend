@@ -108,7 +108,32 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void testSaveMessageDatabaseRequestException() {
+    void testSaveMessageDatabaseRequestExceptionWhenStatementIsClosed() {
+        // Arrange
+        var message = "test";
+        var senderId = "1";
+        var chatId = "1";
+
+        try {
+            when(mockedConnection.prepareStatement(queries.getQuery("sendMessageQuery"))).thenReturn(mockedStatement);
+            when(mockedStatement.executeUpdate()).thenThrow(SQLException.class);
+        } catch (SQLException e) {
+            fail("An exception was thrown in test case: " + e.getMessage());
+        }
+
+        // Act
+        Exception e = assertThrows(DatabaseRequestException.class, () -> {
+            sut.saveMessage(message, senderId, chatId);
+        });
+
+        var actual = e.getMessage();
+
+        // Assert
+        assertTrue(actual.contains("database connection"));
+    }
+
+    @Test
+    void testSaveMessageDatabaseRequestExceptionWhenStatementIsNull() {
         // Arrange
         var message = "test";
         var senderId = "1";
