@@ -89,4 +89,11 @@ class SQLChatDAOTest {
         // Assert
         assertTrue(actual.contains("database connection"));
     }
+
+    @Test
+    void testSaveMessageHappyFlow() {
+        // Arrange
+        // Act
+        // Assert
+    }
 }
