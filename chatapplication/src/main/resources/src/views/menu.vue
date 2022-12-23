@@ -1,7 +1,6 @@
 <template>
   <div class="background">
     <div class="container mt-5">
-
       <div class="row">
         <p class="display-4">Chat Menu</p>
         <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Note! This is page is used for mocking purposes.</small>

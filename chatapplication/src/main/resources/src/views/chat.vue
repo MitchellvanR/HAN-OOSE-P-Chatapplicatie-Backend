@@ -51,9 +51,8 @@ export default {
   methods: {
     getChatLog: function () {
       this.runWebSocket();
-
       this.validateSession();
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/1').then(responseData => {
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + sessionStorage.getItem('chatId')).then(responseData => {
         this.array.push(...responseData.messages);
       }).then(() => this.scrollToBottom());
     },
@@ -73,13 +72,12 @@ export default {
       document.getElementById('sendMessageForm').onsubmit = data => {
         const input = document.getElementById('message');
         input.classList.remove("border", "border-danger");
-
         data.preventDefault();
+
         if (input.value === ""){
           input.classList.add("border", "border-danger");
         } else {
           this.webSocket.send(input.value);
-
           this.array.push({
             message: input.value,
             senderId: this.userId,
