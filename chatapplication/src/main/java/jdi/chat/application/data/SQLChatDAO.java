@@ -20,9 +20,10 @@ public class SQLChatDAO implements IChatDAO {
             ArrayList<MessageDTO> chatHistory = new ArrayList<>();
             while (resultSet.next()) {
                 chatHistory.add(formatMessage(
-                    resultSet.getString("senderId"),
-                    resultSet.getString("message"),
-                    resultSet.getString("time")
+                        resultSet.getString("senderId"),
+                        resultSet.getString("message"),
+                        resultSet.getString("time"),
+                        resultSet.getString("iv")
                 ));
             }
             return chatHistory;
@@ -36,12 +37,13 @@ public class SQLChatDAO implements IChatDAO {
     }
 
     @Override
-    public void saveMessage(String message, String senderId, String chatId){
+    public void saveMessage(String message, String senderId, String chatId, String iv){
         String sql = Queries.getInstance().getQuery("sendMessageQuery");
-        try (PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql)) {
+        try (PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql)){
             statement.setString(1, message);
             statement.setString(2, senderId);
             statement.setString(3, chatId);
+            statement.setString(4, iv);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DatabaseRequestException(e);
