@@ -118,7 +118,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void testSaveMessageDatabaseRequestExceptionWhenStatementIsClosed() {
+    void testSaveMessageDatabaseRequestExceptionWhenUnableToExecuteUpdate() {
         // Arrange
         var message = "test";
         var senderId = "1";
@@ -179,4 +179,44 @@ class SQLChatDAOTest {
         }
     }
 
+    @Test
+    void testAddUserToChatDatabaseRequestExceptionWhenUnableToExecuteUpdate() {
+        // Arrange
+        var chatId = "1";
+        var userId = "1";
+
+        try {
+            when(mockedConnection.prepareStatement(queries.getQuery("addUserToChatQuery"))).thenReturn(mockedStatement);
+            when(mockedStatement.executeUpdate()).thenThrow(SQLException.class);
+        } catch (SQLException e) {
+            fail("An exception was thrown in test case: " + e.getMessage());
+        }
+
+        // Act
+        Exception e = assertThrows(DatabaseRequestException.class, () -> {
+            sut.addUserToChat(chatId, userId);
+        });
+
+        var actual = e.getMessage();
+
+        // Assert
+        assertTrue(actual.contains("database connection"));
+    }
+
+    @Test
+    void testAddUserToChatDatabaseRequestExceptionWhenStatementIsNull() {
+        // Arrange
+        var chatId = "1";
+        var userId = "1";
+
+        // Act
+        Exception e = assertThrows(DatabaseRequestException.class, () -> {
+            sut.addUserToChat(chatId, userId);
+        });
+
+        var actual = e.getMessage();
+
+        // Assert
+        assertTrue(actual.contains("database connection"));
+    }
 }
