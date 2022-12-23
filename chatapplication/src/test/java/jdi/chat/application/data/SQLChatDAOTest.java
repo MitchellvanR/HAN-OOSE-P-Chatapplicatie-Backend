@@ -14,8 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class SQLChatDAOTest {
 
@@ -93,7 +92,32 @@ class SQLChatDAOTest {
     @Test
     void testSaveMessageHappyFlow() {
         // Arrange
+
+
         // Act
+
+
         // Assert
+
+
     }
+
+    @Test
+    void testSaveMessageDatabaseRequestException() {
+        // Arrange
+        var message = "test";
+        var senderId = "1";
+        var chatId = "1";
+
+        // Act
+        Exception e = assertThrows(DatabaseRequestException.class, () -> {
+            sut.saveMessage(message, senderId, chatId);
+        });
+
+        var actual = e.getMessage();
+
+        // Assert
+        assertTrue(actual.contains("database connection"));
+    }
+
 }

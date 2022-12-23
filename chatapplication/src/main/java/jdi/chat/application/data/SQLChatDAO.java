@@ -42,6 +42,7 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
         createConnection();
         String sql = Queries.getInstance().getQuery("sendMessageQuery");
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, message);
             statement.setString(2, senderId);
             statement.setString(3, chatId);
