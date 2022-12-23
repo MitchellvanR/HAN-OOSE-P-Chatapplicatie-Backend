@@ -12,9 +12,8 @@ public class SQLSecurityDAO extends SQLConnection implements ISecurityDAO {
     @Override
     public void addUser(String userId) {
         connectToDatabase();
-        try {
-            String sql = Queries.getInstance().getQuery("addUserQuery");
-            PreparedStatement statement = connection.prepareStatement(sql);
+        String sql = Queries.getInstance().getQuery("addUserQuery");
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, userId);
             statement.executeUpdate();
         } catch (Exception e) {
@@ -25,9 +24,8 @@ public class SQLSecurityDAO extends SQLConnection implements ISecurityDAO {
     @Override
     public void savePublicKey(String userId, String publicKey) {
         connectToDatabase();
-        try {
-            String sql = Queries.getInstance().getQuery("savePublicKeyQuery");
-            PreparedStatement statement = connection.prepareStatement(sql);
+        String sql = Queries.getInstance().getQuery("savePublicKeyQuery");
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, publicKey);
             statement.setString(2, userId);
             statement.executeUpdate();
@@ -39,9 +37,8 @@ public class SQLSecurityDAO extends SQLConnection implements ISecurityDAO {
     @Override
     public String getOtherPublicKey(String userId, String chatId) {
         connectToDatabase();
-        try {
-            String sql = Queries.getInstance().getQuery("getOtherPublicKeyQuery");
-            PreparedStatement statement = connection.prepareStatement(sql);
+        String sql = Queries.getInstance().getQuery("getOtherPublicKeyQuery");
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, chatId);
             statement.setString(2, userId);
             ResultSet resultSet = statement.executeQuery();
