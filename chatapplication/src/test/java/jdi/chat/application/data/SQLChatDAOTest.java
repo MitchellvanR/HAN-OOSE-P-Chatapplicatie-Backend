@@ -56,8 +56,8 @@ class SQLChatDAOTest {
             doReturn(senderId).when(mockedResults).getString("senderId");
             doReturn(message).when(mockedResults).getString("message");
             doReturn(time).when(mockedResults).getString("time");
-        } catch (Exception e) {
-            fail("An exception was thrown in success test case");
+        } catch (SQLException e) {
+            fail("An exception was thrown in success test case: " + e.getMessage());
         }
 
         // Act
@@ -65,7 +65,7 @@ class SQLChatDAOTest {
         try {
             actual = sut.getChatHistory(chatId);
         } catch (SQLException e) {
-            fail(e.getMessage());
+            fail("An exception was thrown in success test case: " + e.getMessage());
         }
 
         // Assert
@@ -92,14 +92,19 @@ class SQLChatDAOTest {
     @Test
     void testSaveMessageHappyFlow() {
         // Arrange
-
+        var message = "test";
+        var senderId = "1";
+        var chatId = "1";
 
         // Act
-
-
+        try {
+            when(mockedConnection.prepareStatement(queries.getQuery("sendMessageQuery"))).thenReturn(mockedStatement);
+            sut.saveMessage(message, senderId, chatId);
         // Assert
-
-
+            verify(mockedStatement).executeUpdate();
+        } catch (SQLException e) {
+            fail("An exception was thrown in success test case: " + e.getMessage());
+        }
     }
 
     @Test
