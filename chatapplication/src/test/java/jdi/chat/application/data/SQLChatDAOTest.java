@@ -3,6 +3,7 @@ package jdi.chat.application.data;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,6 +20,7 @@ import static org.mockito.Mockito.*;
 class SQLChatDAOTest {
 
     private SQLChatDAO sut;
+    private SQLConnection mockedSQLConnection;
     private Connection mockedConnection;
     private PreparedStatement mockedStatement;
     private Queries queries;
@@ -29,10 +31,16 @@ class SQLChatDAOTest {
         sut = new SQLChatDAO();
         queries = Queries.getInstance();
 
+        mockedSQLConnection = Mockito.mock(SQLConnection.class);
         mockedConnection = Mockito.mock(Connection.class);
         mockedStatement = Mockito.mock(PreparedStatement.class);
 
-        SQLChatDAO.setConnection(mockedConnection);
+        SQLConnection.setConnection(mockedConnection);
+    }
+
+    @AfterAll
+    static void tearDown() {
+        SQLConnection.setConnection(null);
     }
 
     @Test
@@ -42,10 +50,11 @@ class SQLChatDAOTest {
         var senderId = "1";
         var message = "test";
         var time = "00:00";
+        var iv = "11111";
         var expected = new ArrayList<MessageDTO>();
         var mockedResults = Mockito.mock(ResultSet.class);
 
-        expected.add(new MessageDTO(senderId, message, time));
+        expected.add(new MessageDTO(senderId, message, time, iv));
 
         try {
             when(mockedConnection.prepareStatement(queries.getQuery("getChatHistoryQuery"))).thenReturn(mockedStatement);
@@ -95,11 +104,12 @@ class SQLChatDAOTest {
         var message = "test";
         var senderId = "1";
         var chatId = "1";
+        var iv = "11111";
 
         // Act
         try {
             when(mockedConnection.prepareStatement(queries.getQuery("sendMessageQuery"))).thenReturn(mockedStatement);
-            sut.saveMessage(message, senderId, chatId);
+            sut.saveMessage(message, senderId, chatId, iv);
         // Assert
             verify(mockedStatement).executeUpdate();
         } catch (SQLException e) {
@@ -113,6 +123,7 @@ class SQLChatDAOTest {
         var message = "test";
         var senderId = "1";
         var chatId = "1";
+        var iv = "11111";
 
         try {
             when(mockedConnection.prepareStatement(queries.getQuery("sendMessageQuery"))).thenReturn(mockedStatement);
@@ -123,7 +134,7 @@ class SQLChatDAOTest {
 
         // Act
         Exception e = assertThrows(DatabaseRequestException.class, () -> {
-            sut.saveMessage(message, senderId, chatId);
+            sut.saveMessage(message, senderId, chatId, iv);
         });
 
         var actual = e.getMessage();
@@ -138,10 +149,11 @@ class SQLChatDAOTest {
         var message = "test";
         var senderId = "1";
         var chatId = "1";
+        var iv = "11111";
 
         // Act
         Exception e = assertThrows(DatabaseRequestException.class, () -> {
-            sut.saveMessage(message, senderId, chatId);
+            sut.saveMessage(message, senderId, chatId, iv);
         });
 
         var actual = e.getMessage();

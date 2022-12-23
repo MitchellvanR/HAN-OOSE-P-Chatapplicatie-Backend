@@ -9,12 +9,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class SQLChatDAO implements IChatDAO, IConnectionDAO {
-    private static Connection connection;
+public class SQLChatDAO extends SQLConnection implements IChatDAO {
 
     @Override
     public ArrayList<MessageDTO> getChatHistory(String chatId) throws SQLException {
-        createConnection();
+        connectToDatabase();
         String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
         ResultSet resultSet = null;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -40,8 +39,10 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
 
     @Override
     public void saveMessage(String message, String senderId, String chatId, String iv){
+        connectToDatabase();
         String sql = Queries.getInstance().getQuery("sendMessageQuery");
         try (PreparedStatement statement = connection.prepareStatement(sql)){
+            if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, message);
             statement.setString(2, senderId);
             statement.setString(3, chatId);
@@ -54,7 +55,7 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
 
     @Override
     public void addUserToChat(String chatId, String userId) {
-        createConnection();
+        connectToDatabase();
         String sql = Queries.getInstance().getQuery("addUserToChatQuery");
         try (PreparedStatement statement = connection.prepareStatement(sql);) {
             statement.setString(1, userId);
@@ -63,28 +64,5 @@ public class SQLChatDAO implements IChatDAO, IConnectionDAO {
         } catch (SQLException e) {
             throw new DatabaseRequestException(e);
         }
-    }
-
-    public static void setConnection(Connection connection) {
-        SQLChatDAO.connection = connection;
-    }
-
-    private static void connectToDatabase() {
-        if (connection == null) {
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Properties properties = new Properties();
-                properties.load(SQLChatDAO.class.getClassLoader().getResourceAsStream("database.properties"));
-                String url = properties.getProperty("connectionString");
-                connection = DriverManager.getConnection(url);
-            } catch (SQLException | IOException | ClassNotFoundException e) {
-                throw new DatabaseRequestException(e);
-            }
-        }
-    }
-
-    @Override
-    public void createConnection() {
-        connectToDatabase();
     }
 }
