@@ -8,10 +8,12 @@ const localVue = createLocalVue()
 Vue.use(Vuetify)
 
 describe('chat.vue', () => {
+    let wrapper;
+
     it('is called OpenChat', () => {
         // de functie getChatLog moet gemocked worden om de test te laten slagen, anders wordt de mounted elke keer uitgevoerd
         let getChatLog = jest.fn();
-        const wrapper = shallowMount(chat, {
+        wrapper = shallowMount(chat, {
             methods: {
                 getChatLog
             },
