@@ -4,19 +4,17 @@ import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Properties;
 
-public class SQLChatDAO extends SQLConnection implements IChatDAO {
+public class SQLChatDAO implements IChatDAO {
 
     @Override
     public ArrayList<MessageDTO> getChatHistory(String chatId) throws SQLException {
-        connectToDatabase();
+        SQLConnection.connectToDatabase();
         String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
         ResultSet resultSet = null;
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {
             if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, chatId);
             resultSet = statement.executeQuery();
@@ -39,9 +37,9 @@ public class SQLChatDAO extends SQLConnection implements IChatDAO {
 
     @Override
     public void saveMessage(String message, String senderId, String chatId, String iv){
-        connectToDatabase();
+        SQLConnection.connectToDatabase();
         String sql = Queries.getInstance().getQuery("sendMessageQuery");
-        try (PreparedStatement statement = connection.prepareStatement(sql)){
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)){
             if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, message);
             statement.setString(2, senderId);
@@ -55,9 +53,9 @@ public class SQLChatDAO extends SQLConnection implements IChatDAO {
 
     @Override
     public void addUserToChat(String chatId, String userId) {
-        connectToDatabase();
+        SQLConnection.connectToDatabase();
         String sql = Queries.getInstance().getQuery("addUserToChatQuery");
-        try (PreparedStatement statement = connection.prepareStatement(sql);) {
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql);) {
             if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, userId);
             statement.setString(2, chatId);
