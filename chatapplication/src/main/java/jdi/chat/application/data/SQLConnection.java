@@ -12,6 +12,8 @@ public class SQLConnection {
 
     protected static Connection connection;
 
+    private SQLConnection() {}
+
     protected static void connectToDatabase() {
         if (connection == null) {
             try {
