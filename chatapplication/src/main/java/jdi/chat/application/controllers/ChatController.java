@@ -41,24 +41,15 @@ public class ChatController {
     @Path("/{chatId}/addUser/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     public void addUserToChat(@PathParam("chatId") String chatId, @PathParam("userId") String userId){
-        System.out.println("addUserToChat method called");
         Chat chat = openChat(chatId);
-        System.out.println("Chat created");
         chat.defineChatType();
-        System.out.println("chatType defined");
         String chatType = chat.getChatType();
-        System.out.println("chatType retrieved: " + chatType);
         if (chatType.equals("standaard")){
-            System.out.println("if statement passed");
             ArrayList<String> users = chat.getUsers();
-            System.out.println("User list made");
             Chat groupChat = new Chat();
-            System.out.println("new chat model made");
             groupChat.addChatToDatabase(users.get(0), "groep");
-            System.out.println("new chat added to database");
             groupChat.addUserToChat(users.get(1));
             groupChat.addUserToChat(userId);
-            System.out.println("users added to chat");
         } else {
             chat.addUserToChat(userId);
         }
