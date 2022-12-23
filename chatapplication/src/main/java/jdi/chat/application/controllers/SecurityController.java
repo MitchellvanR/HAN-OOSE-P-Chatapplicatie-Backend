@@ -23,7 +23,7 @@ public class SecurityController {
     @Path("/{userId}/{publicKey}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response savePublicKey(@PathParam("userId") String userId, @PathParam("publicKey") String publicKey){
-        securityDAO.savePublicKey(userId,publicKey);
+        securityDAO.savePublicKey(userId, publicKey);
         return Response.ok().build();
     }
 
