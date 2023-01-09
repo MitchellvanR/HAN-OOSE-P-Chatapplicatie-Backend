@@ -68,7 +68,7 @@ public class SQLChatDAO implements IChatDAO {
     public String addChatToDatabase(String userId, String type){
         SQLConnection.connectToDatabase();
         String sql = Queries.getInstance().getQuery("createChatQuery");
-        try (CallableStatement statement = SQLConnection.connection.prepareCall(sql);) {
+        try (CallableStatement statement = SQLConnection.connection.prepareCall(sql)) {
             if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, userId);
             statement.setString(2, type);
@@ -81,13 +81,14 @@ public class SQLChatDAO implements IChatDAO {
     }
 
     @Override
-    public ArrayList<String> getUsersInChat(String chatId) {
+    public ArrayList<String> getUsersInChat(String chatId) throws SQLException {
         SQLConnection.connectToDatabase();
         String sql = Queries.getInstance().getQuery("getUsersInChatQuery");
-        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql);){
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)){
             if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, chatId);
-            ResultSet resultSet = statement.executeQuery();
+            resultSet = statement.executeQuery();
             ArrayList<String> usersInChat = new ArrayList<>();
             while(resultSet.next()) {
                String user = resultSet.getString(1);
@@ -96,17 +97,22 @@ public class SQLChatDAO implements IChatDAO {
             return usersInChat;
         } catch (Exception e) {
             throw new DatabaseRequestException(e);
+        } finally {
+            if (resultSet != null){
+                resultSet.close();
+            }
         }
     }
 
     @Override
-    public String getChatType(String chatId) {
+    public String getChatType(String chatId) throws SQLException {
         SQLConnection.connectToDatabase();
         String sql = Queries.getInstance().getQuery("getChatTypeQuery");
-        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql);){
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)){
             if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, chatId);
-            ResultSet resultSet = statement.executeQuery();
+            resultSet = statement.executeQuery();
             String chatType = "";
             while(resultSet.next()) {
                 chatType = resultSet.getString(1);
@@ -114,6 +120,10 @@ public class SQLChatDAO implements IChatDAO {
             return chatType;
         } catch (Exception e) {
             throw new DatabaseRequestException(e);
+        } finally {
+            if (resultSet != null){
+                resultSet.close();
+            }
         }
     }
 }
