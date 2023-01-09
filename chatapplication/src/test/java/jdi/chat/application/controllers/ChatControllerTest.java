@@ -12,9 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class ChatControllerTest {
     private ChatController sut;
     private Chat mockedChat;
-    private String message;
     private String chatId;
     private String userId;
+    private String messageAndIv;
+    private String[] messageAndIvArray;
     private ArrayList<MessageDTO> mockDTO;
     private ArrayList<String> userList;
     @BeforeEach
@@ -24,8 +25,10 @@ class ChatControllerTest {
         this.mockedChat = Mockito.mock(Chat.class);
         this.mockDTO = new ArrayList<>();
         this.userList = new ArrayList<>();
-        this.message = "Hello World";
-        this.userId = "3";
+        String iv = "23,91,173,185,232,253,67,46,157,2,233,184,163,162,104,197";
+        this.messageAndIv = "Hello World" + "^" + iv;
+        this.messageAndIvArray = messageAndIv.split("\\^");
+        this.userId = "1";
         this.chatId = "1";
 
         this.userList.add("1");
@@ -43,7 +46,6 @@ class ChatControllerTest {
         // Arrange
         Mockito.doReturn(mockDTO).when(mockedChat).getChatHistory();
 
-
         // Act
         sut.getChatHistory(chatId);
 
@@ -54,13 +56,13 @@ class ChatControllerTest {
     @Test
     void testSendMessageSUCCESS() {
         // Arrange
-        Mockito.doNothing().when(mockedChat).sendMessage(message, userList.get(0));
+        Mockito.doNothing().when(mockedChat).sendMessage(messageAndIvArray[0], userId, messageAndIvArray[1]);
 
         // Act
-        sut.sendMessage(chatId, userList.get(0), message);
+        sut.sendMessage(chatId, userId, messageAndIv);
 
         // Assert
-        Mockito.verify(mockedChat).sendMessage(message, userList.get(0));
+        Mockito.verify(mockedChat).sendMessage(messageAndIvArray[0], userId, messageAndIvArray[1]);
     }
 
     @Test
@@ -84,6 +86,4 @@ class ChatControllerTest {
         // Assert
         Mockito.verify(mockedChat).addUserToChat(Mockito.anyString());
     }
-
-
 }

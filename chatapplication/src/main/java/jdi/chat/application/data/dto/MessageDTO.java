@@ -4,11 +4,13 @@ public class MessageDTO {
     private String senderId;
     private String message;
     private String time;
+    private String iv;
 
-    public MessageDTO(String senderId, String message, String time) {
+    public MessageDTO(String senderId, String message, String time, String iv) {
         this.senderId = senderId;
         this.message = message;
         this.time = time;
+        this.iv = iv;
     }
 
     public String getSenderId() {
@@ -30,4 +32,8 @@ public class MessageDTO {
     public void setDate(String time) {
         this.time = time;
     }
+
+    public String getIv() { return iv; }
+
+    public void setIv(String iv) { this.iv = iv; }
 }
