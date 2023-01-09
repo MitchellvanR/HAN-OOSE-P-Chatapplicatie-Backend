@@ -46,14 +46,13 @@ public class ChatController {
         String chatType = chat.getChatType();
         if (chatType.equals("standaard")){
             ArrayList<String> users = chat.getUsers();
-            Chat groupChat = new Chat();
+            Chat groupChat = createNewChat("0");
             groupChat.addChatToDatabase(users.get(0), "groep");
             groupChat.addUserToChat(users.get(1));
             groupChat.addUserToChat(userId);
         } else {
             chat.addUserToChat(userId);
         }
-
     }
 
     @POST
@@ -62,7 +61,7 @@ public class ChatController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addChatToDatabase(@PathParam("userId") String userId){
         String type = "standaard"; //mock
-        Chat chat = new Chat();
+        Chat chat = createNewChat("0");
         chat.addChatToDatabase(userId, type);
         return Response.ok().build();
     }
@@ -77,7 +76,7 @@ public class ChatController {
         return createNewChat(chatId);
     }
 
-    private Chat createNewChat(String chatId) {
+    Chat createNewChat(String chatId) {
         Chat chat = new Chat(chatId);
         chats.add(chat);
         return chat;

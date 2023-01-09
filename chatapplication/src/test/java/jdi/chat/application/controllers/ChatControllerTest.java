@@ -16,15 +16,20 @@ class ChatControllerTest {
     private String chatId;
     private String userId;
     private ArrayList<MessageDTO> mockDTO;
+    private ArrayList<String> userList;
     @BeforeEach
     void setup() {
         this.sut = new ChatController();
 
         this.mockedChat = Mockito.mock(Chat.class);
         this.mockDTO = new ArrayList<>();
+        this.userList = new ArrayList<>();
         this.message = "Hello World";
-        this.userId = "1";
+        this.userId = "3";
         this.chatId = "1";
+
+        this.userList.add("1");
+        this.userList.add("2");
 
         ArrayList<Chat> chatList = new ArrayList<>();
         chatList.add(mockedChat);
@@ -49,13 +54,13 @@ class ChatControllerTest {
     @Test
     void testSendMessageSUCCESS() {
         // Arrange
-        Mockito.doNothing().when(mockedChat).sendMessage(message, userId);
+        Mockito.doNothing().when(mockedChat).sendMessage(message, userList.get(0));
 
         // Act
-        sut.sendMessage(chatId, userId, message);
+        sut.sendMessage(chatId, userList.get(0), message);
 
         // Assert
-        Mockito.verify(mockedChat).sendMessage(message, userId);
+        Mockito.verify(mockedChat).sendMessage(message, userList.get(0));
     }
 
     @Test
@@ -69,10 +74,16 @@ class ChatControllerTest {
 
     @Test
     void testAddUserToChat() {
+        // Arrange
+        Mockito.doNothing().when(mockedChat).defineChatType();
+        Mockito.doReturn("group").when(mockedChat).getChatType();
+
         // Act
         sut.addUserToChat(chatId, userId);
 
         // Assert
         Mockito.verify(mockedChat).addUserToChat(Mockito.anyString());
     }
+
+
 }

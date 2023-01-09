@@ -16,14 +16,12 @@ public class Chat {
         chatId = id;
     }
 
-    public Chat(){}
-
     public List<MessageDTO> getChatHistory() {
         return chatDAO.getChatHistory(chatId);
     }
 
     public void sendMessage(String message, String senderId){
-        chatDAO.saveMessage(message, senderId, chatId);
+        chatDAO.saveMessage(message, senderId, getChatId());
     }
 
     public void addUserToChat(String userId) { chatDAO.addUserToChat(chatId, userId); }
