@@ -1,6 +1,5 @@
 package jdi.chat.application.controllers;
 
-import com.google.protobuf.Empty;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -62,13 +61,14 @@ public class ChatController {
     }
 
     @POST
-    @Path("/newChat/{userId}")
+    @Path("/newChat/{userId}/{currentUser}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addChatToDatabase(@PathParam("userId") String userId){
+    public Response addChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
         String type = "standaard"; //mock
         Chat chat = createNewChat("0");
         chat.addChatToDatabase(userId, type);
+        chat.addUserToChat(otherUserId);
         return Response.ok().build();
     }
 

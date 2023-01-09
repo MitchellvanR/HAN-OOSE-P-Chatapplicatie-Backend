@@ -6,6 +6,7 @@ getChatHistoryQuery_: SELECT inVec as iv, senderId, message, DATE(date) as date,
 getUsersInChatQuery_: SELECT DISTINCT userId FROM usersInChats WHERE (chatId = ?)
 getChatTypeQuery_: SELECT type FROM chats WHERE (id = ?)
 sendMessageQuery_: INSERT INTO `prolog-jdi`.messages (message, senderId, chatId, InVec) VALUES (?, ?, ?, ?)
+addUserQuery_: INSERT INTO `prolog-jdi`.users (id) VALUES (?)
 addUserToChatQuery_: INSERT INTO `prolog-jdi`.usersInChats (userId, chatId) VALUES (?, ?)
 createChatQuery_: CALL createNewChatAndReturnId(?, ?)
 savePublicKeyQuery_: UPDATE `prolog-jdi`.users SET publicKey = (?) WHERE id = (?)

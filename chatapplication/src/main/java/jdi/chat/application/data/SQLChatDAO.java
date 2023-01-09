@@ -75,7 +75,7 @@ public class SQLChatDAO implements IChatDAO {
             resultSet.next();
             return resultSet.getString(1);
         } catch (Exception e) {
-            throw new DatabaseRequestException();
+            throw new DatabaseRequestException(e);
         }
     }
 
@@ -94,7 +94,7 @@ public class SQLChatDAO implements IChatDAO {
             }
             return usersInChat;
         } catch (Exception e) {
-            throw new DatabaseRequestException();
+            throw new DatabaseRequestException(e);
         }
     }
 
@@ -112,7 +112,7 @@ public class SQLChatDAO implements IChatDAO {
             }
             return chatType;
         } catch (Exception e) {
-            throw new DatabaseRequestException();
+            throw new DatabaseRequestException(e);
         }
     }
 }

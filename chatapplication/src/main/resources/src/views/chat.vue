@@ -16,7 +16,7 @@
           <button class="btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
           <button class="btn" type="button"><i class="fa fa-paperclip" aria-hidden="true"></i></button>
           <button class="btn" type="button" @click="openForm()"><i class="fa fa-plus" aria-hidden="true"></i></button>
-          <div class="form-popup" id="addUser">
+          <div class="form-popup" id="addUserToCurrentChat">
             <form id="addUserForm" class="wrap">
               <div class="row mb-2">
                 <input type="text" id="userId" placeholder="Enter userId" />
@@ -39,7 +39,7 @@ export default {
     this.delay(30);
     sessionStorage.setItem('chatId', '1');
     this.getChatLog();
-    this.addUser();
+    this.addUserToCurrentChat();
   },
   destroyed() {
     if (this.webSocket.readyState === WebSocket.OPEN) {
@@ -158,7 +158,7 @@ export default {
     getChatLog: function () {
       this.runWebSocket();
       this.validateSession();
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/1').then(async responseData => {
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + sessionStorage.getItem('chatId')).then(async responseData => {
         for (let message of responseData.messages) {
           this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
           await this.delay(30);
@@ -175,11 +175,11 @@ export default {
     },
 
     openForm: function () {
-      document.getElementById("addUser").style.display = "block";
+      document.getElementById("addUserToCurrentChat").style.display = "block";
     },
 
     closeForm: function () {
-      document.getElementById("addUser").style.display = "none";
+      document.getElementById("addUserToCurrentChat").style.display = "none";
     },
 
     runWebSocket: function () {
@@ -206,7 +206,7 @@ export default {
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + userId).then(res =>{ return res})
     },
 
-    addUser: function () {
+    addUserToCurrentChat: function () {
       document.getElementById('addUserForm').onsubmit = data =>
       {
         const input = document.getElementById('userId');
@@ -217,7 +217,7 @@ export default {
           input.classList.add("border", "border-danger");
         } else {
           //is het een int validatie
-          this.addUserToChat(input.value);
+          this.addUserToChat(input.value, sessionStorage.getItem("chatId"));
           input.value = '';
         }
       }

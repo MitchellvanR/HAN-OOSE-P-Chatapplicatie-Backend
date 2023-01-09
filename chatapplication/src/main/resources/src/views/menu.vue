@@ -84,8 +84,8 @@ export default {
       }
     },
     addChatToDatabase: function (id) {
-      sessionStorage.setItem('userId', "1"); // mock
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id).then()
+      sessionStorage.setItem('userId', '1'); // mock
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + sessionStorage.getItem('userId')).then()
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {

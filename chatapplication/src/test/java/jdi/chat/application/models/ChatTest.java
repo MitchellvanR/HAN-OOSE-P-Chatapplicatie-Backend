@@ -19,6 +19,7 @@ public class ChatTest {
     private String message;
     private String userId;
     private ArrayList<MessageDTO> mockedDTO;
+    private String iv;
     @BeforeEach
     void setup() {
         chatId = "0";
@@ -28,10 +29,11 @@ public class ChatTest {
         message = "Test";
         userId = "0";
         mockedDTO = new ArrayList<>();
+        iv = "23,91,173,185,232,253,67,46,157,2,233,184,163,162,104,197";
     }
 
     @Test
-    void testGetChatHistorySucces () throws SQLException {
+    void testGetChatHistorySuccess () throws SQLException {
         // Arrange
         Mockito.doReturn(mockedDTO).when(mockedChatDao).getChatHistory(chatId);
 
@@ -54,13 +56,13 @@ public class ChatTest {
     @Test
     void testSendMessage(){
         // Arrange
-        Mockito.doNothing().when(mockedChatDao).saveMessage(message, userId, chatId);
+        Mockito.doNothing().when(mockedChatDao).saveMessage(message, userId, chatId, iv);
 
         // Act
-        sut.sendMessage(message, userId);
+        sut.sendMessage(message, userId, iv);
 
         // Assert
-        Mockito.verify(mockedChatDao).saveMessage(message, userId, chatId);
+        Mockito.verify(mockedChatDao).saveMessage(message, userId, chatId, iv);
     }
 
     @Test
