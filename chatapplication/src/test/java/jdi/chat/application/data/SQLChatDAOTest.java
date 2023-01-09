@@ -18,13 +18,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class SQLChatDAOTest {
-
     private SQLChatDAO sut;
     private SQLConnection mockedSQLConnection;
     private Connection mockedConnection;
     private PreparedStatement mockedStatement;
     private Queries queries;
-
 
     @BeforeEach
     void setup() {

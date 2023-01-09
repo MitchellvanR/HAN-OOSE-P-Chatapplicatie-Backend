@@ -8,7 +8,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class SQLChatDAO implements IChatDAO {
-
     @Override
     public ArrayList<MessageDTO> getChatHistory(String chatId) throws SQLException {
         SQLConnection.connectToDatabase();
