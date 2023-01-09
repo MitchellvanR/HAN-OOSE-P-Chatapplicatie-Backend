@@ -2,11 +2,12 @@
 test_: Hello query!
 
 # Database queries (Key: Value)
-getSymKeyQuery_: SELECT symKey FROM `prolog-jdi`.chats WHERE (id = ?)
 getChatHistoryQuery_: SELECT inVec as iv, senderId, message, DATE(date) as date, DATE_FORMAT(date, '%H:%i') AS `time` FROM `prolog-jdi`.messages WHERE (chatId = ?) ORDER BY date,time ASC
+getUsersInChatQuery_: SELECT DISTINCT userId FROM usersInChats WHERE (chatId = ?)
+getChatTypeQuery_: SELECT type FROM chats WHERE (id = ?)
 sendMessageQuery_: INSERT INTO `prolog-jdi`.messages (message, senderId, chatId, InVec) VALUES (?, ?, ?, ?)
-addUserToChatQuery_: INSERT INTO `prolog-jdi`.usersInChats (userId, chatId) VALUES (?, ?)
-createChatQuery_: INSERT INTO `prolog-jdi`.chats (id, symKey) VALUES (?, ?)
 addUserQuery_: INSERT INTO `prolog-jdi`.users (id) VALUES (?)
+addUserToChatQuery_: INSERT INTO `prolog-jdi`.usersInChats (userId, chatId) VALUES (?, ?)
+createChatQuery_: CALL createNewChatAndReturnId(?, ?)
 savePublicKeyQuery_: UPDATE `prolog-jdi`.users SET publicKey = (?) WHERE id = (?)
 getOtherPublicKeyQuery_: SELECT publicKey FROM `prolog-jdi`.users WHERE id in (SELECT userId FROM usersInChats WHERE (chatId = ?) AND NOT (userId = ?)) limit 1

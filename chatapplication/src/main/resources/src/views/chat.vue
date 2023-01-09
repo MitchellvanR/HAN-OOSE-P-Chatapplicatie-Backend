@@ -15,6 +15,16 @@
           <input type="text" id="message" placeholder="Write your message..." />
           <button class="btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
           <button class="btn" type="button"><i class="fa fa-paperclip" aria-hidden="true"></i></button>
+          <button class="btn" type="button" @click="openForm()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+          <div class="form-popup" id="addUserToCurrentChat">
+            <form id="addUserForm" class="wrap">
+              <div class="row mb-2">
+                <input type="text" id="userId" placeholder="Enter userId" />
+                <button class="btn" type="submit"><i class="fa fa-check" aria-hidden="true"></i></button>
+                <button class="btn" type="button" @click="closeForm()"><i class="fa fa-times" aria-hidden="true"></i></button>
+              </div>
+            </form>
+          </div>
         </form>
       </div>
     </div>
@@ -29,6 +39,7 @@ export default {
     this.delay(30);
     sessionStorage.setItem('chatId', '1');
     this.getChatLog();
+    this.addUserToCurrentChat();
   },
   destroyed() {
     if (this.webSocket.readyState === WebSocket.OPEN) {
@@ -147,7 +158,7 @@ export default {
     getChatLog: function () {
       this.runWebSocket();
       this.validateSession();
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/1').then(async responseData => {
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + sessionStorage.getItem('chatId')).then(async responseData => {
         for (let message of responseData.messages) {
           this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
           await this.delay(30);
@@ -162,6 +173,15 @@ export default {
         this.scrollToBottom();
       });
     },
+
+    openForm: function () {
+      document.getElementById("addUserToCurrentChat").style.display = "block";
+    },
+
+    closeForm: function () {
+      document.getElementById("addUserToCurrentChat").style.display = "none";
+    },
+
     runWebSocket: function () {
       this.webSocket = new WebSocket('ws://localhost:443');
 
@@ -185,6 +205,24 @@ export default {
     addUser: function(userId){
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + userId).then(res =>{ return res})
     },
+
+    addUserToCurrentChat: function () {
+      document.getElementById('addUserForm').onsubmit = data =>
+      {
+        const input = document.getElementById('userId');
+        input.classList.remove("border", "border-danger");
+
+        data.preventDefault();
+        if (input.value === ""){
+          input.classList.add("border", "border-danger");
+        } else {
+          //is het een int validatie
+          this.addUserToChat(input.value, sessionStorage.getItem("chatId"));
+          input.value = '';
+        }
+      }
+    },
+
     savePublicKey: function (userId, secret){
       let publicKey = this.formulatePublicKey(secret).toString();
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + userId + '/' + String(publicKey)).then(res => {return res})
@@ -221,11 +259,7 @@ export default {
 
     sendMessage: function (encryptedMessage) {
       this.scrollToBottom();
-      if (sessionStorage.getItem('userId') === "1"){
-        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/1/1', encryptedMessage).then(res => { return res; });
-      } else{
-        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/2/1', encryptedMessage).then(res => { return res; });
-      }
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + sessionStorage.getItem('userId') + '/1', encryptedMessage).then(res => { return res; })
     },
     outgoingMessage: function (message, time) {
       const outgoingMessage = document.getElementById('content');
@@ -304,5 +338,9 @@ export default {
   background-color: #000000;
   border-radius: 10px;
   border: 3px solid #e6eaea;
+}
+
+.form-popup {
+  display: none;
 }
 </style>
