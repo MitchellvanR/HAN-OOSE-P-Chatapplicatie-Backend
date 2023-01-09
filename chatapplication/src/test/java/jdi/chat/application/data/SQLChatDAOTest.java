@@ -24,10 +24,22 @@ class SQLChatDAOTest {
     private PreparedStatement mockedStatement;
     private Queries queries;
 
+    private String chatId;
+    private String senderId;
+    private String message;
+    private String time;
+    private String iv;
+
     @BeforeEach
     void setup() {
         sut = new SQLChatDAO();
         queries = Queries.getInstance();
+
+        chatId = "1";
+        senderId = "1";
+        message = "test";
+        time = "00:00";
+        iv = "11111";
 
         mockedSQLConnection = Mockito.mock(SQLConnection.class);
         mockedConnection = Mockito.mock(Connection.class);
@@ -44,11 +56,6 @@ class SQLChatDAOTest {
     @Test
     void testGetChatHistoryHappyFlow() {
         // Arrange
-        var chatId = "1";
-        var senderId = "1";
-        var message = "test";
-        var time = "00:00";
-        var iv = "11111";
         var expected = new ArrayList<MessageDTO>();
         var mockedResults = Mockito.mock(ResultSet.class);
 
@@ -83,9 +90,6 @@ class SQLChatDAOTest {
 
     @Test
     void testGetChatHistoryDatabaseRequestExceptionWhenStatementIsNull() {
-        // Arrange
-        var chatId = "1";
-
         // Act
         Exception e = assertThrows(DatabaseRequestException.class, () -> {
             sut.getChatHistory(chatId);
@@ -98,12 +102,6 @@ class SQLChatDAOTest {
 
     @Test
     void testSaveMessageHappyFlow() {
-        // Arrange
-        var message = "test";
-        var senderId = "1";
-        var chatId = "1";
-        var iv = "11111";
-
         // Act
         try {
             when(mockedConnection.prepareStatement(queries.getQuery("sendMessageQuery"))).thenReturn(mockedStatement);
@@ -118,11 +116,6 @@ class SQLChatDAOTest {
     @Test
     void testSaveMessageDatabaseRequestExceptionWhenUnableToExecuteUpdate() {
         // Arrange
-        var message = "test";
-        var senderId = "1";
-        var chatId = "1";
-        var iv = "11111";
-
         try {
             when(mockedConnection.prepareStatement(queries.getQuery("sendMessageQuery"))).thenReturn(mockedStatement);
             when(mockedStatement.executeUpdate()).thenThrow(SQLException.class);
@@ -143,12 +136,6 @@ class SQLChatDAOTest {
 
     @Test
     void testSaveMessageDatabaseRequestExceptionWhenStatementIsNull() {
-        // Arrange
-        var message = "test";
-        var senderId = "1";
-        var chatId = "1";
-        var iv = "11111";
-
         // Act
         Exception e = assertThrows(DatabaseRequestException.class, () -> {
             sut.saveMessage(message, senderId, chatId, iv);
@@ -163,7 +150,6 @@ class SQLChatDAOTest {
     @Test
     void testAddUserToChatHappyFlow() {
         // Arrange
-        var chatId = "1";
         var userId = "1";
 
         // Act
@@ -180,7 +166,6 @@ class SQLChatDAOTest {
     @Test
     void testAddUserToChatDatabaseRequestExceptionWhenUnableToExecuteUpdate() {
         // Arrange
-        var chatId = "1";
         var userId = "1";
 
         try {
@@ -204,7 +189,6 @@ class SQLChatDAOTest {
     @Test
     void testAddUserToChatDatabaseRequestExceptionWhenStatementIsNull() {
         // Arrange
-        var chatId = "1";
         var userId = "1";
 
         // Act
