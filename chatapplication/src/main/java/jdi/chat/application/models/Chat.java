@@ -41,9 +41,9 @@ public class Chat {
 
     public void addChatToDatabase(String userId, String type){ setChatId(chatDAO.addChatToDatabase(userId, type)); }
 
-    public ArrayList<String> getUsers(){ return chatDAO.getUsersInChat(getChatId()); }
+    public ArrayList<String> getUsers() throws SQLException { return chatDAO.getUsersInChat(getChatId()); }
 
-    public void defineChatType(){ chatType = chatDAO.getChatType(chatId); }
+    public void defineChatType() throws SQLException { chatType = chatDAO.getChatType(chatId); }
 
     public String getChatType() { return chatType; }
 }

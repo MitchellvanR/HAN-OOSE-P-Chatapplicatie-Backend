@@ -7,6 +7,7 @@ import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.models.Chat;
 import net.minidev.json.JSONObject;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class ChatController {
     @POST
     @Path("/{chatId}/addUser/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void addUserToChat(@PathParam("chatId") String chatId, @PathParam("userId") String userId){
+    public void addUserToChat(@PathParam("chatId") String chatId, @PathParam("userId") String userId) throws SQLException {
         Chat chat = openChat(chatId);
         chat.defineChatType();
         String chatType = chat.getChatType();

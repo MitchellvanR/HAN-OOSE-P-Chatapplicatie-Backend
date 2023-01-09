@@ -6,6 +6,8 @@ import jdi.chat.application.models.Chat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,7 +74,7 @@ class ChatControllerTest {
     }
 
     @Test
-    void testAddUserToChat() {
+    void testAddUserToChat() throws SQLException {
         // Arrange
         Mockito.doNothing().when(mockedChat).defineChatType();
         Mockito.doReturn("group").when(mockedChat).getChatType();
