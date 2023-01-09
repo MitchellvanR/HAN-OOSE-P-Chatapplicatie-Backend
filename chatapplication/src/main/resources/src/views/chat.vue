@@ -30,6 +30,7 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   name: 'OpenChat',
@@ -131,7 +132,6 @@ export default {
   }
 }
 </script>
-
 
 <style scoped>
 /* ===== Scrollbar CSS ===== */

@@ -6,16 +6,18 @@ import jdi.chat.application.util.files.Queries;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SQLChatDAO implements IChatDAO {
     @Override
-    public ArrayList<MessageDTO> getChatHistory(String chatId) {
+    public ArrayList<MessageDTO> getChatHistory(String chatId) throws SQLException {
+        ResultSet resultSet = null;
         try {
             String sql = Queries.getInstance().getQuery("getChatHistoryQuery");
             PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
             statement.setString(1, chatId);
-            ResultSet resultSet = statement.executeQuery();
+            resultSet = statement.executeQuery();
 
             ArrayList<MessageDTO> chatHistory = new ArrayList<>();
             while(resultSet.next()) {
@@ -29,6 +31,10 @@ public class SQLChatDAO implements IChatDAO {
             return chatHistory;
         } catch (Exception e) {
             throw new DatabaseRequestException(e);
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
         }
     }
 
