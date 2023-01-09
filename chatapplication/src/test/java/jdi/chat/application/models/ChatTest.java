@@ -18,6 +18,7 @@ public class ChatTest {
     private IChatDAO mockedChatDao;
     private String message;
     private String userId;
+    private String iv;
     private ArrayList<MessageDTO> mockedDTO;
     @BeforeEach
     void setup() {
@@ -27,6 +28,7 @@ public class ChatTest {
         sut.setChatDAO(mockedChatDao);
         message = "Test";
         userId = "0";
+        iv = "11111";
         mockedDTO = new ArrayList<>();
     }
 
@@ -54,13 +56,13 @@ public class ChatTest {
     @Test
     void testSendMessage(){
         // Arrange
-        Mockito.doNothing().when(mockedChatDao).saveMessage(message, userId, chatId);
+        Mockito.doNothing().when(mockedChatDao).saveMessage(message, userId, chatId, iv);
 
         // Act
-        sut.sendMessage(message, userId);
+        sut.sendMessage(message, userId, iv);
 
         // Assert
-        Mockito.verify(mockedChatDao).saveMessage(message, userId, chatId);
+        Mockito.verify(mockedChatDao).saveMessage(message, userId, chatId, iv);
     }
 
     @Test
