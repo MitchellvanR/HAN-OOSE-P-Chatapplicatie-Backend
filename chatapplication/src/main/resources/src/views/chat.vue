@@ -8,7 +8,6 @@
       </div>
       <div class="messages" id="messages">
         <ul v-for="(message, index) in array" :key="index">
-          //
           <li v-if="message.senderId === userId" class="replies mb-3">
             <small class="float-right margin-right-5px">{{message.time}}</small>
             <br>
@@ -57,7 +56,6 @@ export default {
     this.savePublicKey(sessionStorage.getItem('userId'), sessionStorage.getItem('secret'));
     this.delay(30);
     sessionStorage.setItem('chatId', '1');
-    this.getChatLog();
     this.addUserToCurrentChat();
   },
   destroyed() {
@@ -70,7 +68,7 @@ export default {
     // Deze comment (global BigInt) is nodig om BigInts in deze file werkend te krijgen. Zonder deze comment werken ze dus niet.
     /* global BigInt */
     formulatePublicKey: function (secret) {
-      return  BigInt("2") ** BigInt(secret) % BigInt("32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559");
+      return BigInt("2") ** BigInt(secret) % BigInt("32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559");
     },
     formulatePrivateKey: function (otherPublicKey, secret) {
       return (BigInt(otherPublicKey) ** BigInt(secret)) % BigInt("32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559");
@@ -168,14 +166,12 @@ export default {
       this.runWebSocket();
       this.validateSession();
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + sessionStorage.getItem('chatId')).then(async responseData => {
-          for (let message of responseData.messages) { //@todo fix!
-            this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
-            await this.delay(30);
-            await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
-            let decryptedMessage = await this.decrypt(this.cryptoKey, message.message, message.iv);
-
-          }
-        console.log(responseData.messages, ...responseData.messages)
+        for (let message of responseData.messages) {
+          this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
+          await this.delay(30);
+          await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
+          message.message = await this.decrypt(this.cryptoKey, message.message, message.iv);
+        }
         this.array.push(...responseData.messages);
       }).then(() => this.scrollToBottom());
     },
@@ -188,14 +184,13 @@ export default {
     runWebSocket: function () {
       this.webSocket = new WebSocket('ws://localhost:443');
       const that = this;
+      // this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
+      // await this.delay(30);
+      // await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
+      // let dataSet = await this.websocketDecrypt(await data.data.text().then())
 
-      this.webSocket.addEventListener('message', async data => {
-        this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
-        await this.delay(30);
-        await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
-        let dataSet = await this.websocketDecrypt(await data.data.text().then())
-
-        dataSet.text().then(function(result) {
+      this.webSocket.addEventListener('message', data => {
+        data.array.text().then(function(result) {
           that.data.push({
             message: result,
             time: that.getCurrentTime()
