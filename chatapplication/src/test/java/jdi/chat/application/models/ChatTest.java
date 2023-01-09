@@ -54,13 +54,13 @@ public class ChatTest {
     @Test
     void testSendMessage(){
         // Arrange
-        Mockito.doNothing().when(mockedChatDao).saveMessage(message, userId, chatId);
+        Mockito.doNothing().when(mockedChatDao).saveMessage(message, userId, chatId, "");
 
         // Act
-        sut.sendMessage(message, userId);
+        sut.sendMessage(message, userId, "");
 
         // Assert
-        Mockito.verify(mockedChatDao).saveMessage(message, userId, chatId);
+        Mockito.verify(mockedChatDao).saveMessage(message, userId, chatId, "");
     }
 
     @Test
