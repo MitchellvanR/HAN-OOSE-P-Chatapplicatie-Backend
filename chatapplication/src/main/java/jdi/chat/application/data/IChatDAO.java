@@ -16,4 +16,10 @@ public interface IChatDAO {
     default MessageDTO formatMessage(String senderId, String content, String time, String iv){
         return new MessageDTO(senderId, content, time, iv);
     }
+
+    String addChatToDatabase(String userId, String type);
+
+    ArrayList<String> getUsersInChat(String chatId);
+
+    String getChatType(String chatId);
 }

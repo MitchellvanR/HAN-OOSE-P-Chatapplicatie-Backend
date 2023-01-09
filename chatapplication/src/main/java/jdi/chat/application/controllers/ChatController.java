@@ -47,7 +47,29 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     public void addUserToChat(@PathParam("chatId") String chatId, @PathParam("userId") String userId){
         Chat chat = openChat(chatId);
-        chat.addUserToChat(userId);
+        chat.defineChatType();
+        String chatType = chat.getChatType();
+        if (chatType.equals("standaard")){
+            ArrayList<String> users = chat.getUsers();
+            Chat groupChat = createNewChat("0");
+            groupChat.addChatToDatabase(users.get(0), "groep");
+            groupChat.addUserToChat(users.get(1));
+            groupChat.addUserToChat(userId);
+        } else {
+            chat.addUserToChat(userId);
+        }
+    }
+
+    @POST
+    @Path("/newChat/{userId}/{currentUser}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
+        String type = "standaard"; //mock
+        Chat chat = createNewChat("0");
+        chat.addChatToDatabase(userId, type);
+        chat.addUserToChat(otherUserId);
+        return Response.ok().build();
     }
 
     private Chat openChat(String chatId) {
@@ -60,7 +82,7 @@ public class ChatController {
         return createNewChat(chatId);
     }
 
-    private Chat createNewChat(String chatId) {
+    Chat createNewChat(String chatId) {
         Chat chat = new Chat(chatId);
         chats.add(chat);
         return chat;

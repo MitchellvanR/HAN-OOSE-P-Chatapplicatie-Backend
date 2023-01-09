@@ -30,10 +30,11 @@ public class ChatTest {
         userId = "0";
         iv = "11111";
         mockedDTO = new ArrayList<>();
+        iv = "23,91,173,185,232,253,67,46,157,2,233,184,163,162,104,197";
     }
 
     @Test
-    void testGetChatHistorySucces () throws SQLException {
+    void testGetChatHistorySuccess () throws SQLException {
         // Arrange
         Mockito.doReturn(mockedDTO).when(mockedChatDao).getChatHistory(chatId);
 
