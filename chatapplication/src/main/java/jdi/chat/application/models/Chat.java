@@ -3,10 +3,8 @@ package jdi.chat.application.models;
 import jdi.chat.application.data.IChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
 import jdi.chat.application.data.dto.MessageDTO;
-
 import java.util.ArrayList;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
-
 import java.sql.SQLException;
 import java.util.List;
 
