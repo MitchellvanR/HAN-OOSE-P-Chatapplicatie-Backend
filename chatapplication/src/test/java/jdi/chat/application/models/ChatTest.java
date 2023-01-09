@@ -20,7 +20,6 @@ public class ChatTest {
     private String userId;
     private String iv;
     private ArrayList<MessageDTO> mockedDTO;
-    private String iv;
     @BeforeEach
     void setup() {
         chatId = "0";

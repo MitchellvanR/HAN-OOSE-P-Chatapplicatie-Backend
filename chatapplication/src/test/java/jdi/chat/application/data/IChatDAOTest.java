@@ -2,10 +2,7 @@ package jdi.chat.application.data;
 
 import jdi.chat.application.data.dto.MessageDTO;
 import org.junit.jupiter.api.Test;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class IChatDAOTest {
@@ -17,12 +14,25 @@ class IChatDAOTest {
 
         @Override
         public void saveMessage(String message, String senderId, String chatId, String iv) {
-
         }
 
         @Override
         public void addUserToChat(String chatId, String userId) {
+        }
 
+        @Override
+        public String addChatToDatabase(String userId, String type) {
+            return null;
+        }
+
+        @Override
+        public ArrayList<String> getUsersInChat(String chatId) {
+            return null;
+        }
+
+        @Override
+        public String getChatType(String chatId) {
+            return null;
         }
     };
 
