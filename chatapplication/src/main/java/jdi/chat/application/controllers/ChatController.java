@@ -1,6 +1,5 @@
 package jdi.chat.application.controllers;
 
-import com.google.protobuf.Empty;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;

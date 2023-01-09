@@ -5,7 +5,10 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jdi.chat.application.data.ISecurityDAO;
 import jdi.chat.application.data.SQLSecurityDAO;
+import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import net.minidev.json.JSONObject;
+
+import java.sql.SQLException;
 
 @Path("/security")
 public class SecurityController {
@@ -32,7 +35,12 @@ public class SecurityController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOtherPublicKey(@PathParam("userId") String userId, @PathParam("chatId") String chatId){
-        String otherPublicKey = securityDAO.getOtherPublicKey(userId, chatId);
+        String otherPublicKey;
+        try {
+            otherPublicKey = securityDAO.getOtherPublicKey(userId, chatId);
+        } catch (SQLException e) {
+            throw new DatabaseRequestException(e);
+        }
         JSONObject publicKeyJSON = new JSONObject();
         publicKeyJSON.put("publicKey", otherPublicKey);
         return Response.ok().entity(publicKeyJSON).build();

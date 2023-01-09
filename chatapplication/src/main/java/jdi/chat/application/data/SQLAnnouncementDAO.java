@@ -12,7 +12,7 @@ public class SQLAnnouncementDAO implements IAnnouncementDAO{
     @Override
     public void saveAnnouncement(String announcement, String endDate) {
         String sql = Queries.getInstance().getQuery("saveAnnouncementQuery");
-        try (PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql)) {
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {
             statement.setString(1, announcement);
             statement.setString(2, endDate);
             statement.executeUpdate();
@@ -25,7 +25,7 @@ public class SQLAnnouncementDAO implements IAnnouncementDAO{
     public ArrayList<String> getAnnouncements() throws SQLException {
         String sql = Queries.getInstance().getQuery("getAnnouncementsQuery");
         ResultSet resultSet = null;
-        try (PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql)) {
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {
             resultSet = statement.executeQuery();
             ArrayList<String> announcements = new ArrayList<>();
             while (resultSet.next()){
