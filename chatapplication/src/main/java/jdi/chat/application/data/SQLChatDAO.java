@@ -3,7 +3,6 @@ package jdi.chat.application.data;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -67,9 +66,10 @@ public class SQLChatDAO implements IChatDAO {
 
     @Override
     public String addChatToDatabase(String userId, String type){
-        try {
-            String sql = Queries.getInstance().getQuery("createChatQuery");
-            CallableStatement statement = ConnectionDAO.getInstance().getConnection().prepareCall(sql);
+        SQLConnection.connectToDatabase();
+        String sql = Queries.getInstance().getQuery("createChatQuery");
+        try (CallableStatement statement = SQLConnection.connection.prepareCall(sql);) {
+            if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, userId);
             statement.setString(2, type);
             ResultSet resultSet = statement.executeQuery();
@@ -82,12 +82,12 @@ public class SQLChatDAO implements IChatDAO {
 
     @Override
     public ArrayList<String> getUsersInChat(String chatId) {
-        try {
-            String sql = Queries.getInstance().getQuery("getUsersInChatQuery");
-            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+        SQLConnection.connectToDatabase();
+        String sql = Queries.getInstance().getQuery("getUsersInChatQuery");
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql);){
+            if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, chatId);
             ResultSet resultSet = statement.executeQuery();
-
             ArrayList<String> usersInChat = new ArrayList<>();
             while(resultSet.next()) {
                String user = resultSet.getString(1);
@@ -101,12 +101,12 @@ public class SQLChatDAO implements IChatDAO {
 
     @Override
     public String getChatType(String chatId) {
-        try {
-            String sql = Queries.getInstance().getQuery("getChatTypeQuery");
-            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+        SQLConnection.connectToDatabase();
+        String sql = Queries.getInstance().getQuery("getChatTypeQuery");
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql);){
+            if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, chatId);
             ResultSet resultSet = statement.executeQuery();
-
             String chatType = "";
             while(resultSet.next()) {
                 chatType = resultSet.getString(1);
