@@ -22,4 +22,6 @@ public interface IChatDAO {
     ArrayList<String> getUsersInChat(String chatId);
 
     String getChatType(String chatId);
+
+    ArrayList<String> getChatIdFromUserId(String userId);
 }
