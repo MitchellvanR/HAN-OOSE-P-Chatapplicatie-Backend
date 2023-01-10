@@ -20,7 +20,7 @@
             <div class="row mb-2">
               <b class="text-left">Selecteer een gebruiker:</b>
             </div>
-            <form id="user" action="http://localhost:8081/chat">
+            <form id="user" action="http://localhost:8081/chatlist">
               <div class="row mb-2">
                 <!-- <router-link id="user1" to="/chat" custom v-slot="{ navigate }">--><button role="link" id="user1" class="btn btn-outline-primary" v-on:click="setUserId(1)">Gebruiker #1 (Mitch)</button><!--</router-link>-->
               </div>
