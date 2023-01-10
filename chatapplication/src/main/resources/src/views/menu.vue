@@ -8,9 +8,9 @@
         <div class="position-relative border1px">
           <div class="input_style w-100">
             <form id="secret-form">
-              <input type="text" id="secret" v-model= "secret" placeholder="Uw wachtwoord hier..."/>
+              <input type="text" id="secret" v-model= "secret" placeholder="Uw wachtwoord hier..." size="40"/>
               <label for="secret"></label>
-              <button type="button" @click.prevent="saveSecret(secret)">Verzend</button>
+              <button type="button" @click.prevent="saveSecret(secret)" class="btn btn-outline-primary">Verzend</button>
             </form>
           </div>
         </div>
