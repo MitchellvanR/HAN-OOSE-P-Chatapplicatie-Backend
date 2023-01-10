@@ -24,10 +24,10 @@
               <div class="row mb-2">
                 <router-link to="/chatlist" custom v-slot="{ navigate }"><button @click="navigate" id="user1" role="link" class="btn btn-outline-primary" v-on:click="setUserId(1)">Gebruiker #1 (Mitch)</button></router-link>
               </div>
-              <div class="row">
+              <div class="row mb-2">
                 <router-link to="/chatlist" custom v-slot="{ navigate }"><button @click="navigate" id="user2" role="link" class="btn btn-outline-primary" v-on:click="setUserId(2)">Gebruiker #2 (Jaap)</button></router-link>
               </div>
-              <div class="row">
+              <div class="row mb-2">
                 <router-link to="/chatlist" custom v-slot="{ navigate }"><button @click="navigate" id="user3" role="link" class="btn btn-outline-primary" v-on:click="setUserId(3)">Gebruiker #3 (Helen)</button></router-link>
               </div>
             </form>
@@ -37,7 +37,7 @@
               <b>Log in als administrator:</b>
             </div>
             <div class="row">
-              <router-link to="/helplinelist" custom v-slot="{ navigate }"><button @click="navigate" id="administrator" role="link" class="btn btn-primary">Administrator #1</button></router-link>
+              <router-link to="/helplinelist" custom v-slot="{ navigate }"><button @click="navigate" id="administrator" role="link" class="btn btn-primary" v-on:click="setUserId(4)">Administrator #1</button></router-link>
             </div>
           </div>
         </div>
@@ -80,7 +80,6 @@ export default {
         if (input.value === ""){
           input.classList.add("border", "border-danger");
         } else {
-          //is het een int validatie
           this.addChatToDatabase(input.value);
           input.value = '';
         }

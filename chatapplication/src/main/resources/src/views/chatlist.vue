@@ -6,11 +6,15 @@
       <hr>
     </div>
     <div class="row">
-      <div class="col-lg-12">
-        <button class="btn text-info fa-lg float-right">
-          <i class="fa fa-info-circle" aria-hidden="true"></i> <small>Need help?</small>
-        </button>
-      </div>
+      <form id="newChatForm" class="wrap">
+        <div class="col-lg-12">
+          <router-link to="/chat" custom v-slot="{ navigate }">
+            <button class="btn text-info fa-lg float-right" @click="navigate" role="link" class="btn" v-on:click="setChatId(this.chatId)">
+              <i class="fa fa-info-circle" aria-hidden="true"></i> <small>Need help?</small>
+            </button>
+          </router-link>
+        </div>
+      </form>
     </div>
     <div class="row">
       <div class="col-lg-11">
@@ -48,10 +52,12 @@ export default {
   data() {
     return {
       items: [],
+      chatId: ''
     }
   },
   mounted() {
     this.addToItems()
+    this.createChat()
   },
   methods: {
     addToItems: function() {
@@ -59,10 +65,36 @@ export default {
         this.items.push(...responseData.chatIds);
       });
     },
-    setChatId: function (chatId){
-      sessionStorage.setItem("chatId", chatId);
+    createChat: function (){
+      document.getElementById('newChatForm').onsubmit = data =>
+      {
+        this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + sessionStorage.getItem("userId")).then(responseData => {
+          if(responseData.chatId) {
+            this.chatid = responseData.chatId;
+          } else {
+            
+          }
+        });
+        const input = document.getElementById('userId');
+        input.classList.remove("border", "border-danger");
+
+        data.preventDefault();
+        if (input.value === ""){
+          input.classList.add("border", "border-danger");
+        } else {
+          this.addChatToDatabase(input.value);
+          input.value = '';
+        }
+      }
     },
-    sendHttpRequest: function(method, url, data) {
+    addChatToDatabase: function (id) {
+      sessionStorage.setItem('userId', '1'); // mock
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + sessionStorage.getItem('userId')).then()
+    },
+    setChatId: function (chatId){
+        sessionStorage.setItem("chatId", chatId);
+    },
+    sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {
         const XmlHttpRequest = new XMLHttpRequest();
         XmlHttpRequest.open(method, url);
@@ -79,8 +111,8 @@ export default {
         };
 
         XmlHttpRequest.send(data);
-      })
-    }
+      });
+    },
   }
 }
 </script>

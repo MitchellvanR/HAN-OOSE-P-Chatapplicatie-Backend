@@ -139,28 +139,29 @@ public class SQLChatDAO implements IChatDAO {
     }
     @Override
     public String getUserHelplineChatId(String userId) {
-        try {
-            String sql = Queries.getInstance().getQuery("getUserHelplineChatId");
-            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+        SQLConnection.connectToDatabase();
+        String sql = Queries.getInstance().getQuery("getUserHelplineChatIdQuery");
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {
+            if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, userId);
             ResultSet resultSet = statement.executeQuery();
 
-            String chatId = "";
+            String chatId = null;
             while(resultSet.next()){
                 chatId = resultSet.getString("id");
             }
-
             return chatId;
         } catch (Exception e) {
-            throw new DatabaseRequestException();
+            throw new DatabaseRequestException(e);
         }
     }
 
     @Override
     public ArrayList<ChatDTO> getHelplineChats() {
-        try {
-            String sql = Queries.getInstance().getQuery("getHelplineChats");
-            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+        SQLConnection.connectToDatabase();
+        String sql = Queries.getInstance().getQuery("getHelplineChatsQuery");
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {
+            if (statement == null) { throw new DatabaseRequestException(); }
             ResultSet resultSet = statement.executeQuery();
 
             ArrayList<ChatDTO> helplineChats = new ArrayList<>();

@@ -47,7 +47,6 @@ export default {
   methods: {
     getHelplineChats: function() {
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helplineList').then(responseData => {
-        console.log(responseData.helplineChats);
         this.array.push(...responseData.helplineChats);
       });
     },
