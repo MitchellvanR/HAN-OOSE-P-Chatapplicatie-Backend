@@ -28,9 +28,12 @@
           <tr @click="log(chatId)" v-for="chatId in items" :key="chatId">
             <td>{{chatId}}</td>
             <td>
-              <router-link to="/chat" custom v-slot="{ navigate }">
-                <button @click="navigate" role="link" class="btn" v-on:click="setChatId(chatId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
-              </router-link>
+<!--              <router-link to="/chat" custom v-slot="{ navigate }">-->
+<!--                <button @click="navigate" role="link" class="btn" v-on:click="setChatId(chatId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>-->
+<!--              </router-link>-->
+              <form id="chat" action="http://localhost:8081/chat">
+                <button role="link" class="btn" v-on:click="setChatId(chatId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
+              </form>
             </td>
             <td class="w-25"></td>
           </tr>

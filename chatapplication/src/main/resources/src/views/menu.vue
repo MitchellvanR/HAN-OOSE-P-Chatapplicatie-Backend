@@ -69,7 +69,6 @@ export default {
     setUserId: function (userId) {
       sessionStorage.setItem("userId", userId);
     },
-
     createChat: function (){
       document.getElementById('newChatForm').onsubmit = data =>
       {
@@ -109,7 +108,6 @@ export default {
         XmlHttpRequest.send(JSON.stringify(data));
       });
     },
-
     saveSecret: async function (secret) {
       let numberFromString = Number(0);
       for (let i = 0; i < secret.length; i++) {
