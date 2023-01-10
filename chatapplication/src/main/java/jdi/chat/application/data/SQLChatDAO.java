@@ -127,13 +127,14 @@ public class SQLChatDAO implements IChatDAO {
         }
     }
     @Override
-    public ArrayList<String> getChatIdFromUserId(String userId) {
+    public ArrayList<String> getChatIdFromUserId(String userId) throws SQLException {
         SQLConnection.connectToDatabase();
         String sql = Queries.getInstance().getQuery("getChatIdQuery");
+        ResultSet resultSet = null;
         try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {
             if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, userId);
-            ResultSet resultSet = statement.executeQuery();
+            resultSet = statement.executeQuery();
 
             ArrayList<String> chatIds = new ArrayList<>();
             while(resultSet.next()){
@@ -143,6 +144,10 @@ public class SQLChatDAO implements IChatDAO {
             return chatIds;
         } catch (Exception e) {
             throw new DatabaseRequestException(e);
+        } finally {
+            if (resultSet != null){
+                resultSet.close();
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ public class Chat {
 
     public void addUserToChat(String userId) { chatDAO.addUserToChat(chatId, userId); }
 
-    public static ArrayList<String> getChatIdFromUserId(String userId) {
+    public static ArrayList<String> getChatIdFromUserId(String userId) throws SQLException {
         return chatDAO.getChatIdFromUserId(userId);
     }
 
@@ -42,7 +42,7 @@ public class Chat {
 
     public void setChatId(String chatId) { this.chatId = chatId; }
 
-    public void setChatDAO(IChatDAO chatDAO) { this.chatDAO = chatDAO; }
+    public void setChatDAO(IChatDAO chatDAO) { Chat.chatDAO = chatDAO; }
 
     public void addChatToDatabase(String userId, String type){ setChatId(chatDAO.addChatToDatabase(userId, type)); }
 
