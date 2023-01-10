@@ -183,19 +183,13 @@ export default {
     },
     runWebSocket: function () {
       this.webSocket = new WebSocket('ws://localhost:443');
-      const that = this;
-      // this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
-      // await this.delay(30);
-      // await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
-      // let dataSet = await this.websocketDecrypt(await data.data.text().then())
 
-      this.webSocket.addEventListener('message', data => {
-        data.array.text().then(function(result) {
-          that.data.push({
-            message: result,
-            time: that.getCurrentTime()
-          });
-        });
+      this.webSocket.addEventListener('message', async data => {
+        this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
+        await this.delay(30);
+        await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
+        let dataSet = await this.websocketDecrypt(await data.data.text().then())
+        dataSet.text().then(this.showMessage);
       });
 
       document.getElementById('sendMessageForm').onsubmit = data => {
@@ -208,6 +202,12 @@ export default {
         }
         this.handleMessage(this.webSocket);
       }
+    },
+    showMessage: function (message) {
+        this.array.push({
+          message: message,
+          time: this.getCurrentTime()
+        });
     },
     addUserToCurrentChat: function () {
       document.getElementById('addUserForm').onsubmit = data =>
@@ -247,7 +247,7 @@ export default {
       let messageAndIv = encryptedMessage.toString() + "^" + sessionStorage.getItem("sendIv").toString();
 
       this.array.push({
-        message: message.value,
+        message: message,
         senderId: this.userId,
         time: this.getCurrentTime()
       });
