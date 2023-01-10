@@ -1,7 +1,6 @@
 package jdi.chat.application.data.exceptions;
 
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DatabaseRequestExceptionTest {
@@ -9,7 +8,6 @@ class DatabaseRequestExceptionTest {
     void testDatabaseRequestExceptionSUCCESS() {
         //Arrange
         DatabaseRequestException e = new DatabaseRequestException();
-
 
         //Assert
         assertThrows(
