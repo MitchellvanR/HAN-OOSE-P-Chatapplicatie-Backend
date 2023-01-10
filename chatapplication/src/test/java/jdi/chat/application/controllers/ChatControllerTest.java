@@ -25,6 +25,8 @@ class ChatControllerTest {
     private ArrayList<MessageDTO> mockDTO;
     private ArrayList<Chat> chatList;
     private MockedConstruction<Chat> chatMockController;
+    private ArrayList<String> userlist;
+    private String chatType;
     @BeforeEach
     void setup() {
         this.sut = new ChatController();
@@ -37,24 +39,30 @@ class ChatControllerTest {
         this.userId = "1";
         this.addedUserId = "3";
         this.chatId = "1";
+        userlist = new ArrayList<>();
+        userlist.add("1");
+        userlist.add("2");
+        chatType = "standaard";
 
         chatList = new ArrayList<>();
         chatList.add(mockedChat);
+        sut.setChats(chatList);
 
-
+        when(mockedChat.getChatId()).thenReturn("45");
         chatMockController = Mockito.mockConstruction(Chat.class, (mock, context) ->{
             when(mock.getChatId()).thenReturn(chatId);
             when(mock.getChatHistory()).thenReturn(mockDTO);
-            when(mock.getChatType()).thenReturn("groep");
+            when(mock.getChatType()).thenReturn(chatType);
+            when(mock.getUsers()).thenReturn(userlist);
             doNothing().when(mock).sendMessage(anyString(), anyString(), anyString());
             doNothing().when(mock).defineChatType();
+            doNothing().when(mock).addUserToChat(anyString());
+            doNothing().when(mock).addChatToDatabase(anyString(), anyString());
         });
     }
 
     @AfterEach
-    void close(){
-        chatMockController.close();
-    }
+    void close(){ chatMockController.close(); }
 
     @Test
     void testGetChatHistorySUCCESS() {
@@ -105,7 +113,22 @@ class ChatControllerTest {
         sut.addUserToChat(chatId, addedUserId);
 
         // Assert
+        Chat newChatMock = chatMockController.constructed().get(1);
+        Mockito.verify(newChatMock, times(2)).addUserToChat(Mockito.anyString());
+    }
+
+    @Test
+    void testAddChatToDatabase(){
+        // Act
+        sut.addChatToDatabase(userId, addedUserId);
+
+        // Assert
         Chat newChatMock = chatMockController.constructed().get(0);
-        Mockito.verify(newChatMock).addUserToChat(Mockito.anyString());
+        verify(newChatMock, times(1)).addUserToChat(anyString());
+    }
+
+    @Test
+    void TestgetChatIds(){
+
     }
 }

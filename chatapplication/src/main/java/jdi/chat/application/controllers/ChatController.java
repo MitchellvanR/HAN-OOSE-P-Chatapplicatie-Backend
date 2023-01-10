@@ -6,7 +6,6 @@ import jakarta.ws.rs.core.Response;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.models.Chat;
 import net.minidev.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,4 +97,6 @@ public class ChatController {
         chats.add(chat);
         return chat;
     }
+
+    public void setChats(List<Chat> chats) { this.chats = chats; }
 }
