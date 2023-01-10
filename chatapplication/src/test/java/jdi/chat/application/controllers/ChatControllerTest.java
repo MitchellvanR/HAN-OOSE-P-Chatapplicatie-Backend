@@ -126,9 +126,4 @@ class ChatControllerTest {
         Chat newChatMock = chatMockController.constructed().get(0);
         verify(newChatMock, times(1)).addUserToChat(anyString());
     }
-
-    @Test
-    void TestgetChatIds(){
-
-    }
 }
