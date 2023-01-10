@@ -13,9 +13,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class ChatControllerTest {
     private ChatController sut;
     private Chat mockedChat;
-    private String message;
     private String chatId;
     private String userId;
+    private String addedUserId;
+    private String messageAndIv;
+    private String[] messageAndIvArray;
     private ArrayList<MessageDTO> mockDTO;
     @BeforeEach
     void setup() {
@@ -23,8 +25,11 @@ class ChatControllerTest {
 
         this.mockedChat = Mockito.mock(Chat.class);
         this.mockDTO = new ArrayList<>();
-        this.message = "Hello World";
+        String iv = "23,91,173,185,232,253,67,46,157,2,233,184,163,162,104,197";
+        this.messageAndIv = "Hello World" + "^" + iv;
+        this.messageAndIvArray = messageAndIv.split("\\^");
         this.userId = "1";
+        this.addedUserId = "3";
         this.chatId = "1";
 
         ArrayList<Chat> chatList = new ArrayList<>();
@@ -38,7 +43,6 @@ class ChatControllerTest {
     void testGetChatHistorySUCCESS() {
         // Arrange
         Mockito.doReturn(mockDTO).when(mockedChat).getChatHistory();
-
 
         // Act
         sut.getChatHistory(chatId);
@@ -65,13 +69,13 @@ class ChatControllerTest {
     @Test
     void testSendMessageSUCCESS() {
         // Arrange
-        Mockito.doNothing().when(mockedChat).sendMessage(message, userId);
+        Mockito.doNothing().when(mockedChat).sendMessage(messageAndIvArray[0], userId, messageAndIvArray[1]);
 
         // Act
-        sut.sendMessage(chatId, userId, message);
+        sut.sendMessage(chatId, userId, messageAndIv);
 
         // Assert
-        Mockito.verify(mockedChat).sendMessage(message, userId);
+        Mockito.verify(mockedChat).sendMessage(messageAndIvArray[0], userId, messageAndIvArray[1]);
     }
 
     @Test
@@ -85,8 +89,12 @@ class ChatControllerTest {
 
     @Test
     void testAddUserToChat() {
+        // Arrange
+        Mockito.doNothing().when(mockedChat).defineChatType();
+        Mockito.doReturn("group").when(mockedChat).getChatType();
+
         // Act
-        sut.addUserToChat(chatId, userId);
+        sut.addUserToChat(chatId, addedUserId);
 
         // Assert
         Mockito.verify(mockedChat).addUserToChat(Mockito.anyString());
