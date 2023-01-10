@@ -1,64 +1,86 @@
 <template>
-  <div class="position-relative border1px">
-    <div class="input_style w-100">
-      <div id="helpline-button">
-        <i>Chatlijst</i>
-        <br>
+  <div class="container mt-5">
+    <div class="row">
+      <p class="display-4">User Menu</p>
+      <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Note! This is page is used for mocking purposes.</small>
+      <hr>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <button class="btn text-info fa-lg float-right">
+          <i class="fa fa-info-circle" aria-hidden="true"></i> <small>Need help?</small>
+        </button>
       </div>
-      <ul id="chat-list">
-
-      </ul>
+    </div>
+    <div class="row">
+      <div class="col-lg-11">
+        <table class="table table-hover m-4 w-100">
+          <thead>
+          <tr>
+            <th>Chat</th>
+            <th>Action</th>
+            <th>
+              <button class="btn">New chat <i class="fa fa-user-plus"></i></button>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr @click="log(chatId)" v-for="chatId in items" :key="chatId">
+            <td>{{chatId}}</td>
+            <td>
+              <router-link to="/chat" custom v-slot="{ navigate }">
+                <button @click="navigate" role="link" class="btn" v-on:click="setChatId(chatId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
+              </router-link>
+            </td>
+            <td class="w-25"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import reusableFunctions from '../components/reusableFunctions.vue';
-
 export default {
-  name: "openChatlist",
+  name: "openChatList",
 
-  mounted() {
-    this.getUserChatInterface(sessionStorage.getItem('userId'));
+  data() {
+    return {
+      items: [],
+    }
   },
-  Components: {
-    reusableFunctions
+  mounted() {
+    this.addToItems()
   },
   methods: {
-    getUserChatInterface: function(userId) {
-      this.getUserChats(userId);
-      this.makeHelplineButton(userId);
-    },
-    getUserChats: function (userId) {
-      reusableFunctions.methods.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + userId).then(responseData => {
-        let ul = document.getElementById("chat-list");
-
-        for (let chatId of responseData.chatIds) {
-          ul.innerHTML +=
-              '<button type="submit" class="btn btn-outline-primary" onclick="alert(1)">' + 'ChatNummer: ' + 1 + '</button>'
-
-            // '<form action="chat"> ' +
-            //   '<router-linkcustom v-slot="{ navigate }">' +
-            //     '<button type="submit" class="btn btn-outline-primary" onclick="'+ this.setChatId(chatId) + '">' + 'ChatNummer: ' + chatId + '</button>'
-              // '</router-link>'
-            // '</form>';
-        }
+    addToItems: function() {
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/user/' + sessionStorage.getItem("userId")).then(responseData => {
+        this.items.push(...responseData.chatIds);
       });
     },
-    setChatId: function (chatId) {
-      console.log("sad", chatId)
+    setChatId: function (chatId){
       sessionStorage.setItem("chatId", chatId);
     },
-    makeHelplineButton: function (/*userId*/) {
-      // console.log(1234567)
-      // reusableFunctions.methods.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + userId).then(responseData => {
-      //   let div = document.getElementById("helpline-button");
-      //   div.innerHTML +=
-      //       '<form action="http://localhost:63342/prolog-jdi/chatapplicatie/front-end/index.html">' +
-      //       '<button type="submit" onclick="setChatId(' + responseData.chatId + '); setHelpline(1)">Helpline</button>' +
-      //       '</form>';
-      // });
-    },
+    sendHttpRequest: function(method, url, data) {
+      return new Promise((resolve, reject) => {
+        const XmlHttpRequest = new XMLHttpRequest();
+        XmlHttpRequest.open(method, url);
+        XmlHttpRequest.responseType = 'json';
+
+        XmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
+
+        XmlHttpRequest.onload = () => {
+          if (XmlHttpRequest.status >= 400) {
+            reject(XmlHttpRequest.response);
+          } else {
+            resolve(XmlHttpRequest.response);
+          }
+        };
+
+        XmlHttpRequest.send(data);
+      })
+    }
   }
 }
 </script>

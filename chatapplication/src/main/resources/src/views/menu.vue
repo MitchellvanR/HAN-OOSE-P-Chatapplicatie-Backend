@@ -22,7 +22,7 @@
               <b>Log in als administrator:</b>
             </div>
             <div class="row">
-              <router-link to="/chat" custom v-slot="{ navigate }"><button @click="navigate" id="administrator" role="link" class="btn btn-primary">Administrator #1</button></router-link>
+              <router-link to="/helplinelist" custom v-slot="{ navigate }"><button @click="navigate" id="administrator" role="link" class="btn btn-primary">Administrator #1</button></router-link>
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@ package jdi.chat.application.controllers;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.models.Chat;
 import net.minidev.json.JSONObject;
@@ -51,17 +52,14 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAdministratorHelplineChats() {
-        Chat chat = new Chat("2", true);
-        chats.add(chat);
-        ArrayList<Chat> helplineChats = getHelplineChatsFromChats();
-        findLatestMessage(helplineChats);
+        ArrayList<ChatDTO> helplineChats = Chat.getHelplineChats();
         JSONObject helplineChatsJSON = new JSONObject();
         helplineChatsJSON.put("helplineChats", helplineChats);
         return Response.ok().entity(helplineChatsJSON).build();
     }
 
     @GET
-    @Path("/{userId}")
+    @Path("/user/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getChatIds(@PathParam("userId") String userId) {
@@ -80,27 +78,6 @@ public class ChatController {
         JSONObject chatIdJSON = new JSONObject();
         chatIdJSON.put("chatId", chatId);
         return Response.ok().entity(chatIdJSON).build();
-    }
-
-    private ArrayList<Chat> getHelplineChatsFromChats() {
-        ArrayList<Chat> helplineChats = new ArrayList<>();
-
-        if(chats.isEmpty()) {
-            return null;
-        } else {
-            for(Chat chat : chats) {
-                if (chat.isHelpline()) {
-                    helplineChats.add(chat);
-                }
-            }
-            return helplineChats;
-        }
-    }
-
-    private void findLatestMessage(ArrayList<Chat> helplineChats) {
-        for (Chat chat : helplineChats) {
-            chat.findLatestMessage();
-        }
     }
 
     private Chat openChat(String chatId) {

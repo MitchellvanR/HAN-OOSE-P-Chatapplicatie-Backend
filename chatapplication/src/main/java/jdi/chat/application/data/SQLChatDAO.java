@@ -1,5 +1,6 @@
 package jdi.chat.application.data;
 
+import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
@@ -60,25 +61,6 @@ public class SQLChatDAO extends AbstractChatDAO {
     }
 
     @Override
-    public String findLatestMessage(String chatId) {
-        try {
-            String sql = Queries.getInstance().getQuery("findLatestMessageQuery");
-            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
-            statement.setString(1, chatId);
-            ResultSet resultSet = statement.executeQuery();
-
-            String latestMessage = "";
-            while(resultSet.next()){
-                latestMessage = resultSet.getString("message");
-            }
-
-            return latestMessage;
-        } catch (Exception e) {
-            throw new DatabaseRequestException();
-        }
-    }
-
-    @Override
     public ArrayList<String> getChatIdFromUserId(String userId) {
         try {
             String sql = Queries.getInstance().getQuery("getChatId");
@@ -111,6 +93,26 @@ public class SQLChatDAO extends AbstractChatDAO {
             }
 
             return chatId;
+        } catch (Exception e) {
+            throw new DatabaseRequestException();
+        }
+    }
+
+    @Override
+    public ArrayList<ChatDTO> getHelplineChats() {
+        try {
+            String sql = Queries.getInstance().getQuery("getHelplineChats");
+            PreparedStatement statement = ConnectionDAO.getInstance().getConnection().prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+
+            ArrayList<ChatDTO> helplineChats = new ArrayList<>();
+            while(resultSet.next()){
+                helplineChats.add(formatChat(
+                    resultSet.getString("chatId"),
+                    resultSet.getString("latest message")
+                ));
+            }
+            return helplineChats;
         } catch (Exception e) {
             throw new DatabaseRequestException();
         }

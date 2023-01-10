@@ -7,6 +7,6 @@ getChatHistoryQuery_: SELECT inVec, senderId, message, DATE(date) as date, DATE_
 sendMessageQuery_: INSERT INTO `prolog-jdi`.messages (message, senderId, chatId) VALUES (?, ?, ?)
 addUserToChatQuery_: INSERT INTO `prolog-jdi`.usersinchats (userId, chatId) VALUES (?, ?)
 createChatQuery_: INSERT INTO `prolog-jdi`.chats (id, symKey) VALUES (?, ?)
-findLatestMessageQuery_: SELECT message FROM `prolog-jdi`.messages WHERE chatId = ? ORDER BY date DESC LIMIT 1
 getChatId_: SELECT chatId FROM `prolog-jdi`.usersinchats WHERE userId = ?
 getUserHelplineChatId_: SELECT id FROM `prolog-jdi`.chats WHERE type = 1 AND id IN (SELECT chatId FROM usersinchats WHERE userId = ?)
+getHelplineChats_: SELECT c.id AS 'chatId', m.message AS 'latest message', m.`date` AS 'date' FROM chats c INNER JOIN messages m ON c.id = m.chatId INNER JOIN (SELECT chatId, MAX(`date`) AS maxDate FROM messages GROUP BY chatId ) m2 ON m.chatId = m2.chatId AND m.`date` = m2.maxDate

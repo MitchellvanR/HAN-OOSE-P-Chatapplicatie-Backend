@@ -21,15 +21,11 @@
   </div>
 </template>
 <script>
-import reusableFunctions from '../components/reusableFunctions.vue';
 
 export default {
   name: 'OpenChat',
   mounted() {
     this.getChatLog(sessionStorage.getItem('userId'), sessionStorage.getItem('chatId'));
-  },
-  Components: {
-    reusableFunctions
   },
   destroyed() {
     if (this.webSocket.readyState === WebSocket.OPEN) {
@@ -42,7 +38,7 @@ export default {
       console.log(userId);
       console.log("chatid:" + chatId);
         this.runWebSocket();
-      reusableFunctions.methods.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + chatId).then(responseData => {
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + chatId).then(responseData => {
         for (let message of responseData.messages) {
           if (message.senderId === userId) {
             this.outgoingMessage(message.message, message.time);
@@ -81,7 +77,7 @@ export default {
       console.log(userId)
 
       if (sessionStorage.getItem('userId') === "1"){
-        reusableFunctions.methods.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + userId + '/' + chatId, newMessage).then()
+        this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + userId + '/' + chatId, newMessage).then()
       }
     },
     outgoingMessage: function (message, time) {
@@ -109,7 +105,27 @@ export default {
     },
     getCurrentTime: function () {
       let date = new Date();
-      return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();    },
+      return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    },
+  },
+  sendHttpRequest: function (method, url, data) {
+    return new Promise((resolve, reject) => {
+      const XmlHttpRequest = new XMLHttpRequest();
+      XmlHttpRequest.open(method, url);
+      XmlHttpRequest.responseType = 'json';
+
+      XmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
+
+      XmlHttpRequest.onload = () => {
+        if (XmlHttpRequest.status >= 400) {
+          reject(XmlHttpRequest.response);
+        } else {
+          resolve(XmlHttpRequest.response);
+        }
+      };
+
+      XmlHttpRequest.send(data);
+    });
   }
 }
 </script>

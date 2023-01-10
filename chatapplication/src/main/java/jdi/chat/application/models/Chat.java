@@ -2,7 +2,9 @@ package jdi.chat.application.models;
 
 import jdi.chat.application.data.AbstractChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
+import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
+import org.apache.commons.compress.archivers.ar.ArArchiveEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +35,16 @@ public class Chat {
 
     public void addUserToChat(String userId) { chatDAO.addUserToChat(chatId, userId); }
 
-    public void findLatestMessage() {
-        setLatestMessage(chatDAO.findLatestMessage(chatId));
-    }
-
     public static ArrayList<String> getChatIdFromUserId(String userId) {
         return chatDAO.getChatIdFromUserId(userId);
     }
 
     public static String getUserHelplineChatId(String userId) {
         return chatDAO.getUserHelplineChatId(userId);
+    }
+
+    public static ArrayList<ChatDTO> getHelplineChats() {
+        return chatDAO.getHelplineChats();
     }
 
     public String getChatId() {
