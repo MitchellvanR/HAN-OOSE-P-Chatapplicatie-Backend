@@ -116,7 +116,6 @@ export default {
           this.cryptoKey,
           encodedMessage
       );
-
     },
     cleanForDecrypt: function (message) {
       let cleanMessage = message.replace(/['"]/g, '');
