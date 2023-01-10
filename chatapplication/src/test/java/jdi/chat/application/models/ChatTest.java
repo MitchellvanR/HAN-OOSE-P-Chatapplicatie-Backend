@@ -28,7 +28,6 @@ public class ChatTest {
         sut.setChatDAO(mockedChatDao);
         message = "Test";
         userId = "0";
-        iv = "11111";
         mockedDTO = new ArrayList<>();
         iv = "23,91,173,185,232,253,67,46,157,2,233,184,163,162,104,197";
     }
