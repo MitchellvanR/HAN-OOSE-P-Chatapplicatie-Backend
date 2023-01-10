@@ -25,7 +25,7 @@
                 <!-- <router-link to="/chat" custom v-slot="{ navigate }">--><button id="user2" role="link" class="btn btn-outline-primary" v-on:click="setUserId(2)">Gebruiker #2 (Jaap)</button><!--</router-link>-->
               </div>
               <div class="row">
-                <!-- <router-link to="/chat" custom v-slot="{ navigate }">--><button @click="navigate" id="user3" role="link" class="btn btn-outline-primary" v-on:click="setUserId(3)">Gebruiker #3 (Helen)</button><!--</router-link>-->
+                <!-- <router-link to="/chat" custom v-slot="{ navigate }">--><button id="user3" role="link" class="btn btn-outline-primary" v-on:click="setUserId(3)">Gebruiker #3 (Helen)</button><!--</router-link>-->
               </div>
             </form>
           </div>
