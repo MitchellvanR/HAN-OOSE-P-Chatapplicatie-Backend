@@ -22,4 +22,6 @@ public interface IChatDAO {
     ArrayList<String> getUsersInChat(String chatId) throws SQLException;
 
     String getChatType(String chatId) throws SQLException;
+
+    ArrayList<String> getChatIdFromUserId(String userId);
 }

@@ -1,31 +1,34 @@
 <template>
   <div class="background">
     <div class="container mt-5">
-        <p class="display-4">Chatapplicatie Configuratie</p>
+      <div class="row">
+        <p class="display-4">Chat Menu</p>
+        <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Note! This is page is used for mocking purposes.</small>
         <hr>
-      <div class="position-relative border1px">
-        <div class="input_style w-100">
-          <form id="secret-form">
-            <input type="text" id="secret" v-model= "secret" placeholder="Insert password here..."/>
-            <label for="secret"></label>
-            <button type="button" @click.prevent="saveSecret(secret)">Submit</button>
-          </form>
+        <div class="position-relative border1px">
+          <div class="input_style w-100">
+            <form id="secret-form">
+              <input type="text" id="secret" v-model= "secret" placeholder="Insert password here..."/>
+              <label for="secret"></label>
+              <button type="button" @click.prevent="saveSecret(secret)">Submit</button>
+            </form>
+          </div>
         </div>
       </div>
-        <div class="row">
+      <div class="row">
           <div class="col-6 m-2">
             <div class="row mb-2">
               <b class="text-left">Selecteer een gebruiker:</b>
             </div>
             <form id="user">
               <div class="row mb-2">
-                <router-link to="/chat" custom v-slot="{ navigate }"><button @click="navigate" id="user1" role="link" class="btn btn-outline-primary" v-on:click="setUserId(1)">Gebruiker #1 (Mitch)</button></router-link>
-              </div>
-              <div class="row mb-2">
-                <router-link to="/chat" custom v-slot="{ navigate }"><button @click="navigate" id="user2" role="link" class="btn btn-outline-primary" v-on:click="setUserId(2)">Gebruiker #2 (Jaap)</button></router-link>
+                <router-link to="/chatlist" custom v-slot="{ navigate }"><button @click="navigate" id="user1" role="link" class="btn btn-outline-primary" v-on:click="setUserId(1)">Gebruiker #1 (Mitch)</button></router-link>
               </div>
               <div class="row">
-                <router-link to="/chat" custom v-slot="{ navigate }"><button @click="navigate" id="user3" role="link" class="btn btn-outline-primary" v-on:click="setUserId(3)">Gebruiker #3 (Helen)</button></router-link>
+                <router-link to="/chatlist" custom v-slot="{ navigate }"><button @click="navigate" id="user2" role="link" class="btn btn-outline-primary" v-on:click="setUserId(2)">Gebruiker #2 (Jaap)</button></router-link>
+              </div>
+              <div class="row">
+                <router-link to="/chatlist" custom v-slot="{ navigate }"><button @click="navigate" id="user3" role="link" class="btn btn-outline-primary" v-on:click="setUserId(3)">Gebruiker #3 (Helen)</button></router-link>
               </div>
             </form>
           </div>

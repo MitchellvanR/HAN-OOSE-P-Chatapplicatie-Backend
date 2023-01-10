@@ -7,7 +7,17 @@
         </div>
       </div>
       <div class="messages" id="messages">
-        <ul id="content">
+        <ul v-for="(message, index) in array" :key="index">
+          <li v-if="message.senderId === userId" class="replies mb-3">
+            <small class="float-right margin-right-5px">{{message.time}}</small>
+            <br>
+            <p>{{message.message}}</p>
+          </li>
+          <li v-else class="sent mb-3">
+            <small class="margin-left-5px">{{message.time}}</small>
+            <br>
+            <p>{{message.message}}</p>
+          </li>
         </ul>
       </div>
       <div class="message-input border-top border-dark p-2">
@@ -30,15 +40,22 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   name: 'OpenChat',
   cryptoKey: {},
+  data() {
+    return {
+      array: [],
+      userId: sessionStorage.getItem('userId'),
+    }
+  },
   mounted() {
+    this.getChatLog();
     this.savePublicKey(sessionStorage.getItem('userId'), sessionStorage.getItem('secret'));
     this.delay(30);
     sessionStorage.setItem('chatId', '1');
-    this.getChatLog();
     this.addUserToCurrentChat();
   },
   destroyed() {
@@ -51,17 +68,14 @@ export default {
     // Deze comment (global BigInt) is nodig om BigInts in deze file werkend te krijgen. Zonder deze comment werken ze dus niet.
     /* global BigInt */
     formulatePublicKey: function (secret) {
-      return  BigInt("2") ** BigInt(secret) % BigInt("32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559");
+      return BigInt("2") ** BigInt(secret) % BigInt("32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559");
     },
-
     formulatePrivateKey: function (otherPublicKey, secret) {
       return (BigInt(otherPublicKey) ** BigInt(secret)) % BigInt("32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559");
     },
-
     getSecret: function () {
       return BigInt(sessionStorage.getItem("secret"));
     },
-
     importCryptoKey: async function (value) {
       let key = this.formulatePrivateKey(value, this.getSecret());
       let bufferOne = new TextEncoder().encode(key);
@@ -78,19 +92,15 @@ export default {
           ["encrypt", "decrypt"]
       );
     },
-
     generateIv: function () {
       return window.crypto.getRandomValues(new Uint8Array(16));
     },
-
     encodeMessage: function (message) {
       return new TextEncoder().encode(message);
     },
-
     decodeMessage: function (message) {
       return new TextDecoder().decode(message);
     },
-
     encrypt: async function (message) {
       this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
       await this.delay(30);
@@ -123,7 +133,6 @@ export default {
       }
       return correctArray;
     },
-
     decrypt: async function (key, message, iv) {
       let messageArray = this.cleanForDecrypt(message);
       let ivArray = this.cleanForDecrypt(iv);
@@ -140,7 +149,6 @@ export default {
       });
       return this.decodeMessage(encodedMessage);
     },
-
     websocketDecrypt: async function (data) {
       let messageAndIvArray = data.split("^");
       let message = messageAndIvArray[0];
@@ -154,7 +162,6 @@ export default {
         setTimeout(resolve, milliseconds);
       });
     },
-
     getChatLog: function () {
       this.runWebSocket();
       this.validateSession();
@@ -163,25 +170,17 @@ export default {
           this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
           await this.delay(30);
           await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
-          let decryptedMessage = await this.decrypt(this.cryptoKey, message.message, message.iv);
-          if (message.senderId === sessionStorage.getItem('userId')) {
-            this.outgoingMessage(decryptedMessage, message.time);
-          } else {
-            this.incomingMessage(decryptedMessage, message.time);
-          }
+          message.message = await this.decrypt(this.cryptoKey, message.message, message.iv);
         }
-        this.scrollToBottom();
-      });
+        this.array.push(...responseData.messages);
+      }).then(() => this.scrollToBottom());
     },
-
     openForm: function () {
       document.getElementById("addUserToCurrentChat").style.display = "block";
     },
-
     closeForm: function () {
       document.getElementById("addUserToCurrentChat").style.display = "none";
     },
-
     runWebSocket: function () {
       this.webSocket = new WebSocket('ws://localhost:443');
 
@@ -190,22 +189,26 @@ export default {
         await this.delay(30);
         await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
         let dataSet = await this.websocketDecrypt(await data.data.text().then())
-        dataSet.text().then(this.incomingMessage);
+        dataSet.text().then(this.showMessage);
       });
 
       document.getElementById('sendMessageForm').onsubmit = data => {
+        const input = document.getElementById('message');
+        input.classList.remove("border", "border-danger");
         data.preventDefault();
+
         if (this.isInputEmpty()) {
           return document.getElementById('message').classList.add("border", "border-danger");
         }
         this.handleMessage(this.webSocket);
       }
     },
-
-    addUser: function(userId){
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + userId).then(res =>{ return res})
+    showMessage: function (message) {
+        this.array.push({
+          message: message,
+          time: this.getCurrentTime()
+        });
     },
-
     addUserToCurrentChat: function () {
       document.getElementById('addUserForm').onsubmit = data =>
       {
@@ -216,69 +219,48 @@ export default {
         if (input.value === ""){
           input.classList.add("border", "border-danger");
         } else {
-          //is het een int validatie
           this.addUserToChat(input.value, sessionStorage.getItem("chatId"));
           input.value = '';
         }
       }
     },
-
     savePublicKey: function (userId, secret){
       let publicKey = this.formulatePublicKey(secret).toString();
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + userId + '/' + String(publicKey)).then(res => {return res})
     },
-
     getOtherPublicKey: function (userId, chatId){
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/security/' + userId + '/getOtherKey/' + chatId).then(responseData => {
         let publicKey = responseData.publicKey;
         sessionStorage.setItem("otherPublicKey", publicKey);
       });
     },
-
     addUserToChat: function (userId, chatId){
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + chatId + '/addUser/' + userId).then(res => {return res})
     },
-
     isInputEmpty: function() {
       return document.getElementById('message').value === "";
     },
-
     handleMessage: async function(webSocket) {
       let message = document.getElementById('message').value;
       let encryptedMessageBuffer = await this.encrypt(message);
       let encryptedMessage = new Uint8Array(encryptedMessageBuffer);
       let messageAndIv = encryptedMessage.toString() + "^" + sessionStorage.getItem("sendIv").toString();
 
-      this.outgoingMessage(message, this.getCurrentTime());
+      this.array.push({
+        message: message,
+        senderId: this.userId,
+        time: this.getCurrentTime()
+      });
+
       this.sendMessage(messageAndIv);
       webSocket.send(messageAndIv);
 
       document.getElementById('message').classList.remove("border", "border-danger");
       document.getElementById('message').value = '';
     },
-
     sendMessage: function (encryptedMessage) {
       this.scrollToBottom();
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + sessionStorage.getItem('userId') + '/1', encryptedMessage).then(res => { return res; })
-    },
-    outgoingMessage: function (message, time) {
-      const outgoingMessage = document.getElementById('content');
-
-      outgoingMessage.innerHTML += '' +
-        '<li class="replies mb-3">' +
-          '<small class="float-right margin-right-5px">'+ time +'</small>' +
-          '<br>' +
-          '<p> '+ this.filterMessage(message) +' </p>' +
-        '</li>'
-    },
-    incomingMessage: function (message, time = this.getCurrentTime()) {
-      const incomingMessage = document.getElementById('content');
-      incomingMessage.innerHTML += '' +
-        '<li class="sent mb-3">' +
-          '<small class="margin-left-5px">'+ time +'</small>' +
-          '<br>' +
-          '<p> '+ this.filterMessage(message) +' </p>' +
-        '</li>'
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {
@@ -301,9 +283,6 @@ export default {
         window.location.href = "/";
       }
     },
-    filterMessage: function (message) {
-      return message.replace(/<\/?[^>]+>/gi, '')
-    },
     getCurrentTime: function () {
       let date = new Date();
       return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
@@ -315,7 +294,6 @@ export default {
   }
 }
 </script>
-
 
 <style scoped>
 /* ===== Scrollbar CSS ===== */
