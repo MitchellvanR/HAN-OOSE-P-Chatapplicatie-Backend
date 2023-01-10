@@ -6,16 +6,11 @@ import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.models.Chat;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
-import org.mockito.stubbing.OngoingStubbing;
-
 import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -55,7 +50,7 @@ class ChatControllerTest {
             doNothing().when(mock).defineChatType();
         });
     }
-    
+
     @AfterEach
     void close(){
         chatMockController.close();
