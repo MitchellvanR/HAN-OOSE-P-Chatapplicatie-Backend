@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import UserMenu from '../views/menu.vue'
 import OpenChat from '../views/chat.vue'
-import Chatlist from '../views/chatlist.vue'
+import Chatlist from '@/views/chatList.vue'
 import Helplinelist from '../views/helplinelist.vue'
 
 Vue.use(VueRouter)
@@ -19,8 +19,8 @@ const routes = [
     component: OpenChat
   },
   {
-    path: '/chatlist',
-    name: 'openChatlist',
+    path: '/chatList',
+    name: 'openChatList',
     component: Chatlist
   },
   {
@@ -28,7 +28,6 @@ const routes = [
     name: 'openHelplinelist',
     component: Helplinelist
   }
-
 ]
 
 const router = new VueRouter({
