@@ -21,6 +21,11 @@ class IChatDAOTest {
         }
 
         @Override
+        public MessageDTO formatMessage(String senderId, String content, String time, String iv) {
+            return IChatDAO.super.formatMessage(senderId, content, time, iv);
+        }
+
+        @Override
         public String addChatToDatabase(String userId, String type) {
             return null;
         }
@@ -32,6 +37,11 @@ class IChatDAOTest {
 
         @Override
         public String getChatType(String chatId) {
+            return null;
+        }
+
+        @Override
+        public ArrayList<String> getChatIdFromUserId(String userId) {
             return null;
         }
     };

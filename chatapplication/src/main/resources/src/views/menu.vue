@@ -1,18 +1,21 @@
 <template>
   <div class="background">
     <div class="container mt-5">
-        <p class="display-4">Chatapplicatie Configuratie</p>
+      <div class="row">
+        <p class="display-4">Chat Menu</p>
+        <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Note! This is page is used for mocking purposes.</small>
         <hr>
-      <div class="position-relative border1px">
-        <div class="input_style w-100">
-          <form id="secret-form">
-            <input type="text" id="secret" v-model= "secret" placeholder="Insert password here..."/>
-            <label for="secret"></label>
-            <button type="button" @click.prevent="saveSecret(secret)">Submit</button>
-          </form>
+        <div class="position-relative border1px">
+          <div class="input_style w-100">
+            <form id="secret-form">
+              <input type="text" id="secret" v-model= "secret" placeholder="Insert password here..."/>
+              <label for="secret"></label>
+              <button type="button" @click.prevent="saveSecret(secret)">Submit</button>
+            </form>
+          </div>
         </div>
       </div>
-        <div class="row">
+      <div class="row">
           <div class="col-6 m-2">
             <div class="row mb-2">
               <b class="text-left">Selecteer een gebruiker:</b>
