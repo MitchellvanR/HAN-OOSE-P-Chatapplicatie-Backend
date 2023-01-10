@@ -5,13 +5,19 @@ import jdi.chat.application.data.SQLChatDAO;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.models.Chat;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
+import org.mockito.stubbing.OngoingStubbing;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class ChatControllerTest {
     private ChatController sut;
@@ -22,6 +28,8 @@ class ChatControllerTest {
     private String messageAndIv;
     private String[] messageAndIvArray;
     private ArrayList<MessageDTO> mockDTO;
+    private ArrayList<Chat> chatList;
+    private MockedConstruction<Chat> chatMockController;
     @BeforeEach
     void setup() {
         this.sut = new ChatController();
@@ -35,23 +43,31 @@ class ChatControllerTest {
         this.addedUserId = "3";
         this.chatId = "1";
 
-        ArrayList<Chat> chatList = new ArrayList<>();
+        chatList = new ArrayList<>();
         chatList.add(mockedChat);
-        sut.setChats(chatList);
 
-        Mockito.doReturn(chatId).when(mockedChat).getChatId();
+
+        chatMockController = Mockito.mockConstruction(Chat.class, (mock, context) ->{
+            when(mock.getChatId()).thenReturn(chatId);
+            when(mock.getChatHistory()).thenReturn(mockDTO);
+            when(mock.getChatType()).thenReturn("groep");
+            doNothing().when(mock).sendMessage(anyString(), anyString(), anyString());
+            doNothing().when(mock).defineChatType();
+        });
+    }
+    
+    @AfterEach
+    void close(){
+        chatMockController.close();
     }
 
     @Test
     void testGetChatHistorySUCCESS() {
-        // Arrange
-        Mockito.doReturn(mockDTO).when(mockedChat).getChatHistory();
-
         // Act
-        sut.getChatHistory(chatId);
+        Response response = sut.getChatHistory(chatId);
 
         // Assert
-        Mockito.verify(mockedChat).getChatHistory();
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
@@ -60,7 +76,6 @@ class ChatControllerTest {
         var nonExistingChatId = "4";
         var mockedDao = Mockito.mock(SQLChatDAO.class);
         mockedChat.setChatDAO(mockedDao);
-
         Mockito.doThrow(DatabaseRequestException.class).when(mockedChat).getChatHistory();
 
         // Act
@@ -72,14 +87,12 @@ class ChatControllerTest {
 
     @Test
     void testSendMessageSUCCESS() {
-        // Arrange
-        Mockito.doNothing().when(mockedChat).sendMessage(messageAndIvArray[0], userId, messageAndIvArray[1]);
-
         // Act
         sut.sendMessage(chatId, userId, messageAndIv);
 
         // Assert
-        Mockito.verify(mockedChat).sendMessage(messageAndIvArray[0], userId, messageAndIvArray[1]);
+        Chat newChatMock = chatMockController.constructed().get(0);
+        Mockito.verify(newChatMock).sendMessage(messageAndIvArray[0], userId, messageAndIvArray[1]);
     }
 
     @Test
@@ -93,15 +106,11 @@ class ChatControllerTest {
 
     @Test
     void testAddUserToChat() {
-        // Arrange
-        Mockito.doNothing().when(mockedChat).defineChatType();
-        Mockito.doReturn("group").when(mockedChat).getChatType();
-
         // Act
         sut.addUserToChat(chatId, addedUserId);
 
         // Assert
-        Mockito.verify(mockedChat).addUserToChat(Mockito.anyString());
+        Chat newChatMock = chatMockController.constructed().get(0);
+        Mockito.verify(newChatMock).addUserToChat(Mockito.anyString());
     }
-
 }

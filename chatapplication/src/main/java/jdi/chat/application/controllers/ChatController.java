@@ -87,8 +87,4 @@ public class ChatController {
         chats.add(chat);
         return chat;
     }
-
-    public void setChats(List<Chat> chatList) {
-        this.chats = chatList;
-    }
 }
