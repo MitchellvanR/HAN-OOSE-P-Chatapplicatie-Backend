@@ -3,11 +3,14 @@ package jdi.chat.application.controllers;
 import jakarta.ws.rs.core.Response;
 import jdi.chat.application.data.SQLChatDAO;
 import jdi.chat.application.data.dto.MessageDTO;
+import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.models.Chat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ChatControllerTest {
@@ -58,12 +61,13 @@ class ChatControllerTest {
         var mockedDao = Mockito.mock(SQLChatDAO.class);
         mockedChat.setChatDAO(mockedDao);
 
-        Mockito.doReturn("").when(mockedChat).getChatHistory();
+        Mockito.doThrow(DatabaseRequestException.class).when(mockedChat).getChatHistory();
 
         // Act
-        sut.getChatHistory(nonExistingChatId);
+        Response actual = sut.getChatHistory(nonExistingChatId);
 
         // Assert
+        assertEquals(Response.Status.OK.getStatusCode(), actual.getStatus());
     }
 
     @Test
