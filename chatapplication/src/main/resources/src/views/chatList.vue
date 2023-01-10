@@ -1,5 +1,15 @@
 <template>
+
   <div class="container mt-5">
+    <div class="announcements" id="announcements">
+      <div class="row mb-2">
+        <ul v-for="(announcements, index) in announcements" :key="index">
+          <li class="announcement">
+            <p>Aankondiging: {{announcements}}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
     <div class="row">
       <p class="display-4">User Menu</p>
       <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Note! This is page is used for mocking purposes.</small>
@@ -48,10 +58,12 @@ export default {
   data() {
     return {
       items: [],
+      announcements: [],
     }
   },
   mounted() {
     this.addToItems()
+    this.getAnnouncements();
   },
   methods: {
     addToItems: function() {
@@ -61,6 +73,14 @@ export default {
     },
     setChatId: function (chatId){
         sessionStorage.setItem("chatId", chatId);
+    },
+    saveAnnouncement: function (announcement, endDate){
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/announcement/' + announcement + '/' + endDate).then(res => {return res})
+    },
+    getAnnouncements: function (){
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/announcement/getAnnouncements').then(responseData => {
+        this.announcements.push(...responseData.announcements)
+      })
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {
