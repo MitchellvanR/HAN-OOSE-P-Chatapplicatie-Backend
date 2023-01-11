@@ -18,7 +18,6 @@ import static org.mockito.Mockito.doReturn;
 
 public class SQLAnnouncementDAOTest {
     private SQLAnnouncementDAO sut;
-    private SQLConnection mockedSQLConnection;
     private Connection mockedConnection;
     private PreparedStatement mockedStatement;
     private Queries queries;
@@ -38,7 +37,6 @@ public class SQLAnnouncementDAOTest {
         databaseAnnouncement = "This is a database announcement";
         announcements.add(databaseAnnouncement);
 
-        mockedSQLConnection = Mockito.mock(SQLConnection.class);
         mockedConnection = Mockito.mock(Connection.class);
         mockedStatement = Mockito.mock(PreparedStatement.class);
 

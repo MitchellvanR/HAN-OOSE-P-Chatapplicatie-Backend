@@ -11,6 +11,7 @@ import java.util.Properties;
 public class SQLConnection {
 
     protected static Connection connection;
+    protected static Properties properties = new Properties();
 
     private SQLConnection() {}
 
@@ -18,11 +19,10 @@ public class SQLConnection {
         if (connection == null) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Properties properties = new Properties();
                 properties.load(SQLChatDAO.class.getClassLoader().getResourceAsStream("database.properties"));
                 String url = properties.getProperty("connectionString");
                 connection = DriverManager.getConnection(url);
-            } catch (SQLException | IOException | ClassNotFoundException e) {
+            } catch (Exception e) {
                 throw new DatabaseRequestException(e);
             }
         }
@@ -31,4 +31,5 @@ public class SQLConnection {
     protected static void setConnection(Connection connection) {
         SQLConnection.connection = connection;
     }
+    protected static void setProperties(Properties properties) {SQLConnection.properties = properties;}
 }
