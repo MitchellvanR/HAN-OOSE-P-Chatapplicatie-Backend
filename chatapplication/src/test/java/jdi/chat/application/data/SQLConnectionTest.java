@@ -31,6 +31,9 @@ public class SQLConnectionTest {
     @Test
     void connectToDatabaseTest(){
         try {
+            // Arrange
+            SQLConnection.setProperties(new Properties());
+
             // Act
             SQLConnection.connectToDatabase();
         } catch (Exception e){
