@@ -25,7 +25,7 @@ public class SecurityControllerTest {
         chatId = "0";
         mockedSecurityDAO = Mockito.mock(SQLSecurityDAO.class);
         sut.securityDAO = mockedSecurityDAO;
-        empty = new String();
+        empty = "";
     }
 
     @Test
@@ -74,8 +74,6 @@ public class SecurityControllerTest {
         Mockito.when(mockedSecurityDAO.getOtherPublicKey(Mockito.anyString(), Mockito.anyString())).thenThrow(SQLException.class);
 
         //Assert
-        assertThrows(DatabaseRequestException.class, () -> {
-            sut.getOtherPublicKey(userId, chatId);
-        });
+        assertThrows(DatabaseRequestException.class, () -> sut.getOtherPublicKey(userId, chatId));
     }
 }

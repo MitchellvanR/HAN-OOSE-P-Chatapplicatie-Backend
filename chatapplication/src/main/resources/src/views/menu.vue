@@ -8,9 +8,9 @@
         <div class="position-relative border1px">
           <div class="input_style w-100">
             <form id="secret-form">
-              <input type="text" id="secret" v-model= "secret" placeholder="Insert password here..."/>
+              <input type="text" id="secret" v-model= "secret" placeholder="Uw wachtwoord hier..." size="40"/>
               <label for="secret"></label>
-              <button type="button" @click.prevent="saveSecret(secret)">Submit</button>
+              <button type="button" @click.prevent="saveSecret(secret)" class="btn btn-outline-primary">Verzend</button>
             </form>
           </div>
         </div>
@@ -37,7 +37,7 @@
               <b>Log in als administrator:</b>
             </div>
             <div class="row">
-              <!-- <router-link to="/chat" custom v-slot="{ navigate }">--><button id="administrator" role="link" class="btn btn-primary">Administrator #1</button> <!--</router-link>-->
+              <!-- <router-link to="/chatlist" custom v-slot="{ navigate }">--><button id="administrator" role="link" class="btn btn-primary" v-on:click="setUserId('Admin')">Administrator #1</button><!--</router-link>-->
             </div>
           </div>
         </div>
