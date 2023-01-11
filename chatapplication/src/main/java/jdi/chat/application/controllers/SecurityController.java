@@ -34,7 +34,7 @@ public class SecurityController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOtherPublicKey(@PathParam("userId") String userId, @PathParam("chatId") String chatId){
-        String otherPublicKey = null;
+        String otherPublicKey;
         try {
             otherPublicKey = securityDAO.getOtherPublicKey(userId, chatId);
         } catch (SQLException e) {

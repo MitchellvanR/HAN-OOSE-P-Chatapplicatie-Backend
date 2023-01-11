@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -18,7 +19,6 @@ import static org.mockito.Mockito.*;
 class ChatControllerTest {
     private ChatController sut;
     private Chat mockedChat;
-    private String iv;
     private String chatType;
     private String chatId;
     private String userId;
@@ -26,7 +26,6 @@ class ChatControllerTest {
     private String messageAndIv;
     private String[] messageAndIvArray;
     private ArrayList<MessageDTO> mockDTO;
-    private ArrayList<Chat> chatList;
     private ArrayList<String> userlist;
     private ArrayList<String> chatIdList;
     private MockedConstruction<Chat> chatMockController;
@@ -35,10 +34,10 @@ class ChatControllerTest {
         sut = new ChatController();
         mockDTO = new ArrayList<>();
         userlist = new ArrayList<>();
-        chatList = new ArrayList<>();
+        ArrayList<Chat> chatList = new ArrayList<>();
         chatIdList = new ArrayList<>();
         mockedChat = Mockito.mock(Chat.class);
-        iv = "23,91,173,185,232,253,67,46,157,2,233,184,163,162,104,197";
+        String iv = "23,91,173,185,232,253,67,46,157,2,233,184,163,162,104,197";
         messageAndIv = "Hello World" + "^" + iv;
         messageAndIvArray = messageAndIv.split("\\^");
         userId = "1";
@@ -111,7 +110,7 @@ class ChatControllerTest {
     }
 
     @Test
-    void testAddUserToChat() {
+    void testAddUserToChat() throws SQLException {
         // Act
         sut.addUserToChat(chatId, addedUserId);
 
@@ -130,7 +129,7 @@ class ChatControllerTest {
         verify(newChatMock, times(1)).addUserToChat(anyString());
     }
 
-    @Test void testGetChatIds(){
+    @Test void testGetChatIds() throws SQLException {
         // Arrange
         try (MockedStatic<Chat> chatMockedStatic = Mockito.mockStatic(Chat.class)) {
             chatMockedStatic.when(() -> Chat.getChatIdFromUserId(anyString())).thenReturn(chatIdList);
