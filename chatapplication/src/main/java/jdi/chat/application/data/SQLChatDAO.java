@@ -19,10 +19,10 @@ public class SQLChatDAO implements IChatDAO {
             ArrayList<MessageDTO> chatHistory = new ArrayList<>();
             while (resultSet.next()) {
                 chatHistory.add(formatMessage(
-                        resultSet.getString("senderId"),
-                        resultSet.getString("message"),
-                        resultSet.getString("time"),
-                        resultSet.getString("iv")
+                    resultSet.getString("senderId"),
+                    resultSet.getString("message"),
+                    resultSet.getString("time"),
+                    resultSet.getString("iv")
                 ));
             }
             return chatHistory;
