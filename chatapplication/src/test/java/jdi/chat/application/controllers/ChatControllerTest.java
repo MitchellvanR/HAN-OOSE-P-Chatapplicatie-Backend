@@ -17,6 +17,8 @@ import static org.mockito.Mockito.*;
 class ChatControllerTest {
     private ChatController sut;
     private Chat mockedChat;
+    private String iv;
+    private String chatType;
     private String chatId;
     private String userId;
     private String addedUserId;
@@ -24,27 +26,24 @@ class ChatControllerTest {
     private String[] messageAndIvArray;
     private ArrayList<MessageDTO> mockDTO;
     private ArrayList<Chat> chatList;
-    private MockedConstruction<Chat> chatMockController;
     private ArrayList<String> userlist;
-    private String chatType;
+    private MockedConstruction<Chat> chatMockController;
     @BeforeEach
     void setup() {
-        this.sut = new ChatController();
-
-        this.mockedChat = Mockito.mock(Chat.class);
-        this.mockDTO = new ArrayList<>();
-        String iv = "23,91,173,185,232,253,67,46,157,2,233,184,163,162,104,197";
-        this.messageAndIv = "Hello World" + "^" + iv;
-        this.messageAndIvArray = messageAndIv.split("\\^");
-        this.userId = "1";
-        this.addedUserId = "3";
-        this.chatId = "1";
+        sut = new ChatController();
+        mockDTO = new ArrayList<>();
         userlist = new ArrayList<>();
+        chatList = new ArrayList<>();
+        mockedChat = Mockito.mock(Chat.class);
+        iv = "23,91,173,185,232,253,67,46,157,2,233,184,163,162,104,197";
+        messageAndIv = "Hello World" + "^" + iv;
+        messageAndIvArray = messageAndIv.split("\\^");
+        userId = "1";
+        addedUserId = "3";
+        chatId = "1";
         userlist.add("1");
         userlist.add("2");
         chatType = "standaard";
-
-        chatList = new ArrayList<>();
         chatList.add(mockedChat);
         sut.setChats(chatList);
 
