@@ -2,12 +2,13 @@
 
   <div class="container background">
     <p class="display-4">Menu</p>
-    <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Let op! Dit scherm bestaat voor test en demo redenen.</small>
+    <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Let op! Dit scherm wordt alleen gebruikt voor testen en het geven van demo's.</small>
+    <hr class="mb-5">
+
     <div class="row">
       <div class="col-lg-6">
         <form id="secret-form">
-          <hr class="mb-5">
-          <h4>Voer identificatie in, <i class="fa fa-question-circle text-info" aria-hidden="true" title="Omdat de chats beveiligd zijn met End to End Encryption heeft iedere gebruiker een code nodig. Als je een nieuwe gebruiker bent is jouw eerste ingevoerde code je identificatie."></i></h4>
+          <h5>Voer identificatie in, <i class="fa fa-question-circle text-info" aria-hidden="true" title="Omdat de chats beveiligd zijn met End to End Encryption heeft iedere gebruiker een code nodig. Als je een nieuwe gebruiker bent is jouw eerste ingevoerde code je identificatie."></i></h5>
           <div class="input-group mb-5">
             <div class="input-group-prepend">
               <button type="button" class="btn btn-outline-dark" @click.prevent="saveSecret(secret)"><i class="fa fa-check" aria-hidden="true"></i></button>
@@ -24,15 +25,15 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="userId in users" :key="userId">
-            <td>{{userId}}</td>
-            <td>
-              <router-link to="/chat" custom v-slot="{ navigate }">
-                <button @click="navigate" role="link" class="btn" v-on:click="setUserId(userId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
-              </router-link>
-            </td>
-            <td></td>
-          </tr>
+<!--          <tr v-for="userId in users" :key="userId">-->
+<!--            <td>{{userId}}</td>-->
+<!--            <td>-->
+<!--              <router-link to="/chat" custom v-slot="{ navigate }">-->
+<!--                <button @click="navigate" role="link" class="btn" v-on:click="setUserId(userId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>-->
+<!--              </router-link>-->
+<!--            </td>-->
+<!--            <td></td>-->
+<!--          </tr>-->
           <tr>
             <td>1</td>
             <td></td>
