@@ -9,6 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +28,7 @@ class ChatControllerTest {
     private ArrayList<MessageDTO> mockDTO;
     private ArrayList<Chat> chatList;
     private ArrayList<String> userlist;
+    private ArrayList<String> chatIdList;
     private MockedConstruction<Chat> chatMockController;
     @BeforeEach
     void setup() {
@@ -34,6 +36,7 @@ class ChatControllerTest {
         mockDTO = new ArrayList<>();
         userlist = new ArrayList<>();
         chatList = new ArrayList<>();
+        chatIdList = new ArrayList<>();
         mockedChat = Mockito.mock(Chat.class);
         iv = "23,91,173,185,232,253,67,46,157,2,233,184,163,162,104,197";
         messageAndIv = "Hello World" + "^" + iv;
@@ -43,6 +46,7 @@ class ChatControllerTest {
         chatId = "1";
         userlist.add("1");
         userlist.add("2");
+        chatIdList.add("1");
         chatType = "standaard";
         chatList.add(mockedChat);
         sut.setChats(chatList);
@@ -124,5 +128,18 @@ class ChatControllerTest {
         // Assert
         Chat newChatMock = chatMockController.constructed().get(0);
         verify(newChatMock, times(1)).addUserToChat(anyString());
+    }
+
+    @Test void testGetChatIds(){
+        // Arrange
+        try (MockedStatic<Chat> chatMockedStatic = Mockito.mockStatic(Chat.class)) {
+            chatMockedStatic.when(() -> Chat.getChatIdFromUserId(anyString())).thenReturn(chatIdList);
+
+            // Act
+            int actual = sut.getChatIds(userId).getStatus();
+
+            // Assert
+            assertEquals(Response.Status.OK.getStatusCode(), actual);
+        }
     }
 }
