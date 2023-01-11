@@ -1,11 +1,8 @@
 package jdi.chat.application.data;
 
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
-
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class SQLConnection {

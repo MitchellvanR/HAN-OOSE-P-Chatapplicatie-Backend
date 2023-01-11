@@ -11,11 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class SQLConnectionTest {
-    private Properties mockedProperties;
     @BeforeEach
     void setup() {
-        mockedProperties = Mockito.mock(Properties.class);
         SQLConnection.setConnection(null);
+        SQLConnection.setProperties(new Properties());
     }
 
     @AfterAll
@@ -27,9 +26,6 @@ public class SQLConnectionTest {
     @Test
     void connectToDatabaseTest(){
         try {
-            // Arrange
-            SQLConnection.setProperties(new Properties());
-
             // Act
             SQLConnection.connectToDatabase();
         } catch (Exception e){
@@ -40,6 +36,7 @@ public class SQLConnectionTest {
     @Test
     void connectToDatabaseErrorTest() {
         // Arrange
+        Properties mockedProperties = Mockito.mock(Properties.class);
         SQLConnection.setProperties(mockedProperties);
         Mockito.when(mockedProperties.getProperty("jdbc:mysql://localhost/prolog-jdi?user=chatUser&password=chatUserPass&serverTimezone=UTC")).thenThrow(RuntimeException.class);
 
