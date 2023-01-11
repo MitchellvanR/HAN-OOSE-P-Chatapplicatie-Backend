@@ -5,10 +5,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.io.IOException;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
