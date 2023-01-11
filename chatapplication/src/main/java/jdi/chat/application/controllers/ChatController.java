@@ -6,7 +6,6 @@ import jakarta.ws.rs.core.Response;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.models.Chat;
 import net.minidev.json.JSONObject;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;

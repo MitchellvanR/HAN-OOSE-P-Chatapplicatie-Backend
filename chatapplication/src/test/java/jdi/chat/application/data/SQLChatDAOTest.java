@@ -123,7 +123,6 @@ class SQLChatDAOTest {
 
         // Act
         Exception e = assertThrows(DatabaseRequestException.class, () -> sut.saveMessage(message, senderId, chatId, iv));
-
         var actual = e.getMessage();
 
         // Assert
@@ -134,7 +133,6 @@ class SQLChatDAOTest {
     void testSaveMessageDatabaseRequestExceptionWhenStatementIsNull() {
         // Act
         Exception e = assertThrows(DatabaseRequestException.class, () -> sut.saveMessage(message, senderId, chatId, iv));
-
         var actual = e.getMessage();
 
         // Assert
@@ -171,7 +169,6 @@ class SQLChatDAOTest {
 
         // Act
         Exception e = assertThrows(DatabaseRequestException.class, () -> sut.addUserToChat(chatId, userId));
-
         var actual = e.getMessage();
 
         // Assert
@@ -185,7 +182,6 @@ class SQLChatDAOTest {
 
         // Act
         Exception e = assertThrows(DatabaseRequestException.class, () -> sut.addUserToChat(chatId, userId));
-
         var actual = e.getMessage();
 
         // Assert

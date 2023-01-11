@@ -6,13 +6,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -24,7 +22,6 @@ public class SQLAnnouncementDAOTest {
     private Connection mockedConnection;
     private PreparedStatement mockedStatement;
     private Queries queries;
-
     private String announcement;
     private String endDate;
     private String databaseAnnouncement;

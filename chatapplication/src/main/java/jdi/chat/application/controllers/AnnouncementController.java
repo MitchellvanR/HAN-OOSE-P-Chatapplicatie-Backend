@@ -7,7 +7,6 @@ import jdi.chat.application.data.IAnnouncementDAO;
 import jdi.chat.application.data.SQLAnnouncementDAO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import net.minidev.json.JSONObject;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 

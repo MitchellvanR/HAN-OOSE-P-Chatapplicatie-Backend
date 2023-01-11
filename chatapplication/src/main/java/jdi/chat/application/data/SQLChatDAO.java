@@ -61,7 +61,6 @@ public class SQLChatDAO implements IChatDAO {
         } catch (SQLException e) {
             throw new DatabaseRequestException(e);
         }
-
     }
 
     @Override
