@@ -23,7 +23,6 @@ class SQLChatDAOTest {
     private Connection mockedConnection;
     private PreparedStatement mockedStatement;
     private Queries queries;
-
     private String chatId;
     private String senderId;
     private String message;
