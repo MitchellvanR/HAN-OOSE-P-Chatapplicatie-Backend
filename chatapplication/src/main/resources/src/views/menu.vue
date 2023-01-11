@@ -25,15 +25,15 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="userId in users" :key="userId">
-            <td>{{userId}}</td>
-            <td>
-              <router-link to="/chat" custom v-slot="{ navigate }">
-                <button @click="navigate" role="link" class="btn" v-on:click="setUserId(userId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
-              </router-link>
-            </td>
-            <td></td>
-          </tr>
+<!--          <tr v-for="userId in users" :key="userId">-->
+<!--            <td>{{userId}}</td>-->
+<!--            <td>-->
+<!--              <router-link to="/chat" custom v-slot="{ navigate }">-->
+<!--                <button @click="navigate" role="link" class="btn" v-on:click="setUserId(userId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>-->
+<!--              </router-link>-->
+<!--            </td>-->
+<!--            <td></td>-->
+<!--          </tr>-->
           <tr>
             <td>1</td>
             <td></td>
