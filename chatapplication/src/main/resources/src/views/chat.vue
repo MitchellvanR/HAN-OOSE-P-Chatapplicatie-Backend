@@ -1,9 +1,9 @@
 <template>
   <div id="frame" class="mt-3">
-    <div class="content border">
-      <div class="contact-profile">
-        <div class="row">
-          <strong><u>Receiver</u></strong>
+    <div class="content">
+      <div class="contact-profile row mb-2">
+        <div class="col-lg-12">
+          <strong>Naam ontvanger</strong>
         </div>
       </div>
       <div class="messages" id="messages">
@@ -21,26 +21,27 @@
         </ul>
       </div>
       <div class="message-input border-top border-dark p-2">
-        <form id="sendMessageForm" class="wrap">
-          <input type="text" id="message" placeholder="Write your message..." />
-          <button class="btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-          <button class="btn" type="button"><i class="fa fa-paperclip" aria-hidden="true"></i></button>
-          <button class="btn" type="button" @click="openForm()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+        <div class="row mb-2">
+          <form id="sendMessageForm" class="wrap">
+            <input type="text" id="message" placeholder="Stuur een bericht..." />
+            <button class="btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+            <button class="btn" type="button" @click="toggleForm()"><i class="fa fa-users" aria-hidden="true"></i></button>
+          </form>
+        </div>
+        <div class="row">
           <div class="form-popup" id="addUserToCurrentChat">
-            <form id="addUserForm" class="wrap">
-              <div class="row mb-2">
-                <input type="text" id="userId" placeholder="Enter userId" />
-                <button class="btn" type="submit"><i class="fa fa-check" aria-hidden="true"></i></button>
-                <button class="btn" type="button" @click="closeForm()"><i class="fa fa-times" aria-hidden="true"></i></button>
+            <form id="addUserForm" class="row">
+              <div class="col-lg-12">
+                <input type="text" id="userId" placeholder="Gebruiker toevoegen (userId)">
+                <button class="btn" type="button" @click="addUserToCurrentChat()"><i class="fa fa-check" aria-hidden="true"></i></button>
               </div>
             </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   name: 'OpenChat',
@@ -48,15 +49,14 @@ export default {
   data() {
     return {
       array: [],
+      otherPublicKey: '',
       userId: sessionStorage.getItem('userId'),
+      chatId: sessionStorage.getItem('chatId'),
     }
   },
   mounted() {
     this.getChatLog();
-    this.savePublicKey(sessionStorage.getItem('userId'), sessionStorage.getItem('secret'));
     this.delay(30);
-    sessionStorage.setItem('chatId', '1');
-    this.addUserToCurrentChat();
   },
   destroyed() {
     if (this.webSocket.readyState === WebSocket.OPEN) {
@@ -65,11 +65,7 @@ export default {
     }
   },
   methods: {
-    // Deze comment (global BigInt) is nodig om BigInts in deze file werkend te krijgen. Zonder deze comment werken ze dus niet.
     /* global BigInt */
-    formulatePublicKey: function (secret) {
-      return BigInt("2") ** BigInt(secret) % BigInt("32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559");
-    },
     formulatePrivateKey: function (otherPublicKey, secret) {
       return (BigInt(otherPublicKey) ** BigInt(secret)) % BigInt("32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559");
     },
@@ -102,9 +98,9 @@ export default {
       return new TextDecoder().decode(message);
     },
     encrypt: async function (message) {
-      this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
+      this.getOtherPublicKey()
       await this.delay(30);
-      await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
+      await this.importCryptoKey(this.otherPublicKey);
       let iv = this.generateIv();
       sessionStorage.setItem("sendIv", iv.toString());
       let encodedMessage = this.encodeMessage(message);
@@ -116,7 +112,6 @@ export default {
           this.cryptoKey,
           encodedMessage
       );
-
     },
     cleanForDecrypt: function (message) {
       let cleanMessage = message.replace(/['"]/g, '');
@@ -165,29 +160,26 @@ export default {
     getChatLog: function () {
       this.runWebSocket();
       this.validateSession();
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + sessionStorage.getItem('chatId')).then(async responseData => {
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + this.chatId).then(async responseData => {
         for (let message of responseData.messages) {
-          this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
+          this.getOtherPublicKey()
           await this.delay(30);
-          await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
+          await this.importCryptoKey(this.otherPublicKey);
           message.message = await this.decrypt(this.cryptoKey, message.message, message.iv);
         }
         this.array.push(...responseData.messages);
       }).then(() => this.scrollToBottom());
     },
-    openForm: function () {
-      document.getElementById("addUserToCurrentChat").style.display = "block";
-    },
-    closeForm: function () {
-      document.getElementById("addUserToCurrentChat").style.display = "none";
+    toggleForm: function () {
+      document.getElementById("addUserToCurrentChat").classList.toggle("form-popup");
     },
     runWebSocket: function () {
       this.webSocket = new WebSocket('ws://localhost:443');
 
       this.webSocket.addEventListener('message', async data => {
-        this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
+        this.getOtherPublicKey()
         await this.delay(30);
-        await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
+        await this.importCryptoKey(this.otherPublicKey);
         let dataSet = await this.websocketDecrypt(await data.data.text().then())
         dataSet.text().then(this.showMessage);
       });
@@ -210,28 +202,19 @@ export default {
         });
     },
     addUserToCurrentChat: function () {
-      document.getElementById('addUserForm').onsubmit = data =>
-      {
-        const input = document.getElementById('userId');
-        input.classList.remove("border", "border-danger");
+      const input = document.getElementById('userId');
+      input.classList.remove("border", "border-danger");
 
-        data.preventDefault();
-        if (input.value === ""){
-          input.classList.add("border", "border-danger");
-        } else {
-          this.addUserToChat(input.value, sessionStorage.getItem("chatId"));
-          input.value = '';
-        }
+      if (input.value === "" || isNaN(input.value)){
+        input.classList.add("border", "border-danger");
+      } else {
+        this.addUserToChat(input.value, this.chatId);
+        input.value = '';
       }
     },
-    savePublicKey: function (userId, secret){
-      let publicKey = this.formulatePublicKey(secret).toString();
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + userId + '/' + String(publicKey)).then(res => {return res})
-    },
-    getOtherPublicKey: function (userId, chatId){
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/security/' + userId + '/getOtherKey/' + chatId).then(responseData => {
-        let publicKey = responseData.publicKey;
-        sessionStorage.setItem("otherPublicKey", publicKey);
+    getOtherPublicKey: function (){
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/security/' + this.userId + '/getOtherKey/' + this.chatId).then(responseData => {
+        this.otherPublicKey = responseData.publicKey;
       });
     },
     addUserToChat: function (userId, chatId){
@@ -260,7 +243,7 @@ export default {
     },
     sendMessage: function (encryptedMessage) {
       this.scrollToBottom();
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + sessionStorage.getItem('userId') + '/1', encryptedMessage).then(res => { return res; })
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + this.userId + '/'+ this.chatId, encryptedMessage).then(res => { return res; })
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {
