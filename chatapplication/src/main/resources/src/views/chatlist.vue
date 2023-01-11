@@ -6,10 +6,10 @@
       <hr>
     </div>
     <div class="row">
-      <form id="newChatForm" class="wrap">
+      <form id="makeHelplineChat" class="wrap">
         <div class="col-lg-12">
           <router-link to="/chat" custom v-slot="{ navigate }">
-            <button class="btn text-info fa-lg float-right" @click="navigate" role="link" class="btn" v-on:click="setChatId(this.chatId)">
+            <button class="btn text-info fa-lg float-right" type="submit" @click="navigate" role="link" v-on:click="makeHelplineChat()">
               <i class="fa fa-info-circle" aria-hidden="true"></i> <small>Need help?</small>
             </button>
           </router-link>
@@ -56,40 +56,27 @@ export default {
     }
   },
   mounted() {
-    this.addToItems()
-    this.createChat()
+    this.getAllChatsFromUser()
   },
   methods: {
-    addToItems: function() {
+    getAllChatsFromUser: function() {
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/user/' + sessionStorage.getItem("userId")).then(responseData => {
         this.items.push(...responseData.chatIds);
       });
     },
-    createChat: function (){
-      document.getElementById('newChatForm').onsubmit = data =>
-      {
-        this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + sessionStorage.getItem("userId")).then(responseData => {
-          if(responseData.chatId) {
-            this.chatid = responseData.chatId;
-          } else {
-            
-          }
-        });
-        const input = document.getElementById('userId');
-        input.classList.remove("border", "border-danger");
-
-        data.preventDefault();
-        if (input.value === ""){
-          input.classList.add("border", "border-danger");
+    makeHelplineChat: function (){
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + sessionStorage.getItem("userId")).then(responseData => {
+        if(responseData.chatId) {
+          console.log(responseData.chatId)
+          this.setChatId(responseData.chatId);
+          console.log(sessionStorage.getItem('chatId'))
         } else {
-          this.addChatToDatabase(input.value);
-          input.value = '';
+          this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newHelpLineChat/' + sessionStorage.getItem("userId") + '/admin').then()
+          this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + sessionStorage.getItem("userId")).then(responseData => {
+            this.setChatId(responseData.chatId);
+          });
         }
-      }
-    },
-    addChatToDatabase: function (id) {
-      sessionStorage.setItem('userId', '1'); // mock
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + sessionStorage.getItem('userId')).then()
+      });
     },
     setChatId: function (chatId){
         sessionStorage.setItem("chatId", chatId);

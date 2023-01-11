@@ -8,7 +8,6 @@ import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.models.Chat;
 import net.minidev.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,13 +64,23 @@ public class ChatController {
     @POST
     @Path("/newChat/{userId}/{currentUser}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response addChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
-        String type = "standaard"; //mock
+        this.createChat("standaard", userId, otherUserId);
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("/newHelpLineChat/{userId}/{currentUser}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addHelplineChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
+        this.createChat("hulplijn", userId, otherUserId);
+        return Response.ok().build();
+    }
+
+    public void createChat(String type, String userId, String otherUserId){
         Chat chat = createNewChat("0");
         chat.addChatToDatabase(userId, type);
         chat.addUserToChat(otherUserId);
-        return Response.ok().build();
     }
 
     @GET

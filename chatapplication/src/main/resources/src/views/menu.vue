@@ -37,7 +37,7 @@
               <b>Log in als administrator:</b>
             </div>
             <div class="row">
-              <router-link to="/helplinelist" custom v-slot="{ navigate }"><button @click="navigate" id="administrator" role="link" class="btn btn-primary" v-on:click="setUserId(4)">Administrator #1</button></router-link>
+              <router-link to="/administration" custom v-slot="{ navigate }"><button @click="navigate" id="administrator" role="link" class="btn btn-primary" v-on:click="setUserId('admin')">Administrator #4</button></router-link>
             </div>
           </div>
         </div>

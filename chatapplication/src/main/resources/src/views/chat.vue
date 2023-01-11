@@ -52,10 +52,10 @@ export default {
     }
   },
   mounted() {
+    console.log(sessionStorage.getItem('chatId'))
     this.getChatLog();
     this.savePublicKey(sessionStorage.getItem('userId'), sessionStorage.getItem('secret'));
     this.delay(30);
-    sessionStorage.setItem('chatId', '1');
     this.addUserToCurrentChat();
   },
   destroyed() {
@@ -260,7 +260,7 @@ export default {
     },
     sendMessage: function (encryptedMessage) {
       this.scrollToBottom();
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + sessionStorage.getItem('userId') + '/1', encryptedMessage).then(res => { return res; })
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + sessionStorage.getItem('userId') + '/' + sessionStorage.getItem('chatId'), encryptedMessage).then(res => { return res; })
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {

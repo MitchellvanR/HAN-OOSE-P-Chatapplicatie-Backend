@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  name: "openHelplinelist",
+  name: "openAdministration",
   data() {
     return {
       array: []
@@ -49,6 +49,9 @@ export default {
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helplineList').then(responseData => {
         this.array.push(...responseData.helplineChats);
       });
+    },
+    setChatId: function (chatId){
+      sessionStorage.setItem("chatId", chatId);
     },
     sendHttpRequest: function(method, url, data) {
       return new Promise((resolve, reject) => {
