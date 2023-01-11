@@ -1,6 +1,18 @@
 .container {
     background: white;
+    padding: 50px;
 }
+
+.announcement{
+    list-style-type: none;
+    background: rgb(255, 230, 204);
+    padding: 10px;
+    width: 50%;
+    text-align: center;
+    margin: auto;
+    border: 2px solid;
+}
+
 .float-right {
     float: right;
 }
@@ -19,8 +31,6 @@
     max-height: 720px;
     background: #E6EAEA;
 }
-
-
 
 #frame .content {
     float: right;

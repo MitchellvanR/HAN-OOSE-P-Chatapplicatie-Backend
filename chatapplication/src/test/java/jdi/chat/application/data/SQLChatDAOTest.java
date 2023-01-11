@@ -23,7 +23,6 @@ class SQLChatDAOTest {
     private Connection mockedConnection;
     private PreparedStatement mockedStatement;
     private Queries queries;
-
     private String chatId;
     private String senderId;
     private String message;
@@ -91,9 +90,7 @@ class SQLChatDAOTest {
     @Test
     void testGetChatHistoryDatabaseRequestExceptionWhenStatementIsNull() {
         // Act
-        Exception e = assertThrows(DatabaseRequestException.class, () -> {
-            sut.getChatHistory(chatId);
-        });
+        Exception e = assertThrows(DatabaseRequestException.class, () -> sut.getChatHistory(chatId));
         var actual = e.getMessage();
 
         // Assert
@@ -124,10 +121,7 @@ class SQLChatDAOTest {
         }
 
         // Act
-        Exception e = assertThrows(DatabaseRequestException.class, () -> {
-            sut.saveMessage(message, senderId, chatId, iv);
-        });
-
+        Exception e = assertThrows(DatabaseRequestException.class, () -> sut.saveMessage(message, senderId, chatId, iv));
         var actual = e.getMessage();
 
         // Assert
@@ -137,10 +131,7 @@ class SQLChatDAOTest {
     @Test
     void testSaveMessageDatabaseRequestExceptionWhenStatementIsNull() {
         // Act
-        Exception e = assertThrows(DatabaseRequestException.class, () -> {
-            sut.saveMessage(message, senderId, chatId, iv);
-        });
-
+        Exception e = assertThrows(DatabaseRequestException.class, () -> sut.saveMessage(message, senderId, chatId, iv));
         var actual = e.getMessage();
 
         // Assert
@@ -176,10 +167,7 @@ class SQLChatDAOTest {
         }
 
         // Act
-        Exception e = assertThrows(DatabaseRequestException.class, () -> {
-            sut.addUserToChat(chatId, userId);
-        });
-
+        Exception e = assertThrows(DatabaseRequestException.class, () -> sut.addUserToChat(chatId, userId));
         var actual = e.getMessage();
 
         // Assert
@@ -192,10 +180,7 @@ class SQLChatDAOTest {
         var userId = "1";
 
         // Act
-        Exception e = assertThrows(DatabaseRequestException.class, () -> {
-            sut.addUserToChat(chatId, userId);
-        });
-
+        Exception e = assertThrows(DatabaseRequestException.class, () -> sut.addUserToChat(chatId, userId));
         var actual = e.getMessage();
 
         // Assert

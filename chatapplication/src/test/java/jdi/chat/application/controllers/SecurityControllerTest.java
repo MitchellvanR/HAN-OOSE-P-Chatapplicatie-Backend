@@ -1,10 +1,12 @@
 package jdi.chat.application.controllers;
 
 import jdi.chat.application.data.SQLSecurityDAO;
+import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import java.sql.SQLException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class SecurityControllerTest {
@@ -23,7 +25,7 @@ public class SecurityControllerTest {
         chatId = "0";
         mockedSecurityDAO = Mockito.mock(SQLSecurityDAO.class);
         sut.securityDAO = mockedSecurityDAO;
-        empty = new String();
+        empty = "";
     }
 
     @Test
@@ -64,7 +66,14 @@ public class SecurityControllerTest {
         } catch (SQLException e) {
             fail("An exception was thrown in test case: " + e.getMessage());
         }
+    }
 
+    @Test
+    void getOtherPublicKeyCatchesExceptionAndThrowsDatabaseRequestExceptionTest() throws SQLException {
+        //Arrange
+        Mockito.when(mockedSecurityDAO.getOtherPublicKey(Mockito.anyString(), Mockito.anyString())).thenThrow(SQLException.class);
 
+        //Assert
+        assertThrows(DatabaseRequestException.class, () -> sut.getOtherPublicKey(userId, chatId));
     }
 }

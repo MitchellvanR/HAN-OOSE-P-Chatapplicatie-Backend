@@ -53,7 +53,7 @@
       </div>
       <div class="col-lg-6">
         <h4>Administrator scherm</h4>
-        <a href=""><i class="fa fa-sign-out" aria-hidden="true"></i> Open het administrator menu</a>
+        <router-link to="/chatlist" custom v-slot="{ navigate }"><button @click="navigate" id="administrator" role="link" class="btn btn-primary" v-on:click="setUserId('Admin')"><i class="fa fa-sign-out" aria-hidden="true"></i>  Administrator</button></router-link>
       </div>
     </div>
   </div>

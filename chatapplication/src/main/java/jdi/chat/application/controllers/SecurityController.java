@@ -7,7 +7,6 @@ import jdi.chat.application.data.ISecurityDAO;
 import jdi.chat.application.data.SQLSecurityDAO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import net.minidev.json.JSONObject;
-
 import java.sql.SQLException;
 
 @Path("/security")
@@ -35,7 +34,7 @@ public class SecurityController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOtherPublicKey(@PathParam("userId") String userId, @PathParam("chatId") String chatId){
-        String otherPublicKey = null;
+        String otherPublicKey;
         try {
             otherPublicKey = securityDAO.getOtherPublicKey(userId, chatId);
         } catch (SQLException e) {

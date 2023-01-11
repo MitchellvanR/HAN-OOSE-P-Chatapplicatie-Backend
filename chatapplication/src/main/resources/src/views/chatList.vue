@@ -1,5 +1,30 @@
 <template>
   <div class="container mt-5">
+    <div class="announcements" id="announcements">
+      <div class="row mb-2">
+        <ul v-for="(announcements, index) in announcements" :key="index">
+          <li class="announcement">
+            <p>Aankondiging: {{announcements}}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div v-if="showAnnouncementMaker()" class="position-relative border1px">
+      <form id="getAnnouncementMaker">
+        <button type="button" @click.prevent="openForm()" class="btn btn-outline-primary">Nieuwe aankondiging toevoegen</button><br>
+      <div class="input_style w-100 form-popup" id="addAnnouncement">
+        <button type="button" @click.prevent="closeForm()" class="btn btn-outline-primary">Sluit aankondigingsformulier</button><br>
+        <b>Voeg een aankondiging toe</b>
+        <form id="announcement-form">
+          <label for="announcement" >Aankondiging:</label><br>
+          <input type="text" id="announcement" v-model= "announcement" placeholder="Voer hier de aankondiging in..." size="100"/><br>
+          <label for="endDate" >Einddatum:</label><br>
+          <input type="datetime-local" id="endDate" v-model="endDate"><br>
+          <button type="button" @click="saveAnnouncement(announcement, endDate)" class="btn btn-outline-primary">Verzend</button>
+        </form>
+      </div>
+      </form>
+    </div>
     <div class="row">
       <p class="display-4">Gebruiker Menu</p>
       <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Let op! Dit scherm wordt alleen gebruikt voor testen en het geven van demo's.</small>
@@ -55,12 +80,17 @@ export default {
   data() {
     return {
       items: [],
+      announcements: [],
+      announcement: "",
+      endDate:"",
+
     }
   },
   mounted() {
     this.savePublicKey();
     this.createChat();
     this.addToItems()
+    this.getAnnouncements();
   },
   methods: {
     /* global BigInt */
@@ -101,6 +131,23 @@ export default {
     setChatId: function (chatId){
       console.log(chatId, sessionStorage.getItem('chatId'))
     },
+    saveAnnouncement: function (announcement, endDate){
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/announcement/' + announcement + '/' + endDate).then(() => {window.location.reload();})
+    },
+    getAnnouncements: function (){
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/announcement/getAnnouncements').then(responseData => {
+        this.announcements.push(...responseData.announcements)
+      })
+    },
+    showAnnouncementMaker: function (){
+      return sessionStorage.getItem("userId") === "Admin";
+    },
+    openForm: function () {
+      document.getElementById("addAnnouncement").style.display = "block";
+    },
+    closeForm: function () {
+      document.getElementById("addAnnouncement").style.display = "none";
+    },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {
         const XmlHttpRequest = new XMLHttpRequest();
@@ -125,5 +172,7 @@ export default {
 </script>
 
 <style scoped>
-
+.form-popup {
+  display: none;
+}
 </style>
