@@ -17,7 +17,7 @@
         <b>Voeg een aankondiging toe</b>
         <form id="announcement-form">
           <label for="announcement" >Aankondiging:</label><br>
-          <input type="text" id="announcement" v-model= "announcement" placeholder="Voer hier de aankondiging in..." size="100"/><br>
+          <input type="text" id="announcement" v-model="announcement" placeholder="Voer hier de aankondiging in..." size="100"/><br>
           <label for="endDate" >Einddatum:</label><br>
           <input type="datetime-local" id="endDate" v-model="endDate"><br>
           <button type="button" @click="saveAnnouncement(announcement, endDate)" class="btn btn-outline-primary">Verzend</button>
