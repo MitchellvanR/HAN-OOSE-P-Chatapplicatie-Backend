@@ -13,6 +13,7 @@ import java.util.ArrayList;
 @Path ("/announcement")
 public class AnnouncementController {
     IAnnouncementDAO announcementDAO = new SQLAnnouncementDAO();
+
     @POST
     @Path("/{message}/{endDate}")
     @Consumes(MediaType.APPLICATION_JSON)

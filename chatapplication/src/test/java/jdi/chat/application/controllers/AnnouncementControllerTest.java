@@ -16,6 +16,7 @@ public class AnnouncementControllerTest {
     private String endDate;
     private IAnnouncementDAO mockedAnnouncementDAO;
     private ArrayList<String> announcements;
+
     @BeforeEach
     void setup(){
         sut = new AnnouncementController();

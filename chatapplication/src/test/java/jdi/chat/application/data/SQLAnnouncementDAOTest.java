@@ -64,7 +64,6 @@ public class SQLAnnouncementDAOTest {
         } catch (SQLException e) {
             fail("An exception was thrown in success test case: " + e.getMessage());
         }
-
     }
 
     @Test

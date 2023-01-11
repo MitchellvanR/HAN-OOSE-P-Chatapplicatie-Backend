@@ -82,7 +82,6 @@ export default {
   mounted() {
     this.addToItems()
     this.getAnnouncements();
-    this.closeForm();
   },
   methods: {
     addToItems: function() {
@@ -134,5 +133,7 @@ export default {
 </script>
 
 <style scoped>
-
+.form-popup {
+  display: none;
+}
 </style>
