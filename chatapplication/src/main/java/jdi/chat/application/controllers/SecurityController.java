@@ -7,7 +7,6 @@ import jdi.chat.application.data.ISecurityDAO;
 import jdi.chat.application.data.SQLSecurityDAO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import net.minidev.json.JSONObject;
-
 import java.sql.SQLException;
 
 @Path("/security")

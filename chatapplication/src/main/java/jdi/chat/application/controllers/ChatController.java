@@ -93,13 +93,11 @@ public class ChatController {
         return createNewChat(chatId);
     }
 
-    Chat createNewChat(String chatId) {
+    private Chat createNewChat(String chatId) {
         Chat chat = new Chat(chatId);
         chats.add(chat);
         return chat;
     }
 
-    public void setChats(List<Chat> chatList) {
-        this.chats = chatList;
-    }
+    public void setChats(List<Chat> chats) { this.chats = chats; }
 }
