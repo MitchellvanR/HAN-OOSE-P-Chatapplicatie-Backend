@@ -64,7 +64,5 @@ public class SecurityControllerTest {
         } catch (SQLException e) {
             fail("An exception was thrown in test case: " + e.getMessage());
         }
-
-
     }
 }
