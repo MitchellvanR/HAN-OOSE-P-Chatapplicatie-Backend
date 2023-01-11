@@ -60,4 +60,10 @@ describe('chat.vue', () => {
         wrapper.find('#closeForm').trigger('click');
         expect(listener.called);
     });
+
+    it('hoi', () => {
+        setWrapper();
+        wrapper.setData({mockUserId: 1})
+        expect(wrapper.vm.mockUserId).toBe(1);
+    })
 })

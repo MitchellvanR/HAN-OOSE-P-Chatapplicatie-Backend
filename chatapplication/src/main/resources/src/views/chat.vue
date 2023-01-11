@@ -49,6 +49,7 @@ export default {
     return {
       array: [],
       userId: sessionStorage.getItem('userId'),
+      mockUserId: 1,
     }
   },
   mounted() {

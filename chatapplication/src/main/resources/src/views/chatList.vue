@@ -11,9 +11,9 @@
     </div>
     <div v-if="showAnnouncementMaker()" class="position-relative border1px">
       <form id="getAnnouncementMaker">
-        <button type="button" @click.prevent="openForm()" class="btn btn-outline-primary">Nieuwe aankondiging toevoegen</button><br>
+        <button id="openForm" type="button" @click.prevent="openForm()" class="btn btn-outline-primary">Nieuwe aankondiging toevoegen</button><br>
       <div class="input_style w-100 form-popup" id="addAnnouncement">
-        <button type="button" @click.prevent="closeForm()" class="btn btn-outline-primary">Sluit aankondigingsformulier</button><br>
+        <button id="closeForm" type="button" @click.prevent="closeForm()" class="btn btn-outline-primary">Sluit aankondigingsformulier</button><br>
         <b>Voeg een aankondiging toe</b>
         <form id="announcement-form">
           <label for="announcement" >Aankondiging:</label><br>
