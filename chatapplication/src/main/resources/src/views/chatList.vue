@@ -53,16 +53,12 @@
         <table class="table table-hover m-4 w-100">
           <thead>
           <tr>
-            <th>ChatId</th>
             <th>Gebruikers</th>
             <th>Acties</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="chat in chats"  :key="chat">
-            <td>
-              Chat {{chat.chatId}}
-            </td>
             <td>
               <p>
                 <span v-for="user in chat.users" :key="user">
@@ -120,10 +116,9 @@ export default {
         input.classList.remove("border", "border-danger");
 
         data.preventDefault();
-        if (input.value === ""){
+        if (input.value === "" || isNaN(input.value) || input.value === sessionStorage.getItem("userId")){
           input.classList.add("border", "border-danger");
         } else {
-          //is het een int validatie
           this.addChatToDatabase(input.value);
           input.value = '';
         }
