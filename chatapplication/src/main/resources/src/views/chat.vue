@@ -55,6 +55,7 @@ export default {
     }
   },
   mounted() {
+    this.getChatType(sessionStorage.getItem('chatId'))
     this.getChatLog();
     this.delay(30);
   },
@@ -66,6 +67,11 @@ export default {
   },
   methods: {
     /* global BigInt */
+    getChatType: function (chatId) {
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/getChatType/' + chatId).then(responseData => {
+        sessionStorage.setItem('chatType', responseData.chatType);
+      })
+    },
     formulatePrivateKey: function (otherPublicKey, secret) {
       return (BigInt(otherPublicKey) ** BigInt(secret)) % BigInt("32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559");
     },
@@ -162,10 +168,12 @@ export default {
       this.validateSession();
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + this.chatId).then(async responseData => {
         for (let message of responseData.messages) {
-          this.getOtherPublicKey()
-          await this.delay(30);
-          await this.importCryptoKey(this.otherPublicKey);
-          message.message = await this.decrypt(this.cryptoKey, message.message, message.iv);
+          if (sessionStorage.getItem('chatType') !== "groep") {
+            this.getOtherPublicKey()
+            await this.delay(30);
+            await this.importCryptoKey(this.otherPublicKey);
+            message.message = await this.decrypt(this.cryptoKey, message.message, message.iv);
+          }
         }
         this.array.push(...responseData.messages);
       }).then(() => this.scrollToBottom());
@@ -177,11 +185,15 @@ export default {
       this.webSocket = new WebSocket('ws://localhost:443');
 
       this.webSocket.addEventListener('message', async data => {
-        this.getOtherPublicKey()
-        await this.delay(30);
-        await this.importCryptoKey(this.otherPublicKey);
-        let dataSet = await this.websocketDecrypt(await data.data.text().then())
-        dataSet.text().then(this.showMessage);
+        if (sessionStorage.getItem('chatType') === "groep") {
+          data.data.text().then(this.showMessage);
+        } else {
+          this.getOtherPublicKey()
+          await this.delay(30);
+          await this.importCryptoKey(this.otherPublicKey);
+          let dataSet = await this.websocketDecrypt(await data.data.text().then())
+          dataSet.text().then(this.showMessage);
+        }
       });
 
       document.getElementById('sendMessageForm').onsubmit = data => {
@@ -228,6 +240,7 @@ export default {
       let encryptedMessageBuffer = await this.encrypt(message);
       let encryptedMessage = new Uint8Array(encryptedMessageBuffer);
       let messageAndIv = encryptedMessage.toString() + "^" + sessionStorage.getItem("sendIv").toString();
+      let groupMessageAndIv = message + "^" + sessionStorage.getItem('sendIv').toString();
 
       this.array.push({
         message: message,
@@ -235,8 +248,13 @@ export default {
         time: this.getCurrentTime()
       });
 
-      this.sendMessage(messageAndIv);
-      webSocket.send(messageAndIv);
+      if (sessionStorage.getItem('chatType') === "groep") {
+        this.sendMessage(groupMessageAndIv)
+        webSocket.send(groupMessageAndIv)
+      } else {
+        this.sendMessage(messageAndIv);
+        webSocket.send(messageAndIv);
+      }
 
       document.getElementById('message').classList.remove("border", "border-danger");
       document.getElementById('message').value = '';
