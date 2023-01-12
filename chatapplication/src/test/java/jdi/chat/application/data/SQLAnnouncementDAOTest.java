@@ -16,9 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.doReturn;
 
-public class SQLAnnouncementDAOTest {
+class SQLAnnouncementDAOTest {
     private SQLAnnouncementDAO sut;
-    private SQLConnection mockedSQLConnection;
     private Connection mockedConnection;
     private PreparedStatement mockedStatement;
     private Queries queries;
@@ -38,7 +37,6 @@ public class SQLAnnouncementDAOTest {
         databaseAnnouncement = "This is a database announcement";
         announcements.add(databaseAnnouncement);
 
-        mockedSQLConnection = Mockito.mock(SQLConnection.class);
         mockedConnection = Mockito.mock(Connection.class);
         mockedStatement = Mockito.mock(PreparedStatement.class);
 
@@ -51,7 +49,7 @@ public class SQLAnnouncementDAOTest {
     }
 
     @Test
-    void saveAnnouncementTest() {
+    void saveAnnouncementSuccessTest() {
         try {
             // Arrange
             Mockito.when(mockedConnection.prepareStatement(queries.getQuery("saveAnnouncementQuery"))).thenReturn(mockedStatement);
@@ -67,7 +65,7 @@ public class SQLAnnouncementDAOTest {
     }
 
     @Test
-    void saveAnnouncementErrorTest() throws SQLException {
+    void saveAnnouncementSQLExceptionTest() throws SQLException {
         // Arrange
         Mockito.when(mockedConnection.prepareStatement(queries.getQuery("saveAnnouncementQuery"))).thenReturn(mockedStatement);
         Mockito.when(mockedStatement.executeUpdate()).thenThrow(new SQLException());
@@ -77,7 +75,7 @@ public class SQLAnnouncementDAOTest {
     }
 
     @Test
-    void getAnnouncementsTest() {
+    void getAnnouncementsSuccessTest() {
         // Arrange
         var expected = announcements;
         var mockedResults = Mockito.mock(ResultSet.class);
@@ -106,7 +104,7 @@ public class SQLAnnouncementDAOTest {
     }
 
     @Test
-    void getAnnouncementsErrorTest() throws SQLException {
+    void getAnnouncementsSQLExceptionTest() throws SQLException {
         //Arrange
         Mockito.when(mockedConnection.prepareStatement(queries.getQuery("getAnnouncementsQuery"))).thenReturn(mockedStatement);
         Mockito.when(mockedStatement.executeQuery()).thenThrow(new SQLException());

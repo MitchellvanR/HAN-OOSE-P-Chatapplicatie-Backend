@@ -13,7 +13,7 @@ class ConfigTest {
     }
 
     @Test
-    void testConfigurationLoader() {
+    void configurationLoaderSuccessTest() {
         // Arrange
         var key = "test";
         var expected = "Hello config!";
