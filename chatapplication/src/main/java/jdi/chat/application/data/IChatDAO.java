@@ -2,7 +2,6 @@ package jdi.chat.application.data;
 
 import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
