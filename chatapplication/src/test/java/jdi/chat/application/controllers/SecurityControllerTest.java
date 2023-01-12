@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class SecurityControllerTest {
+class SecurityControllerTest {
     private SecurityController sut;
     private String userId;
     private String publicKey;
@@ -29,7 +29,7 @@ public class SecurityControllerTest {
     }
 
     @Test
-    void addUserTest(){
+    void addUserSuccessTest(){
         // Arrange
         Mockito.doNothing().when(mockedSecurityDAO).addUser(userId);
 
@@ -41,7 +41,7 @@ public class SecurityControllerTest {
     }
 
     @Test
-    void savePublicKeyTest(){
+    void savePublicKeySuccessTest(){
         // Arrange
         Mockito.doNothing().when(mockedSecurityDAO).savePublicKey(userId, publicKey);
 
@@ -53,7 +53,7 @@ public class SecurityControllerTest {
     }
 
     @Test
-    void getOtherPublicKeyTest(){
+    void getOtherPublicKeySuccessTest(){
         // Arrange
         try {
             Mockito.doReturn(empty).when(mockedSecurityDAO).getOtherPublicKey(userId, chatId);
@@ -69,7 +69,7 @@ public class SecurityControllerTest {
     }
 
     @Test
-    void getOtherPublicKeyCatchesExceptionAndThrowsDatabaseRequestExceptionTest() throws SQLException {
+    void getOtherPublicKeySQLExceptionTest() throws SQLException {
         //Arrange
         Mockito.when(mockedSecurityDAO.getOtherPublicKey(Mockito.anyString(), Mockito.anyString())).thenThrow(SQLException.class);
 

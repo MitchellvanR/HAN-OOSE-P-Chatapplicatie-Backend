@@ -13,7 +13,7 @@ class QueriesTest {
     }
 
     @Test
-    void testQueryLoader() {
+    void queryLoaderSuccessTest() {
         // Arrange
         var key = "test";
         var expected = "Hello query!";

@@ -43,8 +43,10 @@ public class SQLSecurityDAO implements ISecurityDAO {
             resultSet = statement.executeQuery();
             resultSet.next();
             return resultSet.getString(1);
-        } finally {
-            if (resultSet != null) {
+        } catch (Exception e) {
+            throw new DatabaseRequestException(e);
+        }finally {
+            if (resultSet != null){
                 resultSet.close();
             }
         }
