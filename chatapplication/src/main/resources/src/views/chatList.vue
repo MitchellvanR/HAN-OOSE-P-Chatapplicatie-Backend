@@ -6,11 +6,15 @@
       <hr>
     </div>
     <div class="row">
-      <div class="col-lg-12">
-        <button class="btn text-info fa-lg float-right">
-          <i class="fa fa-info-circle" aria-hidden="true"></i> <small>Need help?</small>
-        </button>
-      </div>
+      <form id="makeHelplineChat" class="wrap">
+        <div class="col-lg-12">
+          <router-link to="/chat" custom v-slot="{ navigate }">
+            <button class="btn text-info fa-lg float-right" type="submit" @click="navigate" role="link" v-on:click="setHelpline()">
+              <i class="fa fa-info-circle" aria-hidden="true"></i> <small>Need help?</small>
+            </button>
+          </router-link>
+        </div>
+      </form>
     </div>
     <div class="row">
       <div class="col-lg-11">
