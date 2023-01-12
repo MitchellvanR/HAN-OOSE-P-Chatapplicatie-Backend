@@ -9,7 +9,7 @@
       <form id="makeHelplineChat" class="wrap">
         <div class="col-lg-12">
           <router-link to="/chat" custom v-slot="{ navigate }">
-            <button class="btn text-info fa-lg float-right" type="submit" @click="navigate" role="link" v-on:click="makeHelplineChat()">
+            <button class="btn text-info fa-lg float-right" type="submit" @click="navigate" role="link" v-on:click="setHelpline()">
               <i class="fa fa-info-circle" aria-hidden="true"></i> <small>Need help?</small>
             </button>
           </router-link>
@@ -64,22 +64,11 @@ export default {
         this.items.push(...responseData.chatIds);
       });
     },
-    makeHelplineChat: function (){
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + sessionStorage.getItem("userId")).then(responseData => {
-        if(responseData.chatId) {
-          console.log(responseData.chatId)
-          this.setChatId(responseData.chatId);
-          console.log(sessionStorage.getItem('chatId'))
-        } else {
-          this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newHelpLineChat/' + sessionStorage.getItem("userId") + '/admin').then()
-          this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + sessionStorage.getItem("userId")).then(responseData => {
-            this.setChatId(responseData.chatId);
-          });
-        }
-      });
-    },
     setChatId: function (chatId){
-        sessionStorage.setItem("chatId", chatId);
+      sessionStorage.setItem("chatId", chatId);
+    },
+    setHelpline: function() {
+      sessionStorage.setItem("isHelpline", "true");
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {

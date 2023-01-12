@@ -51,8 +51,10 @@ export default {
       userId: sessionStorage.getItem('userId'),
     }
   },
+  beforeMount() {
+
+  },
   mounted() {
-    console.log(sessionStorage.getItem('chatId'))
     this.getChatLog();
     this.savePublicKey(sessionStorage.getItem('userId'), sessionStorage.getItem('secret'));
     this.delay(30);
@@ -62,9 +64,25 @@ export default {
     if (this.webSocket.readyState === WebSocket.OPEN) {
       this.webSocket.close();
       this.webSocket = null;
+      sessionStorage.setItem("isHelpline", "false");
     }
   },
   methods: {
+    makeHelplineChat: function (){
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + sessionStorage.getItem("userId")).then(responseData => {
+        if(responseData.chatId) {
+          this.setChatId(responseData.chatId);
+        } else {
+          this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newHelpLineChat/' + sessionStorage.getItem("userId") + '/admin').then()
+          this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + sessionStorage.getItem("userId")).then(responseData => {
+            this.setChatId(responseData.chatId);
+          });
+        }
+      });
+    },
+    setChatId: function (chatId){
+      sessionStorage.setItem("chatId", chatId);
+    },
     // Deze comment (global BigInt) is nodig om BigInts in deze file werkend te krijgen. Zonder deze comment werken ze dus niet.
     /* global BigInt */
     formulatePublicKey: function (secret) {
@@ -102,8 +120,8 @@ export default {
       return new TextDecoder().decode(message);
     },
     encrypt: async function (message) {
+
       this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
-      await this.delay(30);
       await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
       let iv = this.generateIv();
       sessionStorage.setItem("sendIv", iv.toString());
@@ -162,9 +180,13 @@ export default {
         setTimeout(resolve, milliseconds);
       });
     },
-    getChatLog: function () {
+    getChatLog: async function () {
       this.runWebSocket();
       this.validateSession();
+      if (sessionStorage.getItem('isHelpline') === "true") {
+        await this.makeHelplineChat();
+        await this.delay(30);
+      }
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + sessionStorage.getItem('chatId')).then(async responseData => {
         for (let message of responseData.messages) {
           this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
