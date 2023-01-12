@@ -18,8 +18,8 @@
       <div class="col-lg-6">
         <form id="makeHelplineChat" class="wrap">
           <router-link to="/chat" custom v-slot="{ navigate }">
-            <button class="btn text-info fa-lg float-right" type="submit" @click="navigate" role="link">
-              <i class="fa fa-info-circle" aria-hidden="true"></i> <small>Need help?</small>
+            <button class="btn btn-outline-info fa-lg float-right" type="submit" @click="navigate" role="link">
+              <i class="fa fa-info-circle" aria-hidden="true"></i> Hulplijn
             </button>
           </router-link>
         </form>
@@ -69,7 +69,8 @@ export default {
     return {
       items: [],
       announcements: [],
-      chatId: ''
+      chatId: null,
+      userId: sessionStorage.getItem('userId'),
     }
   },
   mounted() {
@@ -82,22 +83,21 @@ export default {
   methods: {
     /* global BigInt */
     setHelplineChat: function (){
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + sessionStorage.getItem("userId")).then(responseData => {
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + this.userId).then(responseData => {
         if(responseData.chatId) {
           this.setChatId(responseData.chatId);
         } else {
-          this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newHelpLineChat/' + sessionStorage.getItem("userId") + '/admin').then()
-          this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + sessionStorage.getItem("userId")).then(responseData => {
+          this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newHelpLineChat/' + this.userId + '/admin').then()
+          this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + this.userId).then(responseData => {
             this.setChatId(responseData.chatId);
           });
         }
       });
     },
     savePublicKey: function (){
-      let userId = sessionStorage.getItem('userId')
       let secret = sessionStorage.getItem('secret')
       let publicKey = this.formulatePublicKey(secret).toString();
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + userId + '/' + String(publicKey)).then(res => {return res})
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + this.userId + '/' + String(publicKey)).then(res => {return res})
     },
     formulatePublicKey: function (secret) {
       return BigInt("2") ** BigInt(secret) % BigInt("32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559");
@@ -120,10 +120,10 @@ export default {
     },
     addChatToDatabase: function (id) {
       sessionStorage.setItem('userId', '1'); // mock
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + sessionStorage.getItem('userId')).then()
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + this.userId).then()
     },
     getAllChatsFromUser: function() {
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/user/' + sessionStorage.getItem("userId")).then(responseData => {
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/user/' + this.userId).then(responseData => {
         this.items.push(...responseData.chatIds);
       });
     },
