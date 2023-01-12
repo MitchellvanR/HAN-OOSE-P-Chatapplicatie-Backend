@@ -159,4 +159,24 @@ public class SQLChatDAO implements IChatDAO {
             }
         }
     }
+
+    @Override
+    public int getStandardChatWithUsers(String userId, String otherUserId) {
+        SQLConnection.connectToDatabase();
+        String sql = Queries.getInstance().getQuery("getStandardChatsWithUsersQuery");
+        ResultSet resultSet = null;
+        int result = 0;
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {
+            if (statement == null) { throw new DatabaseRequestException(); }
+            statement.setString(1, userId);
+            statement.setString(2, otherUserId);
+            resultSet = statement.executeQuery();
+            while(resultSet.next()) {
+                result = resultSet.getInt(1);
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new DatabaseRequestException(e);
+        }
+    }
 }

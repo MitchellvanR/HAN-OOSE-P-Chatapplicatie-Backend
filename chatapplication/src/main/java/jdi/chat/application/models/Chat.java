@@ -55,4 +55,6 @@ public class Chat {
     public void defineChatType() throws SQLException { chatType = chatDAO.getChatType(chatId); }
 
     public String getChatType() { return chatType; }
+
+    public static int getStandardChatWithUsers(String userId, String otherUserId){ return chatDAO.getStandardChatWithUsers(userId, otherUserId); }
 }

@@ -4,6 +4,8 @@ import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class IChatDAOTest {
@@ -27,6 +29,11 @@ class IChatDAOTest {
         }
 
         @Override
+        public ChatDTO formatChatList(String chatId, List<String> users) {
+            return IChatDAO.super.formatChatList(chatId, users);
+        }
+
+        @Override
         public String addChatToDatabase(String userId, String type) {
             return null;
         }
@@ -44,6 +51,11 @@ class IChatDAOTest {
         @Override
         public ArrayList<ChatDTO> getChatIdFromUserId(String userId) {
             return null;
+        }
+
+        @Override
+        public int getStandardChatWithUsers(String userId, String otherUserId) {
+            return 0;
         }
     };
 

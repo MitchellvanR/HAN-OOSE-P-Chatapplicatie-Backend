@@ -58,7 +58,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="chat in chats"  :key="chat">
+          <tr v-for="chat in chats" :key="chat">
             <td>
               <p>
                 <span v-for="user in chat.users" :key="user">
@@ -114,18 +114,30 @@ export default {
       {
         const input = document.getElementById('userId');
         input.classList.remove("border", "border-danger");
-
         data.preventDefault();
-        if (input.value === "" || isNaN(input.value) || input.value === sessionStorage.getItem("userId")){
-          input.classList.add("border", "border-danger");
-        } else {
-          this.addChatToDatabase(input.value);
-          input.value = '';
-        }
+        this.validateCreateChat(input)
+      }
+    },
+    validateCreateChat: function (input){
+      if (input.value === "" || isNaN(input.value) || input.value === sessionStorage.getItem("userId")){
+        input.classList.add("border", "border-danger");
+      } else {
+        this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/newChat/' + input + '/' + sessionStorage.getItem('userId')).then(responseData => {
+          console.log(responseData)
+          if (responseData === "false"){
+            this.addChatToDatabase(input.value);
+            this.chats.push({
+              chatId: "?",
+              users: input.value,
+            });
+            input.value = '';
+          }
+        });
+
+
       }
     },
     addChatToDatabase: function (id) {
-      sessionStorage.setItem('userId', '1'); // mock
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + sessionStorage.getItem('userId')).then()
     },
     getChats: function() {

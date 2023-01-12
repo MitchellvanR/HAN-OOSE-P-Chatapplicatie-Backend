@@ -77,6 +77,18 @@ public class ChatController {
     }
 
     @GET
+    @Path("/newChat/{userId}/{currentUser}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getStandardChatWithUsers(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
+        int amountOfChats = Chat.getStandardChatWithUsers(userId, otherUserId);
+        boolean result = amountOfChats > 0;
+        JSONObject standardChatsWithUsersJSON = new JSONObject();
+        standardChatsWithUsersJSON.put("result", result);
+        return Response.ok().entity(standardChatsWithUsersJSON).build();
+    }
+
+    @GET
     @Path("/user/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

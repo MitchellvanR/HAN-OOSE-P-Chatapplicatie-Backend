@@ -15,3 +15,4 @@ getChatIdQuery_: SELECT chatId, GROUP_CONCAT(DISTINCT userId) as users FROM `pro
 getUsersQuery_: SELECT id FROM `prolog-jdi`.users
 saveAnnouncementQuery_: INSERT INTO `prolog-jdi`.announcements (announcement, endDate) VALUES (?, ?)
 getAnnouncementsQuery_: SELECT announcement FROM `prolog-jdi`.announcements WHERE endDate > NOW()
+getStandardChatsWithUsersQuery_: SELECT COUNT(DISTINCT chatId) FROM `prolog-jdi`.usersInChats WHERE userId = ? AND chatId IN (SELECT id FROM chats WHERE `type`='standaard') AND chatId IN (SELECT chatId FROM usersinchats WHERE userId = ?)
