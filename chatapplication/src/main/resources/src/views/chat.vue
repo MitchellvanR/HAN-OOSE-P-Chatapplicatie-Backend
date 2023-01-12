@@ -49,6 +49,7 @@ export default {
     return {
       array: [],
       userId: sessionStorage.getItem('userId'),
+      otherPublicKey: null
     }
   },
   beforeMount() {
@@ -191,7 +192,7 @@ export default {
         for (let message of responseData.messages) {
           this.getOtherPublicKey(sessionStorage.getItem("userId"), sessionStorage.getItem("chatId"))
           await this.delay(30);
-          await this.importCryptoKey(sessionStorage.getItem("otherPublicKey"));
+          await this.importCryptoKey(this.otherPublicKey);
           message.message = await this.decrypt(this.cryptoKey, message.message, message.iv);
         }
         this.array.push(...responseData.messages);
@@ -252,8 +253,8 @@ export default {
     },
     getOtherPublicKey: function (userId, chatId){
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/security/' + userId + '/getOtherKey/' + chatId).then(responseData => {
-        let publicKey = responseData.publicKey;
-        sessionStorage.setItem("otherPublicKey", publicKey);
+        // sessionStorage.setItem("otherPublicKey", publicKey);
+        this.otherPublicKey = responseData.publicKey;
       });
     },
     addUserToChat: function (userId, chatId){
