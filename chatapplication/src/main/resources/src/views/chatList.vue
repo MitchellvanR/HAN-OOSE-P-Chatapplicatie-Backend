@@ -139,7 +139,7 @@ export default {
       });
     },
     setChatId: function (chatId){
-      sessionStorage.setItem('chatId', chatId)
+      sessionStorage.setItem('chatId', chatId);
     },
     saveAnnouncement: function (announcement, endDate){
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/announcement/' + announcement + '/' + endDate).then(() => {window.location.reload();})
