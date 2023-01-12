@@ -118,12 +118,12 @@ export default {
         if (input.value === "" || isNaN(input.value) || input.value === sessionStorage.getItem("userId")){
           input.classList.add("border", "border-danger");
         } else {
-          this.validateCreatedChatDoesntExist(input.value)
+          this.validateCreatedChatDoesntExist(input, input.value)
           input.value = '';
         }
       }
     },
-    validateCreatedChatDoesntExist: function (id){
+    validateCreatedChatDoesntExist: function (input,id){
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + sessionStorage.getItem('userId')).then(responseData => {
         if (responseData.result === false){
           this.addChatToDatabase(id);
@@ -131,6 +131,8 @@ export default {
             chatId: "?",
             users: id,
           });
+        } else {
+          input.classList.add("border", "border-danger");
         }
       });
     },
