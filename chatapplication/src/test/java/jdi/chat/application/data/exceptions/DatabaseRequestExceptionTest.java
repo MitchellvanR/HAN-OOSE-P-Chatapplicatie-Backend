@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DatabaseRequestExceptionTest {
     @Test
-    void testDatabaseRequestExceptionSUCCESS() {
+    void databaseRequestExceptionSuccessTest() {
         //Arrange
         DatabaseRequestException e = new DatabaseRequestException();
 
