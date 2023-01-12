@@ -25,10 +25,11 @@ public class SQLSecurityDAO implements ISecurityDAO {
         String sql = Queries.getInstance().getQuery("savePublicKeyQuery");
         ResultSet resultSet = null;
         try (CallableStatement statement = SQLConnection.connection.prepareCall(sql)) {
-            statement.setString(1, publicKey);
-            statement.setString(2, userId);
+            statement.setString(1, userId);
+            statement.setString(2, publicKey);
             resultSet = statement.executeQuery();
             resultSet.next();
+            System.out.println(resultSet.getString(1));
             return resultSet.getString(1);
         } catch (Exception e) {
             throw new DatabaseRequestException(e);
