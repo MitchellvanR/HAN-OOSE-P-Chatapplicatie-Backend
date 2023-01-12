@@ -125,7 +125,6 @@ export default {
     },
     validateCreatedChatDoesntExist: function (id){
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + sessionStorage.getItem('userId')).then(responseData => {
-        console.log(responseData.result)
         if (responseData.result === false){
           this.addChatToDatabase(id);
           this.chats.push({
