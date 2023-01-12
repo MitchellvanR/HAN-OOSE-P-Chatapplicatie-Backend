@@ -1,5 +1,6 @@
 package jdi.chat.application.data;
 
+import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ class IChatDAOTest {
         }
 
         @Override
-        public ArrayList<String> getChatIdFromUserId(String userId) {
+        public ArrayList<ChatDTO> getChatIdFromUserId(String userId) {
             return null;
         }
     };

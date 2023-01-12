@@ -135,7 +135,7 @@ class ChatControllerTest {
             chatMockedStatic.when(() -> Chat.getChatIdFromUserId(anyString())).thenReturn(chatIdList);
 
             // Act
-            int actual = sut.getChatIds(userId).getStatus();
+            int actual = sut.getChats(userId).getStatus();
 
             // Assert
             assertEquals(Response.Status.OK.getStatusCode(), actual);

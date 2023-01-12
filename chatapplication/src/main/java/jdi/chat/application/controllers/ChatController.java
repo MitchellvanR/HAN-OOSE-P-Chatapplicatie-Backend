@@ -3,6 +3,7 @@ package jdi.chat.application.controllers;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.models.Chat;
 import net.minidev.json.JSONObject;
@@ -76,10 +77,10 @@ public class ChatController {
     @Path("/user/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getChatIds(@PathParam("userId") String userId) throws SQLException {
-        ArrayList<String> chatIds = Chat.getChatIdFromUserId(userId);
+    public Response getChats(@PathParam("userId") String userId) throws SQLException {
+        List<ChatDTO> chats = Chat.getChatIdFromUserId(userId);
         JSONObject chatIdsJSON = new JSONObject();
-        chatIdsJSON.put("chatIds", chatIds);
+        chatIdsJSON.put("chats", chats);
         return Response.ok().entity(chatIdsJSON).build();
     }
 

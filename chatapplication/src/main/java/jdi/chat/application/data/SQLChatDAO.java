@@ -1,10 +1,12 @@
 package jdi.chat.application.data;
 
+import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SQLChatDAO implements IChatDAO {
     @Override
@@ -125,8 +127,9 @@ public class SQLChatDAO implements IChatDAO {
             }
         }
     }
+
     @Override
-    public ArrayList<String> getChatIdFromUserId(String userId) throws SQLException {
+    public ArrayList<ChatDTO> getChatIdFromUserId(String userId) throws SQLException {
         SQLConnection.connectToDatabase();
         String sql = Queries.getInstance().getQuery("getChatIdQuery");
         ResultSet resultSet = null;
@@ -134,13 +137,20 @@ public class SQLChatDAO implements IChatDAO {
             if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, userId);
             resultSet = statement.executeQuery();
-
-            ArrayList<String> chatIds = new ArrayList<>();
+            ArrayList<ChatDTO> chats = new ArrayList<>();
             while(resultSet.next()){
-                String chatId = resultSet.getString("chatId");
-                chatIds.add(chatId);
+                ArrayList<String> users = new ArrayList<>();
+                String chat = resultSet.getString("chatId");
+                String usersString = resultSet.getString("users");
+                String[] usersArray = usersString.split(",");
+                for (String user : usersArray){
+                    if (!Objects.equals(user, userId)) {
+                        users.add(user);
+                    }
+                }
+                chats.add(formatChatList(chat, users));
             }
-            return chatIds;
+            return chats;
         } catch (Exception e) {
             throw new DatabaseRequestException(e);
         } finally {

@@ -2,6 +2,7 @@ package jdi.chat.application.models;
 
 import jdi.chat.application.data.IChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
+import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import java.sql.SQLException;
@@ -31,8 +32,12 @@ public class Chat {
 
     public void addUserToChat(String userId) { chatDAO.addUserToChat(chatId, userId); }
 
-    public static ArrayList<String> getChatIdFromUserId(String userId) throws SQLException {
-        return chatDAO.getChatIdFromUserId(userId);
+    public static List<ChatDTO> getChatIdFromUserId(String userId) throws SQLException {
+        try {
+            return chatDAO.getChatIdFromUserId(userId);
+        } catch (SQLException e) {
+            throw new DatabaseRequestException(e);
+        }
     }
 
     public String getChatId() {

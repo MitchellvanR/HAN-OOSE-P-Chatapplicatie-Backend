@@ -53,16 +53,26 @@
         <table class="table table-hover m-4 w-100">
           <thead>
           <tr>
-            <th>Chat</th>
-            <th>Action</th>
+            <th>ChatId</th>
+            <th>Gebruikers</th>
+            <th>Acties</th>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="chatId in items" :key="chatId">
-            <td>{{chatId}}</td>
+          <tr v-for="chat in chats"  :key="chat">
+            <td>
+              Chat {{chat.chatId}}
+            </td>
+            <td>
+              <p>
+                <span v-for="user in chat.users" :key="user">
+                  {{user}}
+                </span>
+              </p>
+            </td>
             <td>
               <router-link to="/chat" custom v-slot="{ navigate }">
-                <button @click="navigate" role="link" class="btn" v-on:click="setChatId(chatId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
+                <button @click="navigate" role="link" class="btn" v-on:click="setChatId(chat.chatId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
               </router-link>
             </td>
           </tr>
@@ -79,7 +89,7 @@ export default {
 
   data() {
     return {
-      items: [],
+      chats: [],
       announcements: [],
       announcement: "",
       endDate:"",
@@ -89,7 +99,7 @@ export default {
   mounted() {
     this.savePublicKey();
     this.createChat();
-    this.addToItems()
+    this.getChats()
     this.getAnnouncements();
   },
   methods: {
@@ -123,13 +133,13 @@ export default {
       sessionStorage.setItem('userId', '1'); // mock
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + sessionStorage.getItem('userId')).then()
     },
-    addToItems: function() {
+    getChats: function() {
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/user/' + sessionStorage.getItem("userId")).then(responseData => {
-        this.items.push(...responseData.chatIds);
+        this.chats.push(...responseData.chats);
       });
     },
     setChatId: function (chatId){
-      console.log(chatId, sessionStorage.getItem('chatId'))
+      sessionStorage.setItem('chatId', chatId)
     },
     saveAnnouncement: function (announcement, endDate){
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/announcement/' + announcement + '/' + endDate).then(() => {window.location.reload();})
