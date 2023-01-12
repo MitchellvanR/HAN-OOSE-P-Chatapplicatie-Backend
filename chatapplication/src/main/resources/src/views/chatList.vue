@@ -6,11 +6,15 @@
       <hr>
     </div>
     <div class="row">
-      <div class="col-lg-12">
-        <button class="btn text-info fa-lg float-right">
-          <i class="fa fa-info-circle" aria-hidden="true"></i> <small>Need help?</small>
-        </button>
-      </div>
+      <form id="makeHelplineChat" class="wrap">
+        <div class="col-lg-12">
+          <router-link to="/chat" custom v-slot="{ navigate }">
+            <button class="btn text-info fa-lg float-right" type="submit" @click="navigate" role="link" v-on:click="setHelpline()">
+              <i class="fa fa-info-circle" aria-hidden="true"></i> <small>Need help?</small>
+            </button>
+          </router-link>
+        </div>
+      </form>
     </div>
     <div class="row">
       <div class="col-lg-11">
@@ -48,19 +52,23 @@ export default {
   data() {
     return {
       items: [],
+      chatId: ''
     }
   },
   mounted() {
-    this.addToItems()
+    this.getAllChatsFromUser()
   },
   methods: {
-    addToItems: function() {
+    getAllChatsFromUser: function() {
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/user/' + sessionStorage.getItem("userId")).then(responseData => {
         this.items.push(...responseData.chatIds);
       });
     },
     setChatId: function (chatId){
-        sessionStorage.setItem("chatId", chatId);
+      sessionStorage.setItem("chatId", chatId);
+    },
+    setHelpline: function() {
+      sessionStorage.setItem("isHelpline", "true");
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {
