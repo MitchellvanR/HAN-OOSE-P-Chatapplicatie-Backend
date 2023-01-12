@@ -77,12 +77,6 @@ public class ChatController {
         return Response.ok().build();
     }
 
-    public void createChat(String type, String userId, String otherUserId){
-        Chat chat = createNewChat("0");
-        chat.addChatToDatabase(userId, type);
-        chat.addUserToChat(otherUserId);
-    }
-
     @GET
     @Path("/helplineList")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -114,6 +108,12 @@ public class ChatController {
         JSONObject chatIdJSON = new JSONObject();
         chatIdJSON.put("chatId", chatId);
         return Response.ok().entity(chatIdJSON).build();
+    }
+
+    public void createChat(String type, String userId, String otherUserId){
+        Chat chat = createNewChat("0");
+        chat.addChatToDatabase(userId, type);
+        chat.addUserToChat(otherUserId);
     }
 
     private Chat openChat(String chatId) {
