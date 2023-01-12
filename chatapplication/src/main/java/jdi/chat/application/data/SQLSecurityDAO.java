@@ -29,7 +29,6 @@ public class SQLSecurityDAO implements ISecurityDAO {
             statement.setString(2, publicKey);
             resultSet = statement.executeQuery();
             resultSet.next();
-            System.out.println(resultSet.getString(1));
             return resultSet.getString(1);
         } catch (Exception e) {
             throw new DatabaseRequestException(e);

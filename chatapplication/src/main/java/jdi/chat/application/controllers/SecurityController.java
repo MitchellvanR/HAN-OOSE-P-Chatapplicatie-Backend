@@ -32,10 +32,7 @@ public class SecurityController {
         } catch (SQLException e) {
             throw new DatabaseRequestException(e);
         }
-        System.out.println(oldKey);
-        System.out.println(publicKey);
         Boolean keysMatch = (oldKey == null || oldKey.equals(publicKey));
-        System.out.println(keysMatch);
         JSONObject oldKeyJSON = new JSONObject();
         oldKeyJSON.put("keysMatch", keysMatch);
         return Response.ok().entity(oldKeyJSON).build();

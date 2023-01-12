@@ -100,7 +100,6 @@ export default {
       let publicKey = this.formulatePublicKey(secret).toString();
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + userId + '/' + String(publicKey)).then(responseData => {
         let keysMatch = responseData.keysMatch;
-        console.log(keysMatch);
         if (!keysMatch){
           history.back();
         }
