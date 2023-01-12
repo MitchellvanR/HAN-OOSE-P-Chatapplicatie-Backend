@@ -1,6 +1,5 @@
 package jdi.chat.application.data.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ChatDTO {
