@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AnnouncementControllerTest {
+class AnnouncementControllerTest {
     private AnnouncementController sut;
     private String announcement;
     private String endDate;

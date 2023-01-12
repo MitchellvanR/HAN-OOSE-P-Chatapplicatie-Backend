@@ -12,7 +12,7 @@ import java.sql.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class SQLSecurityDAOTest {
+class SQLSecurityDAOTest {
     private SQLSecurityDAO sut;
     private Connection mockedConnection;
     private PreparedStatement mockedStatement;

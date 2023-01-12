@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ChatTest {
+class ChatTest {
     private Chat sut;
     private String chatId;
     private IChatDAO mockedChatDao;

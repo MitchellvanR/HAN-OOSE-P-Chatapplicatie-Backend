@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MessageDTOTest {
+class MessageDTOTest {
     private MessageDTO sut;
     private String sender;
     private String message;

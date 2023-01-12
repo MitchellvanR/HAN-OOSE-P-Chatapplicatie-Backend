@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.doReturn;
 
-public class SQLAnnouncementDAOTest {
+class SQLAnnouncementDAOTest {
     private SQLAnnouncementDAO sut;
     private Connection mockedConnection;
     private PreparedStatement mockedStatement;

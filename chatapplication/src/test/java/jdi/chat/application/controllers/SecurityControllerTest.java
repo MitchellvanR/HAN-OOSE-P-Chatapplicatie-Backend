@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class SecurityControllerTest {
+class SecurityControllerTest {
     private SecurityController sut;
     private String userId;
     private String publicKey;
