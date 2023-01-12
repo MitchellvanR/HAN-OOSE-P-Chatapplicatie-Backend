@@ -1,9 +1,13 @@
 package jdi.chat.application.data.dto;
 
+import java.util.ArrayList;
+
 public class ChatDTO {
     private String chatId;
     private String type;
     private String latestMessage;
+    private ArrayList<String> users;
+
 
     public ChatDTO(String chatId,  String latestMessage) {
         this.chatId = chatId;
