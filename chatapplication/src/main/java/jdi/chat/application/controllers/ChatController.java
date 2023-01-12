@@ -7,7 +7,7 @@ import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.models.Chat;
 import net.minidev.json.JSONObject;
-
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,11 +46,11 @@ public class ChatController {
     @POST
     @Path("/{chatId}/addUser/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void addUserToChat(@PathParam("chatId") String chatId, @PathParam("userId") String userId){
+    public void addUserToChat(@PathParam("chatId") String chatId, @PathParam("userId") String userId) throws SQLException {
         Chat chat = openChat(chatId);
         chat.defineChatType();
         String chatType = chat.getChatType();
-        if (chatType.equals("standaard")){
+        if ("standaard".equals(chatType)){
             ArrayList<String> users = chat.getUsers();
             Chat groupChat = createNewChat("0");
             groupChat.addChatToDatabase(users.get(0), "groep");
@@ -98,7 +98,7 @@ public class ChatController {
     @Path("/user/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getChatIds(@PathParam("userId") String userId) {
+    public Response getChatIds(@PathParam("userId") String userId) throws SQLException {
         ArrayList<String> chatIds = Chat.getChatIdFromUserId(userId);
         JSONObject chatIdsJSON = new JSONObject();
         chatIdsJSON.put("chatIds", chatIds);
@@ -126,13 +126,11 @@ public class ChatController {
         return createNewChat(chatId);
     }
 
-    Chat createNewChat(String chatId) {
+    private Chat createNewChat(String chatId) {
         Chat chat = new Chat(chatId);
         chats.add(chat);
         return chat;
     }
 
-    public void setChats(List<Chat> chatList) {
-        this.chats = chatList;
-    }
+    public void setChats(List<Chat> chats) { this.chats = chats; }
 }

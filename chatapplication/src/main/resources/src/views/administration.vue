@@ -1,5 +1,21 @@
 <template>
   <div class="container mt-5">
+    <div v-if="showAnnouncementMaker()" class="position-relative border1px">
+      <form id="getAnnouncementMaker">
+        <button type="button" @click.prevent="openForm()" class="btn btn-outline-primary">Nieuwe aankondiging toevoegen</button><br>
+        <div class="input_style w-100 form-popup" id="addAnnouncement">
+          <button type="button" @click.prevent="closeForm()" class="btn btn-outline-primary">Sluit aankondigingsformulier</button><br>
+          <b>Voeg een aankondiging toe</b>
+          <form id="announcement-form">
+            <label for="announcement" >Aankondiging:</label><br>
+            <input type="text" id="announcement" v-model="announcement" placeholder="Voer hier de aankondiging in..." size="100"/><br>
+            <label for="endDate" >Einddatum:</label><br>
+            <input type="datetime-local" id="endDate" v-model="endDate"><br>
+            <button type="button" @click="saveAnnouncement(announcement, endDate)" class="btn btn-outline-primary">Verzend</button>
+          </form>
+        </div>
+      </form>
+    </div>
     <div class="row">
       <p class="display-4">Helpline list</p>
       <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Note! This is page is used for mocking purposes.</small>
@@ -38,7 +54,9 @@ export default {
   name: "openAdministration",
   data() {
     return {
-      array: []
+      array: [],
+      announcement: "",
+      endDate:"",
     }
   },
   mounted() {
@@ -49,6 +67,18 @@ export default {
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helplineList').then(responseData => {
         this.array.push(...responseData.helplineChats);
       });
+    },
+    saveAnnouncement: function (announcement, endDate){
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/announcement/' + announcement + '/' + endDate).then(() => {window.location.reload();})
+    },
+    showAnnouncementMaker: function (){
+      return sessionStorage.getItem("userId") === "Admin";
+    },
+    openForm: function () {
+      document.getElementById("addAnnouncement").style.display = "block";
+    },
+    closeForm: function () {
+      document.getElementById("addAnnouncement").style.display = "none";
     },
     setChatId: function (chatId){
       sessionStorage.setItem("chatId", chatId);

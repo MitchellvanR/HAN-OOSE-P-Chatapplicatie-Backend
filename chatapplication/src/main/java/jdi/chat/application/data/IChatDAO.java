@@ -24,11 +24,11 @@ public interface IChatDAO {
 
     String addChatToDatabase(String userId, String type);
 
-    ArrayList<String> getUsersInChat(String chatId);
+    ArrayList<String> getUsersInChat(String chatId) throws SQLException;
 
-    String getChatType(String chatId);
+    String getChatType(String chatId) throws SQLException;
 
-    ArrayList<String> getChatIdFromUserId(String userId);
+    ArrayList<String> getChatIdFromUserId(String userId) throws SQLException;
 
     String getUserHelplineChatId(String userId);
 

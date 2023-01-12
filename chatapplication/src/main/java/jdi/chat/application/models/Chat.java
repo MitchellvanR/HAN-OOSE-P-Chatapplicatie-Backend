@@ -9,7 +9,6 @@ import org.apache.commons.compress.archivers.ar.ArArchiveEntry;
 import java.util.ArrayList;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class Chat {
 
     public void addUserToChat(String userId) { chatDAO.addUserToChat(chatId, userId); }
 
-    public static ArrayList<String> getChatIdFromUserId(String userId) {
+    public static ArrayList<String> getChatIdFromUserId(String userId) throws SQLException {
         return chatDAO.getChatIdFromUserId(userId);
     }
 
@@ -61,13 +60,13 @@ public class Chat {
 
     public void setChatId(String chatId) { this.chatId = chatId; }
 
-    public void setChatDAO(IChatDAO chatDAO) { this.chatDAO = chatDAO; }
+    public static void setChatDAO(IChatDAO chatDAO) { Chat.chatDAO = chatDAO; }
 
     public void addChatToDatabase(String userId, String type){ setChatId(chatDAO.addChatToDatabase(userId, type)); }
 
-    public ArrayList<String> getUsers(){ return chatDAO.getUsersInChat(getChatId()); }
+    public ArrayList<String> getUsers() throws SQLException { return chatDAO.getUsersInChat(getChatId()); }
 
-    public void defineChatType(){ chatType = chatDAO.getChatType(chatId); }
+    public void defineChatType() throws SQLException { chatType = chatDAO.getChatType(chatId); }
 
     public String getChatType() { return chatType; }
 

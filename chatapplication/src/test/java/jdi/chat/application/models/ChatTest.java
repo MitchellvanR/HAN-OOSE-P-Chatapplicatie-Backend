@@ -9,10 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ChatTest {
+class ChatTest {
     private Chat sut;
     private String chatId;
     private IChatDAO mockedChatDao;
@@ -28,13 +27,12 @@ public class ChatTest {
         sut.setChatDAO(mockedChatDao);
         message = "Test";
         userId = "0";
-        iv = "11111";
         mockedDTO = new ArrayList<>();
         iv = "23,91,173,185,232,253,67,46,157,2,233,184,163,162,104,197";
     }
 
     @Test
-    void testGetChatHistorySuccess () throws SQLException {
+    void getChatHistorySuccessTest () throws SQLException {
         // Arrange
         Mockito.doReturn(mockedDTO).when(mockedChatDao).getChatHistory(chatId);
 
@@ -46,7 +44,7 @@ public class ChatTest {
     }
 
     @Test
-    void testGetChatHistoryError() throws SQLException {
+    void getChatHistorySQLExceptionTest() throws SQLException {
         // Arrange
         Mockito.when(mockedChatDao.getChatHistory(chatId)).thenThrow(new SQLException());
 
@@ -55,7 +53,7 @@ public class ChatTest {
     }
 
     @Test
-    void testSendMessage(){
+    void sendMessageSuccessTest(){
         // Arrange
         Mockito.doNothing().when(mockedChatDao).saveMessage(message, userId, chatId, iv);
 
@@ -67,7 +65,7 @@ public class ChatTest {
     }
 
     @Test
-    void testAddUserToChat(){
+    void addUserToChatSuccessTest(){
         // Arrange
         Mockito.doNothing().when(mockedChatDao).addUserToChat(chatId, userId);
 
@@ -79,7 +77,7 @@ public class ChatTest {
     }
 
     @Test
-    void testSetChatId(){
+    void setChatIdSuccessTest(){
         // Arrange
         String newId = "1337";
 
