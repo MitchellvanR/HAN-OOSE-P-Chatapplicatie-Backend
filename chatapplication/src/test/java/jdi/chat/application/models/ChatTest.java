@@ -32,7 +32,7 @@ public class ChatTest {
     }
 
     @Test
-    void testGetChatHistorySuccess () throws SQLException {
+    void getChatHistorySuccessTest () throws SQLException {
         // Arrange
         Mockito.doReturn(mockedDTO).when(mockedChatDao).getChatHistory(chatId);
 
@@ -44,7 +44,7 @@ public class ChatTest {
     }
 
     @Test
-    void testGetChatHistoryError() throws SQLException {
+    void getChatHistorySQLExceptionTest() throws SQLException {
         // Arrange
         Mockito.when(mockedChatDao.getChatHistory(chatId)).thenThrow(new SQLException());
 
@@ -53,7 +53,7 @@ public class ChatTest {
     }
 
     @Test
-    void testSendMessage(){
+    void sendMessageSuccessTest(){
         // Arrange
         Mockito.doNothing().when(mockedChatDao).saveMessage(message, userId, chatId, iv);
 
@@ -65,7 +65,7 @@ public class ChatTest {
     }
 
     @Test
-    void testAddUserToChat(){
+    void addUserToChatSuccessTest(){
         // Arrange
         Mockito.doNothing().when(mockedChatDao).addUserToChat(chatId, userId);
 
@@ -77,7 +77,7 @@ public class ChatTest {
     }
 
     @Test
-    void testSetChatId(){
+    void setChatIdSuccessTest(){
         // Arrange
         String newId = "1337";
 

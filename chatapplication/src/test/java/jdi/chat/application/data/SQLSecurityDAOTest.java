@@ -44,7 +44,7 @@ public class SQLSecurityDAOTest {
     }
 
     @Test
-    void addUserTest() {
+    void addUserSuccessTest() {
         try {
             // Arrange
             Mockito.when(mockedConnection.prepareStatement(queries.getQuery("addUserQuery"))).thenReturn(mockedStatement);
@@ -60,7 +60,7 @@ public class SQLSecurityDAOTest {
     }
 
     @Test
-    void addUserErrorTest() throws SQLException {
+    void addUserSQLExceptionTest() throws SQLException {
         // Arrange
         Mockito.when(mockedConnection.prepareStatement(queries.getQuery("addUserQuery"))).thenReturn(mockedStatement);
         Mockito.when(mockedStatement.executeUpdate()).thenThrow(new SQLException());
@@ -70,7 +70,7 @@ public class SQLSecurityDAOTest {
     }
 
     @Test
-    void savePublicKeyTest() {
+    void savePublicKeySuccessTest() {
         try {
             // Arrange
             Mockito.when(mockedConnection.prepareStatement(queries.getQuery("savePublicKeyQuery"))).thenReturn(mockedStatement);
@@ -86,7 +86,7 @@ public class SQLSecurityDAOTest {
     }
 
     @Test
-    void savePublicKeyErrorTest() throws SQLException {
+    void savePublicKeySQLExceptionTest() throws SQLException {
         // Arrange
         Mockito.when(mockedConnection.prepareStatement(queries.getQuery("savePublicKeyQuery"))).thenReturn(mockedStatement);
         Mockito.when(mockedStatement.executeUpdate()).thenThrow(new SQLException());
@@ -96,7 +96,7 @@ public class SQLSecurityDAOTest {
     }
 
     @Test
-    void getOtherPublicKeyTest() {
+    void getOtherPublicKeySuccessTest() {
         try {
             // Arrange
             var expected = publicKey;
@@ -129,7 +129,7 @@ public class SQLSecurityDAOTest {
     }
 
     @Test
-    void getOtherPublicKeyErrorTest() throws SQLException {
+    void getOtherPublicKeySQLExceptionTest() throws SQLException {
         Mockito.when(mockedConnection.prepareStatement(queries.getQuery("getOtherPublicKeyQuery"))).thenReturn(mockedStatement);
         Mockito.when(mockedStatement.executeUpdate()).thenThrow(new SQLException());
 

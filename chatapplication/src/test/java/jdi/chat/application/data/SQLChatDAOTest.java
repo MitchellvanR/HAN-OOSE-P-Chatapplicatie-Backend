@@ -54,7 +54,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void testGetChatHistoryHappyFlow() {
+    void getChatHistorySuccessTest() {
         // Arrange
         var expected = new ArrayList<MessageDTO>();
         expected.add(new MessageDTO(senderId, message, time, iv));
@@ -87,7 +87,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void testGetChatHistoryDatabaseRequestExceptionWhenStatementIsNull() {
+    void getChatHistoryDatabaseRequestExceptionTest() {
         // Act
         Exception e = assertThrows(DatabaseRequestException.class, () -> sut.getChatHistory(chatId));
         var actual = e.getMessage();
@@ -97,7 +97,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void testSaveMessageHappyFlow() {
+    void saveMessageSuccessTest() {
         // Act
         try {
             when(mockedConnection.prepareStatement(queries.getQuery("sendMessageQuery"))).thenReturn(mockedStatement);
@@ -110,7 +110,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void testSaveMessageDatabaseRequestExceptionWhenUnableToExecuteUpdate() {
+    void saveMessageFailedExecuteDatabaseRequestExceptionTest() {
         // Arrange
         try {
             when(mockedConnection.prepareStatement(queries.getQuery("sendMessageQuery"))).thenReturn(mockedStatement);
@@ -128,7 +128,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void testSaveMessageDatabaseRequestExceptionWhenStatementIsNull() {
+    void saveMessageNullStatementDatabaseRequestExceptionTest() {
         // Act
         Exception e = assertThrows(DatabaseRequestException.class, () -> sut.saveMessage(message, senderId, chatId, iv));
         var actual = e.getMessage();
@@ -138,7 +138,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void testAddUserToChatHappyFlow() {
+    void addUserToChatSuccessTest() {
         // Arrange
         var userId = "1";
 
@@ -154,7 +154,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void testAddUserToChatDatabaseRequestExceptionWhenUnableToExecuteUpdate() {
+    void addUserToChatFailedExecuteDatabaseRequestExceptionTest() {
         // Arrange
         var userId = "1";
 
@@ -174,7 +174,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void testAddUserToChatDatabaseRequestExceptionWhenStatementIsNull() {
+    void testAddUserToChatNullStatementDatabaseRequestExceptionTest() {
         // Arrange
         var userId = "1";
 
@@ -187,7 +187,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void addChatToDatabaseTest(){
+    void addChatToDatabaseSuccessTest(){
         try {
             // Arrange
             var expected = chatId;
@@ -219,7 +219,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void addChatToDatabaseErrorTest() throws SQLException {
+    void addChatToDatabaseSQLExceptionTest() throws SQLException {
         // Arrange
         when(mockedConnection.prepareCall(queries.getQuery("createChatQuery"))).thenReturn(mockedCall);
         when(mockedCall.executeQuery()).thenThrow(SQLException.class);
@@ -229,7 +229,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void getUsersInChatTest(){
+    void getUsersInChatSuccessTest(){
         try {
             // Arrange
             var expected = new ArrayList<String>();
@@ -262,7 +262,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void getUsersInChatErrorTest() throws SQLException {
+    void getUsersInChatSQLExceptionTest() throws SQLException {
         // Arrange
         when(mockedConnection.prepareStatement(queries.getQuery("getUsersInChatQuery"))).thenReturn(mockedStatement);
         when(mockedStatement.executeQuery()).thenThrow(SQLException.class);
@@ -272,7 +272,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void getChatTypeTest() {
+    void getChatTypeSuccessTest() {
         try {
             // Arrange
             var expected = type;
@@ -304,7 +304,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void getChatTypeErrorTest() throws SQLException {
+    void getChatTypeSQLExceptionTest() throws SQLException {
         // Arrange
         when(mockedConnection.prepareStatement(queries.getQuery("getChatTypeQuery"))).thenReturn(mockedStatement);
         when(mockedStatement.executeQuery()).thenThrow(SQLException.class);
@@ -314,7 +314,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void getChatIdFromUserIdTest() {
+    void getChatIdFromUserIdSuccessTest() {
         try {
             // Arrange
             var expected = new ArrayList<String>();
@@ -347,7 +347,7 @@ class SQLChatDAOTest {
     }
 
     @Test
-    void getChatIdFromUserIdErrorTest() throws SQLException {
+    void getChatIdFromUserIdSQLExceptionTest() throws SQLException {
         // Arrange
         when(mockedConnection.prepareStatement(queries.getQuery("getChatIdQuery"))).thenReturn(mockedStatement);
         when(mockedStatement.executeQuery()).thenThrow(SQLException.class);

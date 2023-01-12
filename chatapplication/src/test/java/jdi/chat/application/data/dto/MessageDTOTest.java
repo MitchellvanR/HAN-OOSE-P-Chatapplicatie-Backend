@@ -22,7 +22,7 @@ public class MessageDTOTest {
     }
 
     @Test
-    void settersAndGettersTest(){
+    void settersAndGettersSuccessTest(){
         // Act
         sut.setSenderId(sender);
         sut.setMessage(message);
