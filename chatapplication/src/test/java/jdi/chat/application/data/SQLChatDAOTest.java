@@ -1,5 +1,6 @@
 package jdi.chat.application.data;
 
+import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
@@ -27,18 +28,20 @@ class SQLChatDAOTest {
     private String time;
     private String iv;
     private String type;
+    private ArrayList<String> userList;
 
     @BeforeEach
     void setup() {
         sut = new SQLChatDAO();
+        userList = new ArrayList<>();
         queries = Queries.getInstance();
-
         chatId = "1";
         senderId = "1";
         message = "test";
         time = "00:00";
         iv = "11111";
         type = "standard";
+        userList.add("2");
 
         mockedConnection = Mockito.mock(Connection.class);
         mockedStatement = Mockito.mock(PreparedStatement.class);
@@ -317,8 +320,8 @@ class SQLChatDAOTest {
     void getChatIdFromUserIdSuccessTest() {
         try {
             // Arrange
-            var expected = new ArrayList<String>();
-            expected.add(chatId);
+            var expected = new ArrayList<ChatDTO>();
+            expected.add(new ChatDTO("1", userList));
 
             try {
                 when(mockedConnection.prepareStatement(queries.getQuery("getChatIdQuery"))).thenReturn(mockedStatement);
@@ -326,13 +329,13 @@ class SQLChatDAOTest {
 
                 when(mockedResults.next()).thenReturn(true).thenReturn(false);
 
-                doReturn(chatId).when(mockedResults).getString("chatId");
+                doReturn("1,2").when(mockedResults).getString("users");
             } catch (SQLException e) {
                 fail("An exception was thrown in success test case: " + e.getMessage());
             }
 
             // Act
-            ArrayList<String> actual = null;
+            ArrayList<ChatDTO> actual = null;
             try {
                 actual = sut.getChatIdFromUserId(senderId);
             } catch (Exception e) {
@@ -340,7 +343,7 @@ class SQLChatDAOTest {
             }
 
             // Assert
-            assertEquals(expected.get(0), actual.get(0));
+            assertEquals(expected.get(0).getUsers(), actual.get(0).getUsers());
         } catch (Exception e) {
             fail("An exception was thrown in test case: " + e.getMessage());
         }
