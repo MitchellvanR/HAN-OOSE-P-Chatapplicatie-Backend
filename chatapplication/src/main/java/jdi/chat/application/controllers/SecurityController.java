@@ -24,9 +24,17 @@ public class SecurityController {
     @POST
     @Path("/{userId}/{publicKey}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response savePublicKey(@PathParam("userId") String userId, @PathParam("publicKey") String publicKey){
-        securityDAO.savePublicKey(userId, publicKey);
-        return Response.ok().build();
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response savePublicKey(@PathParam("userId") String userId, @PathParam("publicKey") String publicKey) {
+        String oldKey;
+        try {
+            oldKey = securityDAO.savePublicKey(userId, publicKey);
+        } catch (SQLException e) {
+            throw new DatabaseRequestException(e);
+        }
+        JSONObject oldKeyJSON = new JSONObject();
+        oldKeyJSON.put("oldKey", oldKey);
+        return Response.ok().entity(oldKeyJSON).build();
     }
 
     @GET
