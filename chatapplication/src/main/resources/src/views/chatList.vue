@@ -18,7 +18,7 @@
       <div class="col-lg-6">
         <form id="makeHelplineChat" class="wrap">
           <router-link to="/chat" custom v-slot="{ navigate }">
-            <button class="btn text-info fa-lg float-right" type="submit" @click="navigate" role="link" v-on:click="setHelpline()">
+            <button class="btn text-info fa-lg float-right" type="submit" @click="navigate" role="link">
               <i class="fa fa-info-circle" aria-hidden="true"></i> <small>Need help?</small>
             </button>
           </router-link>
@@ -77,9 +77,22 @@ export default {
     this.createChat();
     this.getAnnouncements();
     this.getAllChatsFromUser()
+    this.setHelplineChat();
   },
   methods: {
     /* global BigInt */
+    setHelplineChat: function (){
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + sessionStorage.getItem("userId")).then(responseData => {
+        if(responseData.chatId) {
+          this.setChatId(responseData.chatId);
+        } else {
+          this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newHelpLineChat/' + sessionStorage.getItem("userId") + '/admin').then()
+          this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + sessionStorage.getItem("userId")).then(responseData => {
+            this.setChatId(responseData.chatId);
+          });
+        }
+      });
+    },
     savePublicKey: function (){
       let userId = sessionStorage.getItem('userId')
       let secret = sessionStorage.getItem('secret')
@@ -149,7 +162,5 @@ export default {
 </script>
 
 <style scoped>
-.form-popup {
-  display: none;
-}
+
 </style>
