@@ -115,27 +115,25 @@ export default {
         const input = document.getElementById('userId');
         input.classList.remove("border", "border-danger");
         data.preventDefault();
-        this.validateCreateChat(input)
+        if (input.value === "" || isNaN(input.value) || input.value === sessionStorage.getItem("userId")){
+          input.classList.add("border", "border-danger");
+        } else {
+          this.validateCreatedChatDoesntExist(input.value)
+          input.value = '';
+        }
       }
     },
-    validateCreateChat: function (input){
-      if (input.value === "" || isNaN(input.value) || input.value === sessionStorage.getItem("userId")){
-        input.classList.add("border", "border-danger");
-      } else {
-        this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/newChat/' + input + '/' + sessionStorage.getItem('userId')).then(responseData => {
-          console.log(responseData)
-          if (responseData === "false"){
-            this.addChatToDatabase(input.value);
-            this.chats.push({
-              chatId: "?",
-              users: input.value,
-            });
-            input.value = '';
-          }
-        });
-
-
-      }
+    validateCreatedChatDoesntExist: function (id){
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + sessionStorage.getItem('userId')).then(responseData => {
+        console.log(responseData.result)
+        if (responseData.result === false){
+          this.addChatToDatabase(id);
+          this.chats.push({
+            chatId: "?",
+            users: id,
+          });
+        }
+      });
     },
     addChatToDatabase: function (id) {
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + sessionStorage.getItem('userId')).then()
