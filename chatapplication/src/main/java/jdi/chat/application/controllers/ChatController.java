@@ -10,6 +10,7 @@ import net.minidev.json.JSONObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Path("/chats")
 public class ChatController {
@@ -67,9 +68,11 @@ public class ChatController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
         String type = "standaard"; //mock
-        Chat chat = createNewChat("0");
-        chat.addChatToDatabase(userId, type);
-        chat.addUserToChat(otherUserId);
+        if (!Objects.equals(userId, otherUserId)){
+            Chat chat = createNewChat("0");
+            chat.addChatToDatabase(userId, type);
+            chat.addUserToChat(otherUserId);
+        }
         return Response.ok().build();
     }
 
