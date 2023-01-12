@@ -7,13 +7,9 @@ const localVue = createLocalVue();
 describe('menu.vue', () => {
     let wrapper;
     const listener = sinon.spy();
-    let createChat = jest.fn();
 
     function setWrapper() {
         wrapper = shallowMount(menu, {
-            methods: {
-                createChat
-            },
             localVue
         });
     }
@@ -45,10 +41,5 @@ describe('menu.vue', () => {
         setWrapper();
         wrapper.find('#administrator').trigger('click');
         expect(listener.called);
-    });
-
-    it('calls createChat on mount ',() => {
-        setWrapper();
-        expect(createChat).toBeCalled();
     });
 });

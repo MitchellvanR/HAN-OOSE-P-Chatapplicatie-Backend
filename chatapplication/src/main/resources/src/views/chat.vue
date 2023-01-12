@@ -54,7 +54,6 @@ export default {
       userId: sessionStorage.getItem('userId'),
       chatId: sessionStorage.getItem('chatId'),
       mockUserId: 1,
-      //TODO mockUserID check
     }
   },
   mounted() {

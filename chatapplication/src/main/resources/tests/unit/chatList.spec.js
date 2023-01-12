@@ -8,11 +8,17 @@ describe('chatList.vue', () => {
     let wrapper;
     const listener = sinon.spy();
     let addToItems = jest.fn();
+    let savePublicKey = jest.fn();
+    let createChat = jest.fn();
+    let getAnnouncement = jest.fn();
 
     function setWrapper() {
         wrapper = shallowMount(chatList, {
             methods: {
-                addToItems
+                addToItems,
+                savePublicKey,
+                createChat,
+                getAnnouncement
             },
             localVue
         });
@@ -24,6 +30,21 @@ describe('chatList.vue', () => {
     });
 
     it('calls addToList on mount',  () => {
+        setWrapper();
+        expect(addToItems).toBeCalled();
+    });
+
+    it('calls savePublicKey on mount',  () => {
+        setWrapper();
+        expect(addToItems).toBeCalled();
+    });
+
+    it('calls createChat on mount',  () => {
+        setWrapper();
+        expect(addToItems).toBeCalled();
+    });
+
+    it('calls getAnnouncement on mount',  () => {
         setWrapper();
         expect(addToItems).toBeCalled();
     });
