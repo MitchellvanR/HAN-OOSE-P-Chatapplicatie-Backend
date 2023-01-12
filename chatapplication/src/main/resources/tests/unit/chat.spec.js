@@ -1,6 +1,5 @@
 import {createLocalVue, mount, shallowMount} from '@vue/test-utils';
 import chat from '@/views/chat';
-import sinon from "sinon";
 
 const localVue = createLocalVue()
 

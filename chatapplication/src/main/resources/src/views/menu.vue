@@ -3,7 +3,6 @@
     <p class="display-4">Menu</p>
     <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Let op! Dit scherm wordt alleen gebruikt voor testen en het geven van demo's.</small>
     <hr class="mb-5">
-
     <div class="row">
       <div class="col-lg-6">
         <form id="secret-form">
@@ -38,7 +37,7 @@
             <td></td>
             <td>
               <form id="user" action="http://localhost:8081/chatlist">
-                <!--<router-link to="/chatlist" custom v-slot="{ navigate }">--><button id="user1" role="link" class="btn btn-outline-primary" v-on:click="setUserId(1)">Gebruiker #1 (Mitch)</button><!--</router-link>--></form>
+                <button id="user1" role="link" class="btn btn-outline-primary" v-on:click="setUserId(1)">Gebruiker #1 (Mitch)</button></form>
             </td>
           </tr>
           <tr>
@@ -46,7 +45,7 @@
             <td></td>
             <td>
               <form id="user" action="http://localhost:8081/chatlist">
-                <!--<router-link to="/chatlist" custom v-slot="{ navigate }">--><button id="user2" role="link" class="btn btn-outline-primary" v-on:click="setUserId(2)">Gebruiker #2 (Jaap)</button><!--</router-link>--></form>
+                <button id="user2" role="link" class="btn btn-outline-primary" v-on:click="setUserId(2)">Gebruiker #2 (Jaap)</button></form>
             </td>
           </tr>
           </tbody>
@@ -54,7 +53,7 @@
         <div class="col-lg-6">
           <h4>Administrator scherm</h4>
           <form id="user" action="http://localhost:8081/chatlist">
-            <!--<router-link to="/chatlist" custom v-slot="{ navigate }">--><button id="administrator" role="link" class="btn btn-primary" v-on:click="setUserId('Admin')"><i class="fa fa-sign-out" aria-hidden="true"></i>  Administrator</button><!--</router-link>--></form>
+            <button id="administrator" role="link" class="btn btn-primary" v-on:click="setUserId('Admin')"><i class="fa fa-sign-out" aria-hidden="true"></i>  Administrator</button></form>
         </div>
       </div>
     </div>
