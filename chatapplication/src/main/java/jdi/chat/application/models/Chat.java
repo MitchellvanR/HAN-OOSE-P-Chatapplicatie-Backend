@@ -46,7 +46,7 @@ public class Chat {
 
     public void setChatId(String chatId) { this.chatId = chatId; }
 
-    public void setChatDAO(IChatDAO chatDAO) { Chat.chatDAO = chatDAO; }
+    public static void setChatDAO(IChatDAO chatDAO) { Chat.chatDAO = chatDAO; }
 
     public void addChatToDatabase(String userId, String type){ setChatId(chatDAO.addChatToDatabase(userId, type)); }
 

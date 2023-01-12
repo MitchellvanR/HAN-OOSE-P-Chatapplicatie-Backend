@@ -64,10 +64,10 @@ class ChatControllerTest {
     }
 
     @AfterEach
-    void close(){ chatMockController.close(); }
+    void tearDown(){ chatMockController.close(); }
 
     @Test
-    void testGetChatHistorySUCCESS() {
+    void getChatHistorySuccessTest() {
         // Act
         Response response = sut.getChatHistory(chatId);
 
@@ -76,7 +76,7 @@ class ChatControllerTest {
     }
 
     @Test
-    void testGetChatHistoryChatNotExistingCorrectResponseStatus() {
+    void getChatHistoryChatNotExistingCorrectResponseStatusTest() {
         // Arrange
         var nonExistingChatId = "4";
         var mockedDao = Mockito.mock(SQLChatDAO.class);
@@ -91,7 +91,7 @@ class ChatControllerTest {
     }
 
     @Test
-    void testSendMessageSUCCESS() {
+    void sendMessageSuccessTest() {
         // Act
         sut.sendMessage(chatId, userId, messageAndIv);
 
@@ -101,7 +101,7 @@ class ChatControllerTest {
     }
 
     @Test
-    void testSendMessageFAILED() {
+    void SendMessageFailedTest() {
         // Act
         int actual = sut.sendMessage(chatId, userId, "").getStatus();
 
@@ -110,7 +110,7 @@ class ChatControllerTest {
     }
 
     @Test
-    void testAddUserToChat() throws SQLException {
+    void addUserToChatSuccessTest() throws SQLException {
         // Act
         sut.addUserToChat(chatId, addedUserId);
 
@@ -120,7 +120,7 @@ class ChatControllerTest {
     }
 
     @Test
-    void testAddChatToDatabase(){
+    void AddChatToDatabaseSuccessTest(){
         // Act
         sut.addChatToDatabase(userId, addedUserId);
 
@@ -129,7 +129,7 @@ class ChatControllerTest {
         verify(newChatMock, times(1)).addUserToChat(anyString());
     }
 
-    @Test void testGetChatIds() throws SQLException {
+    @Test void getChatIdsSuccessTest() throws SQLException {
         // Arrange
         try (MockedStatic<Chat> chatMockedStatic = Mockito.mockStatic(Chat.class)) {
             chatMockedStatic.when(() -> Chat.getChatIdFromUserId(anyString())).thenReturn(chatIdList);

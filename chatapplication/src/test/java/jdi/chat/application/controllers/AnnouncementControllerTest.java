@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AnnouncementControllerTest {
+class AnnouncementControllerTest {
     private AnnouncementController sut;
     private String announcement;
     private String endDate;
@@ -29,7 +29,7 @@ public class AnnouncementControllerTest {
     }
 
     @Test
-    void saveAnnouncementTest(){
+    void saveAnnouncementSuccessTest(){
         // Arrange
         Mockito.doNothing().when(mockedAnnouncementDAO).saveAnnouncement(announcement, endDate);
 
@@ -41,7 +41,7 @@ public class AnnouncementControllerTest {
     }
 
     @Test
-    void getAnnouncementsTest() throws SQLException {
+    void getAnnouncementsSuccessTest() throws SQLException {
         // Arrange
         Mockito.doReturn(announcements).when(mockedAnnouncementDAO).getAnnouncements();
 
@@ -53,7 +53,7 @@ public class AnnouncementControllerTest {
     }
 
     @Test
-    void getAnnouncementsErrorTest() throws SQLException {
+    void getAnnouncementsSQLExceptionTest() throws SQLException {
         // Arrange
         Mockito.when(mockedAnnouncementDAO.getAnnouncements()).thenThrow(new SQLException());
 

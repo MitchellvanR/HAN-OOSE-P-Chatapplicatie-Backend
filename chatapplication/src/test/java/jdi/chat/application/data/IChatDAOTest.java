@@ -48,7 +48,7 @@ class IChatDAOTest {
     };
 
     @Test
-    void testFormatMessageCorrectReturn() {
+    void formatMessageCorrectReturnTest() {
         // Arrange
         var senderId = "1";
         var content = "test";

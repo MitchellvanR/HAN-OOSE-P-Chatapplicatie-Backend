@@ -14,7 +14,7 @@ class FileLoaderTest {
     }
 
     @Test
-    void testConfigurationLoader() {
+    void configurationLoaderSuccessTest() {
         // Arrange
         var path = "configuration/test.txt";
         var key = "test";
@@ -29,13 +29,11 @@ class FileLoaderTest {
     }
 
     @Test
-    void testConfigNotFoundExceptionCorrectResponse() {
+    void configNotFoundExceptionCorrectResponseTest() {
         // Arrange
         var path = "configuration/non-existent-file.txt";
 
         // Assert
-        assertThrows(ConfigNotFoundException.class, () -> {
-            sut.readConfigFile(path);
-        });
+        assertThrows(ConfigNotFoundException.class, () -> sut.readConfigFile(path));
     }
 }
