@@ -13,7 +13,6 @@ public class Chat {
     private String chatId;
     private static IChatDAO chatDAO = new SQLChatDAO();
     private String chatType;
-    private String latestMessage;
 
     public Chat(String id) {
         chatId = id;
@@ -60,8 +59,4 @@ public class Chat {
     public static void setChatDAO(IChatDAO chatDAO) { Chat.chatDAO = chatDAO; }
 
     public String getChatType() { return chatType; }
-
-    public String getLatestMessage() { return latestMessage; }
-
-    public void setLatestMessage(String latestMessage) { this.latestMessage = latestMessage; }
 }
