@@ -20,37 +20,17 @@
           <tr>
             <th>Chat</th>
             <th>Actie</th>
-            <th>Tijdelijke oplossing</th>
           </tr>
           </thead>
           <tbody>
-          <!--          <tr v-for="userId in users" :key="userId">-->
-          <!--            <td>{{userId}}</td>-->
-          <!--            <td>-->
-          <!--              <router-link to="/chat" custom v-slot="{ navigate }">-->
-          <!--                <button @click="navigate" role="link" class="btn" v-on:click="setUserId(userId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>-->
-          <!--              </router-link>-->
-          <!--            </td>-->
-          <!--            <td></td>-->
-          <!--          </tr>-->
-          <tr>
-            <td>1</td>
-            <td></td>
-            <td>
-              <form id="user" action="http://localhost:8081/chatlist">
-                <button id="user1" role="link" class="btn btn-outline-primary" v-on:click="setUserId(1)">Gebruiker #1 (Mitch)</button>
-              </form>
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td></td>
-            <td>
-              <form id="user" action="http://localhost:8081/chatlist">
-                <button id="user2" role="link" class="btn btn-outline-primary" v-on:click="setUserId(2)">Gebruiker #2 (Jaap)</button>
-              </form>
-            </td>
-          </tr>
+            <tr v-for="user in users" :key="user.id">
+              <td>{{user.id}}</td>
+              <td>
+                <form id="user" action="http://localhost:8081/chatList">
+                  <button id="user" role="link" class="btn" v-on:click="setUserId(user.id)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
+                </form>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -74,12 +54,12 @@ export default {
     };
   },
   mounted() {
-    // this.getAllUsers();
+    this.getAllUsers();
   },
   methods: {
     getAllUsers: function(){
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/user/getAllUsers').then(data => {
-        this.users.push(...data.list);
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/users').then(data => {
+        this.users.push(...data.users);
       });
     },
     setUserId: function (userId) {
