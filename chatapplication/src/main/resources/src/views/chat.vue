@@ -226,7 +226,7 @@ export default {
       if (input.value === "" || isNaN(input.value)){
         input.classList.add("border", "border-danger");
       } else {
-        this.addUserToChat(input.value, this.chatId);
+        this.addUserToChat(input, input.value, this.chatId);
         input.value = '';
       }
     },
@@ -235,8 +235,14 @@ export default {
         this.otherPublicKey = responseData.publicKey;
       });
     },
-    addUserToChat: function (userId, chatId){
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + chatId + '/addUser/' + userId).then(res => {return res})
+    addUserToChat: function (input, userId, chatId){
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/newChat/' + userId).then(responseData => {
+        if (responseData.result === true){
+          this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/' + chatId + '/addUser/' + userId).then(res => {return res})
+        } else {
+          input.classList.add("border", "border-danger");
+        }
+      });
     },
     isInputEmpty: function() {
       return document.getElementById('message').value === "";
