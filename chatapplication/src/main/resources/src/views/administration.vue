@@ -71,9 +71,7 @@ export default {
       let publicKey = this.formulatePublicKey(secret).toString();
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + sessionStorage.getItem('userId') + '/' + String(publicKey)).then(responseData => {
         let keysMatch = responseData.keysMatch;
-        console.log(keysMatch)
         if (!keysMatch || sessionStorage.getItem('userId') !== 'Admin'){
-          console.log(keysMatch)
           history.back();
         }
       })
