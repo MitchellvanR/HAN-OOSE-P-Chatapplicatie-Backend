@@ -9,25 +9,11 @@
         </ul>
       </div>
     </div>
-    <div v-if="showAnnouncementMaker()" class="position-relative border1px">
-      <form id="getAnnouncementMaker">
-        <button id="openForm" type="button" @click.prevent="openForm()" class="btn btn-outline-primary">Nieuwe aankondiging toevoegen</button><br>
-      <div class="input_style w-100 form-popup" id="addAnnouncement">
-        <button id="closeForm" type="button" @click.prevent="closeForm()" class="btn btn-outline-primary">Sluit aankondigingsformulier</button><br>
-        <b>Voeg een aankondiging toe</b>
-        <form id="announcement-form">
-          <label for="announcement" >Aankondiging:</label><br>
-          <input type="text" id="announcement" v-model="announcement" placeholder="Voer hier de aankondiging in..." size="100"/><br>
-          <label for="endDate" >Einddatum:</label><br>
-          <input type="datetime-local" id="endDate" v-model="endDate"><br>
-          <button type="button" @click="saveAnnouncement(announcement, endDate)" class="btn btn-outline-primary">Verzend</button>
-        </form>
-      </div>
-      </form>
-    </div>
     <div class="row">
-      <p class="display-4">Gebruiker Menu</p>
-      <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Let op! Dit scherm wordt alleen gebruikt voor testen en het geven van demo's.</small>
+      <div class="col lg-8">
+        <p class="display-4">Gebruiker Menu</p>
+        <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Let op! Dit scherm wordt alleen gebruikt voor testen en het geven van demo's.</small>
+      </div>
       <hr>
     </div>
     <div class="row">
@@ -43,9 +29,11 @@
         </form>
       </div>
       <div class="col-lg-6">
-        <button class="btn text-info fa-lg float-right">
-          <i class="fa fa-info-circle" aria-hidden="true"></i> <small>Hulplijn</small>
-        </button>
+        <router-link to="/chat" custom v-slot="{ navigate }">
+          <button class="btn btn-outline-info fa-lg float-right" type="submit" v-on:click="setHelpLineChatType()" @click="navigate"  role="link">
+            <i class="fa fa-info-circle" aria-hidden="true"></i> Hulplijn
+          </button>
+        </router-link>
       </div>
     </div>
     <div class="row">
@@ -54,7 +42,7 @@
           <thead>
           <tr>
             <th>Chat</th>
-            <th>Action</th>
+            <th>Actie</th>
           </tr>
           </thead>
           <tbody>
@@ -82,21 +70,35 @@ export default {
       announcements: [],
       announcement: "",
       endDate:"",
+      chatId: null,
+      userId: sessionStorage.getItem('userId'),
     }
   },
   mounted() {
     this.savePublicKey();
     this.createChat();
-    this.addToItems();
     this.getAnnouncements();
+    this.getAllChatsFromUser()
+    this.setHelplineChat();
   },
   methods: {
     /* global BigInt */
+    setHelplineChat: function (){
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + this.userId).then(responseData => {
+        if(responseData.chatId) {
+          this.setChatId(responseData.chatId);
+        } else {
+          this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newHelpLineChat/' + this.userId + '/admin').then()
+          this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/helpline/' + this.userId).then(responseData => {
+            this.setChatId(responseData.chatId);
+          });
+        }
+      });
+    },
     savePublicKey: function (){
-      let userId = sessionStorage.getItem('userId');
-      let secret = sessionStorage.getItem('secret');
+      let secret = sessionStorage.getItem('secret')
       let publicKey = this.formulatePublicKey(secret).toString();
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + userId + '/' + String(publicKey)).then(responseData => {
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + this.userId + '/' + String(publicKey)).then(responseData => {
         let keysMatch = responseData.keysMatch;
         if (!keysMatch){
           history.back();
@@ -116,40 +118,30 @@ export default {
         if (input.value === ""){
           input.classList.add("border", "border-danger");
         } else {
-          //is het een int validatie
           this.addChatToDatabase(input.value);
           input.value = '';
         }
       }
     },
     addChatToDatabase: function (id) {
-      sessionStorage.setItem('userId', '1'); // mock
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + sessionStorage.getItem('userId')).then()
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + this.userId).then()
     },
-    addToItems: function() {
-      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/user/' + sessionStorage.getItem("userId")).then(responseData => {
+    getAllChatsFromUser: function() {
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/user/' + this.userId).then(responseData => {
         this.items.push(...responseData.chatIds);
       });
     },
-    setChatId: function (chatId){
-      sessionStorage.setItem('chatId', chatId);
+    setHelpLineChatType: function (){
+      sessionStorage.setItem("isHelpline", "true");
     },
-    saveAnnouncement: function (announcement, endDate){
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/announcement/' + announcement + '/' + endDate).then(() => {window.location.reload();})
+    setChatId: function (chatId){
+      sessionStorage.setItem("isHelpline", "false");
+      sessionStorage.setItem('chatId', chatId);
     },
     getAnnouncements: function (){
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/announcement/getAnnouncements').then(responseData => {
         this.announcements.push(...responseData.announcements);
       })
-    },
-    showAnnouncementMaker: function (){
-      return sessionStorage.getItem("userId") === "Admin";
-    },
-    openForm: function () {
-      document.getElementById("addAnnouncement").style.display = "block";
-    },
-    closeForm: function () {
-      document.getElementById("addAnnouncement").style.display = "none";
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {
@@ -175,7 +167,5 @@ export default {
 </script>
 
 <style scoped>
-.form-popup {
-  display: none;
-}
+
 </style>

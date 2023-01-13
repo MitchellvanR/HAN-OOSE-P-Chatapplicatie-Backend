@@ -1,8 +1,10 @@
 <template>
+
   <div class="container background">
     <p class="display-4">Menu</p>
     <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Let op! Dit scherm wordt alleen gebruikt voor testen en het geven van demo's.</small>
     <hr class="mb-5">
+
     <div class="row">
       <div class="col-lg-6">
         <form id="secret-form">
@@ -70,7 +72,7 @@ export default {
     };
   },
   mounted() {
-    this.getAllUsers();
+    // this.getAllUsers();
   },
   methods: {
     getAllUsers: function(){
@@ -80,26 +82,6 @@ export default {
     },
     setUserId: function (userId) {
       sessionStorage.setItem("userId", userId);
-    },
-    createChat: function (){
-      document.getElementById('newChatForm').onsubmit = data =>
-      {
-        const input = document.getElementById('userId');
-        input.classList.remove("border", "border-danger");
-
-        data.preventDefault();
-        if (input.value === ""){
-          input.classList.add("border", "border-danger");
-        } else {
-          //is het een int validatie
-          this.addChatToDatabase(input.value);
-          input.value = '';
-        }
-      }
-    },
-    addChatToDatabase: function (id) {
-      sessionStorage.setItem('userId', '1'); // mock
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + sessionStorage.getItem('userId')).then()
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {
@@ -120,7 +102,6 @@ export default {
         XmlHttpRequest.send(data);
       });
     },
-
     saveSecret: async function (secret) {
       let numberFromString = Number(0);
       for (let i = 0; i < secret.length; i++) {

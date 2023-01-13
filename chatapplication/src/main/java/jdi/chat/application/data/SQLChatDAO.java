@@ -1,5 +1,6 @@
 package jdi.chat.application.data;
 
+import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
@@ -147,6 +148,44 @@ public class SQLChatDAO implements IChatDAO {
             if (resultSet != null){
                 resultSet.close();
             }
+        }
+    }
+    @Override
+    public String getUserHelplineChatId(String userId) {
+        SQLConnection.connectToDatabase();
+        String sql = Queries.getInstance().getQuery("getUserHelplineChatIdQuery");
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {
+            if (statement == null) { throw new DatabaseRequestException(); }
+            statement.setString(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            String chatId = null;
+            while(resultSet.next()){
+                chatId = resultSet.getString("id");
+            }
+            return chatId;
+        } catch (Exception e) {
+            throw new DatabaseRequestException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<ChatDTO> getHelplineChats() {
+        SQLConnection.connectToDatabase();
+        String sql = Queries.getInstance().getQuery("getHelplineChatsQuery");
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {
+            if (statement == null) { throw new DatabaseRequestException(); }
+            ResultSet resultSet = statement.executeQuery();
+
+            ArrayList<ChatDTO> helplineChats = new ArrayList<>();
+            while(resultSet.next()){
+                helplineChats.add(formatChat(
+                        resultSet.getString("chatId")
+                ));
+            }
+            return helplineChats;
+        } catch (Exception e) {
+            throw new DatabaseRequestException();
         }
     }
 }
