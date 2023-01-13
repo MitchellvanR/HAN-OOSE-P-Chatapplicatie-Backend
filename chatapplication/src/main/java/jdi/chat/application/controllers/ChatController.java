@@ -100,6 +100,19 @@ public class ChatController {
     }
 
     @GET
+    @Path("/getChatType/{chatId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getChatType(@PathParam("chatId") String chatId) throws SQLException {
+        Chat chat = openChat(chatId);
+        chat.defineChatType();
+        String type = chat.getChatType();
+        JSONObject chatTypeJSON = new JSONObject();
+        chatTypeJSON.put("chatType", type);
+        return Response.ok().entity(chatTypeJSON).build();
+    }
+
+    @GET
     @Path("/helpline/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
