@@ -1,46 +1,54 @@
 <template>
-  <div id="frame" class="mt-3">
-    <div class="content">
-      <div class="contact-profile row mb-2">
-        <div class="col-lg-12">
-          <strong>Naam ontvanger</strong>
-        </div>
-      </div>
-      <div class="messages" id="messages">
-        <ul v-for="(message, index) in array" :key="index">
-          <li v-if="message.senderId === userId" class="replies mb-3">
-            <small class="float-right margin-right-5px">{{message.time}}</small>
-            <br>
-            <p>{{message.message}}</p>
-          </li>
-          <li v-else class="sent mb-3">
-            <small class="margin-left-5px">{{message.time}}</small>
-            <br>
-            <p>{{message.message}}</p>
-          </li>
-        </ul>
-      </div>
-      <div class="message-input border-top border-dark p-2">
-        <div class="row mb-2">
-          <form id="sendMessageForm" class="wrap">
-            <input type="text" id="message" placeholder="Stuur een bericht..." />
-            <button class="btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-            <button class="btn" id="groupChatButton" type="button" @click="toggleView('addUserToCurrentChat')"><i class="fa fa-users" aria-hidden="true"></i></button>
-          </form>
-        </div>
-        <div class="row">
-          <div class="form-popup" id="addUserToCurrentChat">
-            <form id="addUserForm" class="row">
-              <div class="col-lg-12">
-                <input type="text" id="userId" placeholder="Gebruiker toevoegen (userId)">
-                <button class="btn" type="button" @click="addUserToCurrentChat()"><i class="fa fa-check" aria-hidden="true"></i></button>
+  <div class="row mt-3">
+    <div class="col lg-2"></div>
+    <div class="col lg-8">
+      <div id="frame">
+        <div class="content">
+          <div class="contact-profile row mb-2">
+            <div class="col-lg-12">
+              <strong>Naam ontvanger</strong>
+            </div>
+          </div>
+          <div class="messages" id="messages">
+            <ul v-for="(message, index) in array" :key="index">
+              <li v-if="message.senderId === userId" class="replies mb-3">
+                <small class="float-right margin-right-5px">{{message.time}}</small>
+                <br>
+                <p>{{message.message}}</p>
+              </li>
+              <li v-else class="sent mb-3">
+                <small class="margin-left-5px">{{message.time}}</small>
+                <br>
+                <p>{{message.message}}</p>
+              </li>
+            </ul>
+          </div>
+          <div class="message-input border-top border-dark p-2">
+            <div class="row mb-2">
+              <form id="sendMessageForm" class="wrap">
+                <input type="text" id="message" placeholder="Stuur een bericht..." />
+                <button class="btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                <button class="btn" id="groupChatButton" type="button" @click="toggleView('addUserToCurrentChat')"><i class="fa fa-users" aria-hidden="true"></i></button>
+              </form>
+            </div>
+            <div class="row">
+              <div class="form-popup" id="addUserToCurrentChat">
+                <form id="addUserForm" class="row">
+                  <div class="col-lg-12">
+                    <input type="text" id="userId" placeholder="Gebruiker toevoegen (userId)">
+                    <button class="btn" type="button" @click="addUserToCurrentChat()"><i class="fa fa-check" aria-hidden="true"></i></button>
+                  </div>
+                </form>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="col lg-2"></div>
+
   </div>
+
 </template>
 
 <script>
