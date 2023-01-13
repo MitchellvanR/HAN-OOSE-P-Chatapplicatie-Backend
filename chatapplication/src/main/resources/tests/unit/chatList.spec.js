@@ -26,7 +26,7 @@ describe('chatList.vue', () => {
 
     it('is called ChatList', () => {
         setWrapper();
-        expect(wrapper.name()).toEqual('openChatList');
+        expect(wrapper.name()).toEqual('ChatList');
     });
 
     it('calls addToList on mount',  () => {

@@ -61,9 +61,6 @@
           <tr v-for="chatId in items" :key="chatId">
             <td>{{chatId}}</td>
             <td>
-<!--              <router-link to="/chat" custom v-slot="{ navigate }">-->
-<!--                <button @click="navigate" role="link" class="btn" v-on:click="setChatId(chatId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>-->
-<!--              </router-link>-->
               <form id="chat" action="http://localhost:8081/chat">
                 <button role="link" class="btn" v-on:click="setChatId(chatId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
               </form>
@@ -85,20 +82,19 @@ export default {
       announcements: [],
       announcement: "",
       endDate:"",
-
     }
   },
   mounted() {
     this.savePublicKey();
     this.createChat();
-    this.addToItems()
+    this.addToItems();
     this.getAnnouncements();
   },
   methods: {
     /* global BigInt */
     savePublicKey: function (){
-      let userId = sessionStorage.getItem('userId')
-      let secret = sessionStorage.getItem('secret')
+      let userId = sessionStorage.getItem('userId');
+      let secret = sessionStorage.getItem('secret');
       let publicKey = this.formulatePublicKey(secret).toString();
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + userId + '/' + String(publicKey)).then(responseData => {
         let keysMatch = responseData.keysMatch;
@@ -136,14 +132,14 @@ export default {
       });
     },
     setChatId: function (chatId){
-      sessionStorage.setItem('chatId', chatId)
+      sessionStorage.setItem('chatId', chatId);
     },
     saveAnnouncement: function (announcement, endDate){
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/announcement/' + announcement + '/' + endDate).then(() => {window.location.reload();})
     },
     getAnnouncements: function (){
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/announcement/getAnnouncements').then(responseData => {
-        this.announcements.push(...responseData.announcements)
+        this.announcements.push(...responseData.announcements);
       })
     },
     showAnnouncementMaker: function (){
