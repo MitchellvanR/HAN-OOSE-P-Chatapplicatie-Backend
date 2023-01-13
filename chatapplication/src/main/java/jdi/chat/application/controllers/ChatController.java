@@ -67,7 +67,7 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
-        this.createChat("standaard", userId, otherUserId);
+        this.createChatInDatabase("standaard", userId, otherUserId);
         return Response.ok().build();
     }
 
