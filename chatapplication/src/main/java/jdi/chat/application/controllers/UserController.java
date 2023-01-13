@@ -8,7 +8,10 @@ import jakarta.ws.rs.core.Response;
 import jdi.chat.application.data.IUserDAO;
 import jdi.chat.application.data.SQLUserDAO;
 import jdi.chat.application.data.dto.UsersDTO;
+import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import net.minidev.json.JSONObject;
+
+import java.sql.SQLException;
 
 @Path("/users")
 public class UserController {
@@ -17,9 +20,12 @@ public class UserController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers() {
-        UsersDTO users = userDAO.getAllUsers();
-        JSONObject usersJSON = new JSONObject();
-        usersJSON.put("users", users);
-        return Response.ok().entity(usersJSON).build();
+        UsersDTO users;
+        try {
+            users = userDAO.getAllUsers();
+        } catch (SQLException e) {
+            throw new DatabaseRequestException();
+        }
+        return Response.ok().entity(users).build();
     }
 }
