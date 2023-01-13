@@ -67,9 +67,7 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
-        if (!Objects.equals(userId, otherUserId)){
-            this.createChat("standaard", userId, otherUserId);
-        }
+        this.createChat("standaard", userId, otherUserId);
         return Response.ok().build();
     }
 
@@ -77,7 +75,7 @@ public class ChatController {
     @Path("/newHelpLineChat/{userId}/{currentUser}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addHelplineChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
-        this.createChat("hulplijn", userId, otherUserId);
+        this.createChatInDatabase("hulplijn", userId, otherUserId);
         return Response.ok().build();
     }
 
@@ -151,7 +149,7 @@ public class ChatController {
         return Response.ok().entity(chatIdJSON).build();
     }
 
-    public void createChat(String type, String userId, String otherUserId){
+    private void createChatInDatabase(String type, String userId, String otherUserId){
         Chat chat = createNewChat("0");
         chat.addChatToDatabase(userId, type);
         chat.addUserToChat(otherUserId);
