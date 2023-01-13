@@ -129,7 +129,7 @@ public class SQLChatDAO implements IChatDAO {
     }
 
     @Override
-    public ArrayList<ChatDTO> getChatIdFromUserId(String userId) throws SQLException {
+    public ArrayList<ChatDTO> getChatDTOFromUserId(String userId) throws SQLException {
         SQLConnection.connectToDatabase();
         String sql = Queries.getInstance().getQuery("getChatIdQuery");
         ResultSet resultSet = null;
@@ -148,7 +148,7 @@ public class SQLChatDAO implements IChatDAO {
                         users.add(user);
                     }
                 }
-                chats.add(formatChatList(chat, users));
+                chats.add(formatChatDTO(chat, users));
             }
             return chats;
         } catch (Exception e) {

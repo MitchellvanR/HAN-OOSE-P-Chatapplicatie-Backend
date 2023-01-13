@@ -223,7 +223,7 @@ export default {
       const input = document.getElementById('userId');
       input.classList.remove("border", "border-danger");
 
-      if (input.value === "" || isNaN(input.value)){
+      if (input.value === "" || isNaN(input.value) || input.value !== this.userId){
         input.classList.add("border", "border-danger");
       } else {
         this.addUserToChat(input, input.value, this.chatId);

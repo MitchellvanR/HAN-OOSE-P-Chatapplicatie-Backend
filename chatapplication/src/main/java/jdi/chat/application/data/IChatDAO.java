@@ -18,7 +18,7 @@ public interface IChatDAO {
         return new MessageDTO(senderId, content, time, iv);
     }
 
-    default ChatDTO formatChatList(String chatId, List<String> users){
+    default ChatDTO formatChatDTO(String chatId, List<String> users){
         return new ChatDTO(chatId, users);
     }
 
@@ -32,7 +32,7 @@ public interface IChatDAO {
 
     String getChatType(String chatId) throws SQLException;
 
-    ArrayList<ChatDTO> getChatIdFromUserId(String userId) throws SQLException;
+    ArrayList<ChatDTO> getChatDTOFromUserId(String userId) throws SQLException;
 
     int getStandardChatWithUsers(String userId, String otherUserId);
 

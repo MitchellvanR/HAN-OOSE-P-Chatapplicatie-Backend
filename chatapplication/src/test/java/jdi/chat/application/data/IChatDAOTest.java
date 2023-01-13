@@ -28,8 +28,8 @@ class IChatDAOTest {
         }
 
         @Override
-        public ChatDTO formatChatList(String chatId, List<String> users) {
-            return IChatDAO.super.formatChatList(chatId, users);
+        public ChatDTO formatChatDTO(String chatId, List<String> users) {
+            return IChatDAO.super.formatChatDTO(chatId, users);
         }
 
         @Override
@@ -48,7 +48,7 @@ class IChatDAOTest {
         }
 
         @Override
-        public ArrayList<ChatDTO> getChatIdFromUserId(String userId) {
+        public ArrayList<ChatDTO> getChatDTOFromUserId(String userId) {
             return null;
         }
 

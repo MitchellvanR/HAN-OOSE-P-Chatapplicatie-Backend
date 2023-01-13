@@ -74,6 +74,7 @@ public class ChatController {
     @POST
     @Path("/newHelpLineChat/{userId}/{currentUser}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addHelplineChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
         this.createChatInDatabase("hulplijn", userId, otherUserId);
         return Response.ok().build();

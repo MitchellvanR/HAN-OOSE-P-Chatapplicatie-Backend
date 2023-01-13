@@ -337,7 +337,7 @@ class SQLChatDAOTest {
             // Act
             ArrayList<ChatDTO> actual = null;
             try {
-                actual = sut.getChatIdFromUserId(senderId);
+                actual = sut.getChatDTOFromUserId(senderId);
             } catch (Exception e) {
                 fail("An exception was thrown in success test case: " + e.getMessage());
             }
@@ -356,7 +356,7 @@ class SQLChatDAOTest {
         when(mockedStatement.executeQuery()).thenThrow(SQLException.class);
 
         // Assert
-        assertThrows(DatabaseRequestException.class, () -> sut.getChatIdFromUserId(senderId));
+        assertThrows(DatabaseRequestException.class, () -> sut.getChatDTOFromUserId(senderId));
     }
 
     @Test
