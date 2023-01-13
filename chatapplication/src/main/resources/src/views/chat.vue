@@ -56,7 +56,7 @@ export default {
     }
   },
   mounted() {
-    this.getChatType(sessionStorage.getItem('chatId'))
+    this.getChatType(sessionStorage.getItem('chatId'));
     this.getChatLog();
     this.delay(30);
   },
@@ -83,7 +83,7 @@ export default {
     importCryptoKey: async function (value) {
       let key = this.formulatePrivateKey(value, this.getSecret());
       let bufferOne = new TextEncoder().encode(key);
-      let bufferTwo = new Uint8Array(32)
+      let bufferTwo = new Uint8Array(32);
       for (let i = 0; i < bufferTwo.length; i++) {
         bufferTwo[i] = bufferOne[i];
       }
@@ -106,7 +106,7 @@ export default {
       return new TextDecoder().decode(message);
     },
     encrypt: async function (message) {
-      this.getOtherPublicKey()
+      this.getOtherPublicKey();
       await this.delay(30);
       await this.importCryptoKey(this.otherPublicKey);
       let iv = this.generateIv();
@@ -194,7 +194,7 @@ export default {
         if (sessionStorage.getItem('chatType') === "groep") {
           data.data.text().then(this.showMessage);
         } else {
-          this.getOtherPublicKey()
+          this.getOtherPublicKey();
           await this.delay(30);
           await this.importCryptoKey(this.otherPublicKey);
           let dataSet = await this.websocketDecrypt(await data.data.text().then())
@@ -261,8 +261,8 @@ export default {
       });
 
       if (sessionStorage.getItem('chatType') === "groep") {
-        this.sendMessage(groupMessageAndIv)
-        webSocket.send(groupMessageAndIv)
+        this.sendMessage(groupMessageAndIv);
+        webSocket.send(groupMessageAndIv);
       } else {
         this.sendMessage(messageAndIv);
         webSocket.send(messageAndIv);

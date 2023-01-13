@@ -29,11 +29,11 @@
         </form>
       </div>
       <div class="col-lg-6">
-        <router-link to="/chat" custom v-slot="{ navigate }">
-          <button class="btn btn-outline-info fa-lg float-right" type="submit" v-on:click="setHelpLineChatType()" @click="navigate"  role="link">
+        <form id="chat" action="http://localhost:8081/chat">
+          <button class="btn btn-outline-info fa-lg float-right" type="submit" v-on:click="setHelpLineChatType()" role="link">
             <i class="fa fa-info-circle" aria-hidden="true"></i> Hulplijn
           </button>
-        </router-link>
+        </form>
       </div>
     </div>
     <div class="row">
@@ -55,9 +55,9 @@
               </p>
             </td>
             <td>
-              <router-link to="/chat" custom v-slot="{ navigate }">
+              <form id="chat" action="http://localhost:8081/chat">
                 <button @click="navigate" role="link" class="btn" v-on:click="setChatId(chat.chatId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
-              </router-link>
+              </form>
             </td>
           </tr>
           </tbody>
@@ -69,12 +69,13 @@
 
 <script>
 export default {
-  name: "openChatList",
-
+  name: "ChatList",
   data() {
     return {
       chats: [],
       announcements: [],
+      announcement: "",
+      endDate:"",
       chatId: null,
       userId: sessionStorage.getItem('userId'),
     }
@@ -167,7 +168,7 @@ export default {
     },
     getAnnouncements: function (){
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/announcement/getAnnouncements').then(responseData => {
-        this.announcements.push(...responseData.announcements)
+        this.announcements.push(...responseData.announcements);
       })
     },
     sendHttpRequest: function (method, url, data) {

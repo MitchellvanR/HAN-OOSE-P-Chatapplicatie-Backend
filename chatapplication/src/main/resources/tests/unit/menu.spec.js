@@ -1,20 +1,33 @@
-import { mount } from '@vue/test-utils';
+import {createLocalVue, shallowMount} from '@vue/test-utils';
 import menu from '@/views/menu';
+import sinon from 'sinon';
+
+const localVue = createLocalVue();
 
 describe('menu.vue', () => {
-    // De stubs: ['router-link'] is nodig omdat er anders warnings worden gegeven dat de router-link niet herkend wordt!
-    const wrapper = mount(menu, {
-        stubs: ['router-link']
+    let wrapper;
+    const listener = sinon.spy();
+
+    function setWrapper() {
+        wrapper = shallowMount(menu, {
+            localVue
+        });
+    }
+
+    it('Is called UserMenu', () => {
+        setWrapper();
+        expect(wrapper.name()).toEqual('UserMenu');
     });
 
-    it('check if component exist', () => {
-        expect(wrapper.findComponent(menu).exists()).toBe(true);
-    })
+    it('check if setUserId is called after click button user', () => {
+        setWrapper();
+        wrapper.find('#user1').trigger('click');
+        expect(listener.called);
+    });
 
-    it('check if button user1 is clicked', () => {
-        wrapper.vm.navigate = jest.fn();
-        const button = wrapper.find('#user1');
-        button.trigger('click');
-        expect(wrapper.vm.navigate).toHaveBeenCalled();
-    })
-})
+    it('check if setUserId is called after click button administrator', () => {
+        setWrapper();
+        wrapper.find('#administrator').trigger('click');
+        expect(listener.called);
+    });
+});
