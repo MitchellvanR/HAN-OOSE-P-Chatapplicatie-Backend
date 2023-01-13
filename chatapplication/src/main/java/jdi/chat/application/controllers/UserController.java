@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 @Path("/users")
 public class UserController {
-    private final IUserDAO userDAO = new SQLUserDAO();
+    private IUserDAO userDAO = new SQLUserDAO();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -27,5 +27,9 @@ public class UserController {
             throw new DatabaseRequestException();
         }
         return Response.ok().entity(users).build();
+    }
+
+    public void setUserDAO(IUserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 }
