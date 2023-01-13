@@ -35,7 +35,6 @@
 }
 
 #frame .content {
-    float: right;
     height: 100%;
     overflow: hidden;
     position: relative;
@@ -45,11 +44,6 @@
     #frame .content {
         width: calc(100% - 58px);
         min-width: 300px !important;
-    }
-}
-@media screen and (min-width: 900px) {
-    #frame .content {
-        width: calc(100% - 340px);
     }
 }
 .contact-profile {
