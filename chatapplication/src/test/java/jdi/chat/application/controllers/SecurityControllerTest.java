@@ -41,15 +41,24 @@ class SecurityControllerTest {
     }
 
     @Test
-    void savePublicKeySuccessTest(){
+    void savePublicKeySuccessTest() throws SQLException {
         // Arrange
-        Mockito.doNothing().when(mockedSecurityDAO).savePublicKey(userId, publicKey);
+        Mockito.doReturn(empty).when(mockedSecurityDAO).savePublicKey(userId, publicKey);
 
         // Act
         sut.savePublicKey(userId, publicKey);
 
         // Assert
         Mockito.verify(mockedSecurityDAO).savePublicKey(userId, publicKey);
+    }
+
+    @Test
+    void savePublicKeySQLExceptionTest() throws SQLException {
+        // Arrange
+        Mockito.when(mockedSecurityDAO.savePublicKey(userId, publicKey)).thenThrow(SQLException.class);
+
+        // Assert
+        assertThrows(DatabaseRequestException.class, () -> sut.savePublicKey(userId, publicKey));
     }
 
     @Test
