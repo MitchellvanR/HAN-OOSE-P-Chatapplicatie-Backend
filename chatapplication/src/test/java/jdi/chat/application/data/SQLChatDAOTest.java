@@ -22,6 +22,7 @@ class SQLChatDAOTest {
     private ResultSet mockedResults;
     private String chatId;
     private String senderId;
+    private String userId;
     private String message;
     private String time;
     private String iv;
@@ -35,6 +36,7 @@ class SQLChatDAOTest {
         queries = Queries.getInstance();
         chatId = "1";
         senderId = "1";
+        userId = "2";
         message = "test";
         time = "00:00";
         iv = "11111";
@@ -355,5 +357,37 @@ class SQLChatDAOTest {
 
         // Assert
         assertThrows(DatabaseRequestException.class, () -> sut.getChatIdFromUserId(senderId));
+    }
+
+    @Test
+    void getStandardChatWithUsersTest() {
+        try {
+            // Arrange
+            int expected = 0;
+
+            try {
+                when(mockedConnection.prepareStatement(queries.getQuery("getStandardChatsWithUsersQuery"))).thenReturn(mockedStatement);
+                doReturn(mockedResults).when(mockedStatement).executeQuery();
+
+                when(mockedResults.next()).thenReturn(true).thenReturn(false);
+
+                doReturn(type).when(mockedResults).getString(1);
+            } catch (SQLException e) {
+                fail("An exception was thrown in success test case: " + e.getMessage());
+            }
+
+            // Act
+            int actual = 1;
+            try {
+                actual = sut.getStandardChatWithUsers(senderId, userId);
+            } catch (Exception e) {
+                fail("An exception was thrown in success test case: " + e.getMessage());
+            }
+
+            // Assert
+            assertEquals(expected, actual);
+        } catch (Exception e) {
+            fail("An exception was thrown in test case: " + e.getMessage());
+        }
     }
 }
