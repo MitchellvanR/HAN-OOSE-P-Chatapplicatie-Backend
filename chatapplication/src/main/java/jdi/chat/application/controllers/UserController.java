@@ -9,7 +9,6 @@ import jdi.chat.application.data.IUserDAO;
 import jdi.chat.application.data.SQLUserDAO;
 import jdi.chat.application.data.dto.UsersDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
-import net.minidev.json.JSONObject;
 
 import java.sql.SQLException;
 
