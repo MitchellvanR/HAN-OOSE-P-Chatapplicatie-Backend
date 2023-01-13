@@ -2,10 +2,11 @@ package jdi.chat.application.models;
 
 import jdi.chat.application.data.IChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
+import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
+import java.util.ArrayList;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Chat {
@@ -35,6 +36,20 @@ public class Chat {
         return chatDAO.getChatIdFromUserId(userId);
     }
 
+    public static String getUserHelplineChatId(String userId) {
+        return chatDAO.getUserHelplineChatId(userId);
+    }
+
+    public static ArrayList<ChatDTO> getHelplineChats() {
+        return chatDAO.getHelplineChats();
+    }
+
+    public void addChatToDatabase(String userId, String type){ setChatId(chatDAO.addChatToDatabase(userId, type)); }
+
+    public ArrayList<String> getUsers() throws SQLException { return chatDAO.getUsersInChat(getChatId()); }
+
+    public void defineChatType() throws SQLException { chatType = chatDAO.getChatType(chatId); }
+
     public String getChatId() {
         return chatId;
     }
@@ -42,12 +57,6 @@ public class Chat {
     public void setChatId(String chatId) { this.chatId = chatId; }
 
     public static void setChatDAO(IChatDAO chatDAO) { Chat.chatDAO = chatDAO; }
-
-    public void addChatToDatabase(String userId, String type){ setChatId(chatDAO.addChatToDatabase(userId, type)); }
-
-    public ArrayList<String> getUsers() throws SQLException { return chatDAO.getUsersInChat(getChatId()); }
-
-    public void defineChatType() throws SQLException { chatType = chatDAO.getChatType(chatId); }
 
     public String getChatType() { return chatType; }
 }

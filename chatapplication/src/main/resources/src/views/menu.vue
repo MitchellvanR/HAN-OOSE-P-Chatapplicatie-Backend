@@ -4,7 +4,6 @@
     <p class="display-4">Menu</p>
     <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Let op! Dit scherm wordt alleen gebruikt voor testen en het geven van demo's.</small>
     <hr class="mb-5">
-
     <div class="row">
       <div class="col-lg-6">
         <form id="secret-form">
@@ -37,7 +36,9 @@
       </div>
       <div class="col-lg-6">
         <h4>Administrator scherm</h4>
-        <router-link to="/chatlist" custom v-slot="{ navigate }"><button @click="navigate" id="administrator" role="link" class="btn btn-primary" v-on:click="setUserId('Admin')"><i class="fa fa-sign-out" aria-hidden="true"></i>  Administrator</button></router-link>
+        <form id="user" action="http://localhost:8081/administration">
+          <button id="administrator" role="link" class="btn btn-primary" v-on:click="setUserId('Admin')"><i class="fa fa-sign-out" aria-hidden="true"></i>  Administrator</button>
+        </form>
       </div>
     </div>
   </div>
