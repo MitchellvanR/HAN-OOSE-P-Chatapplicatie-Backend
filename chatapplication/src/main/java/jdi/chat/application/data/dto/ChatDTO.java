@@ -4,10 +4,7 @@ import java.util.ArrayList;
 
 public class ChatDTO {
     private String chatId;
-    private String type;
     private String latestMessage;
-    private ArrayList<String> users;
-
 
     public ChatDTO(String chatId,  String latestMessage) {
         this.chatId = chatId;
@@ -20,14 +17,6 @@ public class ChatDTO {
 
     public void setChatId(String chatId) {
         this.chatId = chatId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getLatestMessage() {
