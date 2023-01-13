@@ -10,7 +10,7 @@ import jdi.chat.application.data.SQLUserDAO;
 import jdi.chat.application.data.dto.UsersDTO;
 import net.minidev.json.JSONObject;
 
-@Path("Users")
+@Path("/users")
 public class UserController {
     private final IUserDAO userDAO = new SQLUserDAO();
 
