@@ -4,7 +4,6 @@ import jdi.chat.application.data.dto.UserDTO;
 import jdi.chat.application.data.dto.UsersDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
