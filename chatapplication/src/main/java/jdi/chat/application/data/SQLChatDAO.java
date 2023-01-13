@@ -179,4 +179,23 @@ public class SQLChatDAO implements IChatDAO {
             throw new DatabaseRequestException(e);
         }
     }
+
+    @Override
+    public int checkIfUserExists(String userId){
+        SQLConnection.connectToDatabase();
+        String sql = Queries.getInstance().getQuery("getUserWithIdQuery");
+        ResultSet resultSet = null;
+        int result = 0;
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {
+            if (statement == null) { throw new DatabaseRequestException(); }
+            statement.setString(1, userId);
+            resultSet = statement.executeQuery();
+            while(resultSet.next()) {
+                result = resultSet.getInt(1);
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new DatabaseRequestException(e);
+        }
+    }
 }

@@ -390,4 +390,36 @@ class SQLChatDAOTest {
             fail("An exception was thrown in test case: " + e.getMessage());
         }
     }
+
+    @Test
+    void checkIfUserExistsTest() {
+        try {
+            // Arrange
+            int expected = 0;
+
+            try {
+                when(mockedConnection.prepareStatement(queries.getQuery("getUserWithIdQuery"))).thenReturn(mockedStatement);
+                doReturn(mockedResults).when(mockedStatement).executeQuery();
+
+                when(mockedResults.next()).thenReturn(true).thenReturn(false);
+
+                doReturn(type).when(mockedResults).getString(0);
+            } catch (SQLException e) {
+                fail("An exception was thrown in success test case: " + e.getMessage());
+            }
+
+            // Act
+            int actual = 1;
+            try {
+                actual = sut.checkIfUserExists(userId);
+            } catch (Exception e) {
+                fail("An exception was thrown in success test case: " + e.getMessage());
+            }
+
+            // Assert
+            assertEquals(expected, actual);
+        } catch (Exception e) {
+            fail("An exception was thrown in test case: " + e.getMessage());
+        }
+    }
 }

@@ -67,13 +67,25 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
-        String type = "standaard"; //mock
+        String type = "standaard";
         if (!Objects.equals(userId, otherUserId)){
             Chat chat = createNewChat("0");
             chat.addChatToDatabase(userId, type);
             chat.addUserToChat(otherUserId);
         }
         return Response.ok().build();
+    }
+
+    @GET
+    @Path("/newChat/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response checkIfUserExists(@PathParam("userId") String userId){
+        int amountOfUsers = Chat.checkIfUserExists(userId);
+        boolean result = amountOfUsers > 0;
+        JSONObject doesUserExistJSON = new JSONObject();
+        doesUserExistJSON.put("result", result);
+        return Response.ok().entity(doesUserExistJSON).build();
     }
 
     @GET

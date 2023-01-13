@@ -18,6 +18,8 @@ public class Chat {
         chatId = id;
     }
 
+    public static int checkIfUserExists(String userId) { return chatDAO.checkIfUserExists(userId); }
+
     public List<MessageDTO> getChatHistory() {
         try {
             return chatDAO.getChatHistory(chatId);

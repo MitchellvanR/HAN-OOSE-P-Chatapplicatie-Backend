@@ -118,18 +118,27 @@ export default {
         if (input.value === "" || isNaN(input.value) || input.value === sessionStorage.getItem("userId")){
           input.classList.add("border", "border-danger");
         } else {
-          this.validateCreatedChatDoesntExist(input, input.value)
+          this.validateUserExists(input, input.value)
           input.value = '';
         }
       }
     },
-    validateCreatedChatDoesntExist: function (input,id){
+    validateUserExists: function (input, id){
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/newChat/' + id).then(responseData => {
+        if (responseData.result === true){
+          this.validateCreatedChatDoesntExist(input, id)
+        } else {
+          input.classList.add("border", "border-danger");
+        }
+      });
+    },
+    validateCreatedChatDoesntExist: function (input, id){
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + sessionStorage.getItem('userId')).then(responseData => {
         if (responseData.result === false){
           this.addChatToDatabase(id);
           this.chats.push({
             chatId: "?",
-            users: id,
+            users: [id],
           });
         } else {
           input.classList.add("border", "border-danger");

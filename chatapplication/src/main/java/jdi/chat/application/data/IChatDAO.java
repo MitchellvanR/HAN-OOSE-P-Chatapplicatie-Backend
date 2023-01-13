@@ -31,4 +31,6 @@ public interface IChatDAO {
     ArrayList<ChatDTO> getChatIdFromUserId(String userId) throws SQLException;
 
     int getStandardChatWithUsers(String userId, String otherUserId);
+
+    int checkIfUserExists(String userId);
 }

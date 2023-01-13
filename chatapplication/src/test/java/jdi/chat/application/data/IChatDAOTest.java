@@ -56,6 +56,11 @@ class IChatDAOTest {
         public int getStandardChatWithUsers(String userId, String otherUserId) {
             return 0;
         }
+
+        @Override
+        public int checkIfUserExists(String userId) {
+            return 0;
+        }
     };
 
     @Test
