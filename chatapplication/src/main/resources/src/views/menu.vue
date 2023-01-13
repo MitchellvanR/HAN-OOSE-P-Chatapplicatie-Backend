@@ -26,9 +26,9 @@
             <tr v-for="user in users" :key="user.id">
               <td>{{user.id}}</td>
               <td>
-                <router-link to="/chatList" custom v-slot="{ navigate }">
-                  <button @click="navigate" role="link" class="btn" v-on:click="setUserId(user.id)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
-                </router-link>
+                <form id="user" action="http://localhost:8081/chatList">
+                  <button id="user" role="link" class="btn" v-on:click="setUserId(user.id)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
+                </form>
               </td>
             </tr>
           </tbody>
