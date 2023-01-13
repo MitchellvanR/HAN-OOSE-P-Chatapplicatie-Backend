@@ -34,7 +34,7 @@ public class Chat {
 
     public void addUserToChat(String userId) { chatDAO.addUserToChat(chatId, userId); }
 
-    public static List<ChatDTO> getChatIdFromUserId(String userId) throws SQLException {
+    public static List<ChatDTO> getChatDTOFromUserId(String userId) throws SQLException {
         try {
             return chatDAO.getChatDTOFromUserId(userId);
         } catch (SQLException e) {

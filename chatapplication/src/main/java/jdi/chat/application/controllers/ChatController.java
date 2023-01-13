@@ -10,7 +10,6 @@ import net.minidev.json.JSONObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Path("/chats")
 public class ChatController {
@@ -120,7 +119,7 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getChats(@PathParam("userId") String userId) throws SQLException {
-        List<ChatDTO> chats = Chat.getChatIdFromUserId(userId);
+        List<ChatDTO> chats = Chat.getChatDTOFromUserId(userId);
         JSONObject chatIdsJSON = new JSONObject();
         chatIdsJSON.put("chats", chats);
         return Response.ok().entity(chatIdsJSON).build();

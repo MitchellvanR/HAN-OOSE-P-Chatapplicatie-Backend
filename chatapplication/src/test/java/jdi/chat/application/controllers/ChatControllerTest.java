@@ -133,7 +133,7 @@ class ChatControllerTest {
     void getChatIdsSuccessTest() throws SQLException {
         // Arrange
         try (MockedStatic<Chat> chatMockedStatic = Mockito.mockStatic(Chat.class)) {
-            chatMockedStatic.when(() -> Chat.getChatIdFromUserId(anyString())).thenReturn(chatIdList);
+            chatMockedStatic.when(() -> Chat.getChatDTOFromUserId(anyString())).thenReturn(chatIdList);
 
             // Act
             int actual = sut.getChats(userId).getStatus();
