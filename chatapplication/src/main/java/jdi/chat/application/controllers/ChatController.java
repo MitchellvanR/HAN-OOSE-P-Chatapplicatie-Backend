@@ -65,7 +65,7 @@ public class ChatController {
     @Path("/newChat/{userId}/{currentUser}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
-        this.createChat("standaard", userId, otherUserId);
+        this.createChatInDatabase("standaard", userId, otherUserId);
         return Response.ok().build();
     }
 
@@ -73,7 +73,7 @@ public class ChatController {
     @Path("/newHelpLineChat/{userId}/{currentUser}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addHelplineChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
-        this.createChat("hulplijn", userId, otherUserId);
+        this.createChatInDatabase("hulplijn", userId, otherUserId);
         return Response.ok().build();
     }
 
@@ -82,7 +82,7 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAdministratorHelplineChats() {
-        ArrayList<ChatDTO> helplineChats = Chat.getHelplineChats();
+        ArrayList <ChatDTO> helplineChats = Chat.getHelplineChats();
         JSONObject helplineChatsJSON = new JSONObject();
         helplineChatsJSON.put("helplineChats", helplineChats);
         return Response.ok().entity(helplineChatsJSON).build();
@@ -123,7 +123,7 @@ public class ChatController {
         return Response.ok().entity(chatIdJSON).build();
     }
 
-    public void createChat(String type, String userId, String otherUserId){
+    private void createChatInDatabase(String type, String userId, String otherUserId){
         Chat chat = createNewChat("0");
         chat.addChatToDatabase(userId, type);
         chat.addUserToChat(otherUserId);
