@@ -16,16 +16,10 @@ public class Chat {
     private String chatId;
     private static IChatDAO chatDAO = new SQLChatDAO();
     private String chatType;
-    private boolean helpline;
     private String latestMessage;
 
     public Chat(String id) {
         chatId = id;
-    }
-
-    public Chat(String id, boolean helpline) {
-        this.chatId = id;
-        this.helpline = helpline;
     }
 
     public List<MessageDTO> getChatHistory() {
@@ -54,6 +48,12 @@ public class Chat {
         return chatDAO.getHelplineChats();
     }
 
+    public void addChatToDatabase(String userId, String type){ setChatId(chatDAO.addChatToDatabase(userId, type)); }
+
+    public ArrayList<String> getUsers() throws SQLException { return chatDAO.getUsersInChat(getChatId()); }
+
+    public void defineChatType() throws SQLException { chatType = chatDAO.getChatType(chatId); }
+
     public String getChatId() {
         return chatId;
     }
@@ -62,17 +62,7 @@ public class Chat {
 
     public static void setChatDAO(IChatDAO chatDAO) { Chat.chatDAO = chatDAO; }
 
-    public void addChatToDatabase(String userId, String type){ setChatId(chatDAO.addChatToDatabase(userId, type)); }
-
-    public ArrayList<String> getUsers() throws SQLException { return chatDAO.getUsersInChat(getChatId()); }
-
-    public void defineChatType() throws SQLException { chatType = chatDAO.getChatType(chatId); }
-
     public String getChatType() { return chatType; }
-
-    public boolean isHelpline() { return helpline; }
-
-    public void setHelpline(boolean helpline) { this.helpline = helpline; }
 
     public String getLatestMessage() { return latestMessage; }
 
