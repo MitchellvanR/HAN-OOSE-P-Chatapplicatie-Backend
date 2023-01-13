@@ -61,6 +61,16 @@ class IChatDAOTest {
         public int checkIfUserExists(String userId) {
             return 0;
         }
+
+        @Override
+        public String getUserHelplineChatId(String userId) {
+            return null;
+        }
+
+        @Override
+        public ArrayList<ChatDTO> getHelplineChats() {
+            return null;
+        }
     };
 
     @Test

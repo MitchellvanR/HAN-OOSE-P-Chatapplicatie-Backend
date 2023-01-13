@@ -5,7 +5,7 @@ import java.sql.SQLException;
 public interface ISecurityDAO {
     void addUser(String userId);
 
-    void savePublicKey(String userId, String publicKey);
+    String savePublicKey(String userId, String publicKey) throws SQLException;
 
     String getOtherPublicKey(String userId, String chatId) throws SQLException;
 }

@@ -129,7 +129,8 @@ class ChatControllerTest {
         verify(newChatMock, times(1)).addUserToChat(anyString());
     }
 
-    @Test void getChatIdsSuccessTest() throws SQLException {
+    @Test
+    void getChatIdsSuccessTest() throws SQLException {
         // Arrange
         try (MockedStatic<Chat> chatMockedStatic = Mockito.mockStatic(Chat.class)) {
             chatMockedStatic.when(() -> Chat.getChatIdFromUserId(anyString())).thenReturn(chatIdList);
@@ -166,5 +167,14 @@ class ChatControllerTest {
             // Assert
             assertEquals(Response.Status.OK.getStatusCode(), actual);
         }
+    }
+    @Test
+    void getChatTypeSuccessTest() throws SQLException {
+        // Act
+        sut.getChatType(chatId);
+
+        // Assert
+        Chat newChatMock = chatMockController.constructed().get(0);
+        verify(newChatMock, times(1)).getChatType();
     }
 }

@@ -22,6 +22,10 @@ public interface IChatDAO {
         return new ChatDTO(chatId, users);
     }
 
+    default ChatDTO formatChat(String chatId) {
+        return new ChatDTO(chatId);
+    }
+
     String addChatToDatabase(String userId, String type);
 
     ArrayList<String> getUsersInChat(String chatId) throws SQLException;
@@ -33,4 +37,8 @@ public interface IChatDAO {
     int getStandardChatWithUsers(String userId, String otherUserId);
 
     int checkIfUserExists(String userId);
+
+    String getUserHelplineChatId(String userId);
+
+    ArrayList<ChatDTO> getHelplineChats();
 }

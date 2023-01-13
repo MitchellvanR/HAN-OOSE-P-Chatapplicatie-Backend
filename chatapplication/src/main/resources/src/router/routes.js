@@ -2,7 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import UserMenu from '../views/menu.vue'
 import OpenChat from '../views/chat.vue'
-import Chatlist from "@/views/chatList.vue";
+import ChatList from '@/views/chatList.vue'
+import Administration from '../views/administration.vue'
 
 Vue.use(VueRouter)
 
@@ -18,9 +19,14 @@ const routes = [
     component: OpenChat
   },
   {
-    path: '/chatlist',
-    name: 'openChatlist',
-    component: Chatlist
+    path: '/chatList',
+    name: 'openChatList',
+    component: ChatList
+  },
+  {
+    path: '/administration',
+    name: 'openAdministration',
+    component: Administration
   }
 ]
 

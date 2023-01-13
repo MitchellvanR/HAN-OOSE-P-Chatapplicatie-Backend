@@ -4,9 +4,9 @@ import jdi.chat.application.data.IChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
 import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
+import java.util.ArrayList;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Chat {
@@ -16,6 +16,11 @@ public class Chat {
 
     public Chat(String id) {
         chatId = id;
+    }
+
+    public Chat(String id, boolean helpline) {
+        this.chatId = id;
+        this.helpline = helpline;
     }
 
     public static int checkIfUserExists(String userId) { return chatDAO.checkIfUserExists(userId); }
@@ -40,6 +45,14 @@ public class Chat {
         } catch (SQLException e) {
             throw new DatabaseRequestException(e);
         }
+    }
+
+    public static String getUserHelplineChatId(String userId) {
+        return chatDAO.getUserHelplineChatId(userId);
+    }
+
+    public static ArrayList<ChatDTO> getHelplineChats() {
+        return chatDAO.getHelplineChats();
     }
 
     public String getChatId() {
