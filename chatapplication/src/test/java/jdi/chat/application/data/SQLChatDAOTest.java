@@ -1,5 +1,6 @@
 package jdi.chat.application.data;
 
+import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
@@ -7,10 +8,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import java.sql.*;
 import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -23,22 +22,26 @@ class SQLChatDAOTest {
     private ResultSet mockedResults;
     private String chatId;
     private String senderId;
+    private String userId;
     private String message;
     private String time;
     private String iv;
     private String type;
+    private ArrayList<String> userList;
 
     @BeforeEach
     void setup() {
         sut = new SQLChatDAO();
+        userList = new ArrayList<>();
         queries = Queries.getInstance();
-
         chatId = "1";
         senderId = "1";
+        userId = "2";
         message = "test";
         time = "00:00";
         iv = "11111";
         type = "standard";
+        userList.add("2");
 
         mockedConnection = Mockito.mock(Connection.class);
         mockedStatement = Mockito.mock(PreparedStatement.class);
@@ -317,8 +320,8 @@ class SQLChatDAOTest {
     void getChatIdFromUserIdSuccessTest() {
         try {
             // Arrange
-            var expected = new ArrayList<String>();
-            expected.add(chatId);
+            var expected = new ArrayList<ChatDTO>();
+            expected.add(new ChatDTO("1", userList));
 
             try {
                 when(mockedConnection.prepareStatement(queries.getQuery("getChatIdQuery"))).thenReturn(mockedStatement);
@@ -326,21 +329,21 @@ class SQLChatDAOTest {
 
                 when(mockedResults.next()).thenReturn(true).thenReturn(false);
 
-                doReturn(chatId).when(mockedResults).getString("chatId");
+                doReturn("1,2").when(mockedResults).getString("users");
             } catch (SQLException e) {
                 fail("An exception was thrown in success test case: " + e.getMessage());
             }
 
             // Act
-            ArrayList<String> actual = null;
+            ArrayList<ChatDTO> actual = null;
             try {
-                actual = sut.getChatIdFromUserId(senderId);
+                actual = sut.getChatDTOFromUserId(senderId);
             } catch (Exception e) {
                 fail("An exception was thrown in success test case: " + e.getMessage());
             }
 
             // Assert
-            assertEquals(expected.get(0), actual.get(0));
+            assertEquals(expected.get(0).getUsers(), actual.get(0).getUsers());
         } catch (Exception e) {
             fail("An exception was thrown in test case: " + e.getMessage());
         }
@@ -353,6 +356,70 @@ class SQLChatDAOTest {
         when(mockedStatement.executeQuery()).thenThrow(SQLException.class);
 
         // Assert
-        assertThrows(DatabaseRequestException.class, () -> sut.getChatIdFromUserId(senderId));
+        assertThrows(DatabaseRequestException.class, () -> sut.getChatDTOFromUserId(senderId));
+    }
+
+    @Test
+    void getStandardChatWithUsersTest() {
+        try {
+            // Arrange
+            int expected = 0;
+
+            try {
+                when(mockedConnection.prepareStatement(queries.getQuery("getStandardChatsWithUsersQuery"))).thenReturn(mockedStatement);
+                doReturn(mockedResults).when(mockedStatement).executeQuery();
+
+                when(mockedResults.next()).thenReturn(true).thenReturn(false);
+
+                doReturn(type).when(mockedResults).getString(1);
+            } catch (SQLException e) {
+                fail("An exception was thrown in success test case: " + e.getMessage());
+            }
+
+            // Act
+            int actual = 1;
+            try {
+                actual = sut.getStandardChatWithUsers(senderId, userId);
+            } catch (Exception e) {
+                fail("An exception was thrown in success test case: " + e.getMessage());
+            }
+
+            // Assert
+            assertEquals(expected, actual);
+        } catch (Exception e) {
+            fail("An exception was thrown in test case: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void checkIfUserExistsTest() {
+        try {
+            // Arrange
+            int expected = 0;
+
+            try {
+                when(mockedConnection.prepareStatement(queries.getQuery("getUserWithIdQuery"))).thenReturn(mockedStatement);
+                doReturn(mockedResults).when(mockedStatement).executeQuery();
+
+                when(mockedResults.next()).thenReturn(true).thenReturn(false);
+
+                doReturn(type).when(mockedResults).getString(0);
+            } catch (SQLException e) {
+                fail("An exception was thrown in success test case: " + e.getMessage());
+            }
+
+            // Act
+            int actual = 1;
+            try {
+                actual = sut.checkIfUserExists(userId);
+            } catch (Exception e) {
+                fail("An exception was thrown in success test case: " + e.getMessage());
+            }
+
+            // Assert
+            assertEquals(expected, actual);
+        } catch (Exception e) {
+            fail("An exception was thrown in test case: " + e.getMessage());
+        }
     }
 }

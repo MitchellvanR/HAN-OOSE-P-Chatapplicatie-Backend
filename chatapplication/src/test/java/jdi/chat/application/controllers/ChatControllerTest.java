@@ -133,10 +133,36 @@ class ChatControllerTest {
     void getChatIdsSuccessTest() throws SQLException {
         // Arrange
         try (MockedStatic<Chat> chatMockedStatic = Mockito.mockStatic(Chat.class)) {
-            chatMockedStatic.when(() -> Chat.getChatIdFromUserId(anyString())).thenReturn(chatIdList);
+            chatMockedStatic.when(() -> Chat.getChatDTOFromUserId(anyString())).thenReturn(chatIdList);
 
             // Act
-            int actual = sut.getChatIds(userId).getStatus();
+            int actual = sut.getChats(userId).getStatus();
+
+            // Assert
+            assertEquals(Response.Status.OK.getStatusCode(), actual);
+        }
+    }
+
+    @Test void getStandardChatWithUsersTest() {
+        // Arrange
+        try (MockedStatic<Chat> chatMockedStatic = Mockito.mockStatic(Chat.class)) {
+            chatMockedStatic.when(() -> Chat.getStandardChatWithUsers(anyString(), anyString())).thenReturn(1);
+
+            // Act
+            int actual = sut.getStandardChatWithUsers(userId, addedUserId).getStatus();
+
+            // Assert
+            assertEquals(Response.Status.OK.getStatusCode(), actual);
+        }
+    }
+
+    @Test void checkIfUserExistsTest() {
+        // Arrange
+        try (MockedStatic<Chat> chatMockedStatic = Mockito.mockStatic(Chat.class)) {
+            chatMockedStatic.when(() -> Chat.getStandardChatWithUsers(anyString(), anyString())).thenReturn(1);
+
+            // Act
+            int actual = sut.checkIfUserExists(userId).getStatus();
 
             // Assert
             assertEquals(Response.Status.OK.getStatusCode(), actual);

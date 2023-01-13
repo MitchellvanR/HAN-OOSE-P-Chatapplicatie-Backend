@@ -41,16 +41,22 @@
         <table class="table table-hover m-4 w-100">
           <thead>
           <tr>
-            <th>Chat</th>
-            <th>Actie</th>
+            <th>Gebruikers</th>
+            <th>Acties</th>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="chatId in items" :key="chatId">
-            <td>{{chatId}}</td>
+          <tr v-for="chat in chats" :key="chat">
+            <td>
+              <p>
+                <span v-for="user in chat.users" :key="user">
+                  {{user}}
+                </span>
+              </p>
+            </td>
             <td>
               <form id="chat" action="http://localhost:8081/chat">
-                <button role="link" class="btn" v-on:click="setChatId(chatId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
+                <button @click="navigate" role="link" class="btn" v-on:click="setChatId(chat.chatId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
               </form>
             </td>
           </tr>
@@ -66,7 +72,7 @@ export default {
   name: "ChatList",
   data() {
     return {
-      items: [],
+      chats: [],
       announcements: [],
       announcement: "",
       endDate:"",
@@ -115,20 +121,42 @@ export default {
         input.classList.remove("border", "border-danger");
 
         data.preventDefault();
-        if (input.value === ""){
+        if (input.value === "" || isNaN(input.value) || input.value === sessionStorage.getItem("userId")){
           input.classList.add("border", "border-danger");
         } else {
-          this.addChatToDatabase(input.value);
+          this.validateUserExists(input, input.value)
           input.value = '';
         }
       }
+    },
+    validateUserExists: function (input, id){
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/newChat/' + id).then(responseData => {
+        if (responseData.result === true){
+          this.validateCreatedChatDoesntExist(input, id)
+        } else {
+          input.classList.add("border", "border-danger");
+        }
+      });
+    },
+    validateCreatedChatDoesntExist: function (input, id){
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + sessionStorage.getItem('userId')).then(responseData => {
+        if (responseData.result === false){
+          this.addChatToDatabase(id);
+          this.chats.push({
+            chatId: "?",
+            users: [id],
+          });
+        } else {
+          input.classList.add("border", "border-danger");
+        }
+      });
     },
     addChatToDatabase: function (id) {
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + this.userId).then()
     },
     getAllChatsFromUser: function() {
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/user/' + this.userId).then(responseData => {
-        this.items.push(...responseData.chatIds);
+        this.chats.push(...responseData.chats);
       });
     },
     setHelpLineChatType: function (){

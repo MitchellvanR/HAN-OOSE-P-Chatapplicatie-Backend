@@ -13,13 +13,13 @@ import java.util.List;
 
 @Path("/chats")
 public class ChatController {
-    private List<Chat> chats = new ArrayList<>();
+    private List<Chat> chatList = new ArrayList<>();
 
     @GET
     @Path("/{chatId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getChatHistory(@PathParam("chatId") String chatId) {
+    public Response getChatHistory(@PathParam("chatId") String chatId){
         List<MessageDTO> chatHistory = openChat(chatId).getChatHistory();
         JSONObject chatHistoryJSON = new JSONObject();
         chatHistoryJSON.put("messages", chatHistory);
@@ -64,6 +64,7 @@ public class ChatController {
     @POST
     @Path("/newChat/{userId}/{currentUser}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
         this.createChatInDatabase("standaard", userId, otherUserId);
         return Response.ok().build();
@@ -72,9 +73,34 @@ public class ChatController {
     @POST
     @Path("/newHelpLineChat/{userId}/{currentUser}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addHelplineChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
         this.createChatInDatabase("hulplijn", userId, otherUserId);
         return Response.ok().build();
+    }
+
+    @GET
+    @Path("/newChat/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response checkIfUserExists(@PathParam("userId") String userId){
+        int amountOfUsers = Chat.checkIfUserExists(userId);
+        boolean result = amountOfUsers > 0;
+        JSONObject doesUserExistJSON = new JSONObject();
+        doesUserExistJSON.put("result", result);
+        return Response.ok().entity(doesUserExistJSON).build();
+    }
+
+    @GET
+    @Path("/newChat/{userId}/{currentUser}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getStandardChatWithUsers(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
+        int amountOfChats = Chat.getStandardChatWithUsers(userId, otherUserId);
+        boolean result = amountOfChats > 0;
+        JSONObject standardChatsWithUsersJSON = new JSONObject();
+        standardChatsWithUsersJSON.put("result", result);
+        return Response.ok().entity(standardChatsWithUsersJSON).build();
     }
 
     @GET
@@ -82,7 +108,7 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAdministratorHelplineChats() {
-        ArrayList <ChatDTO> helplineChats = Chat.getHelplineChats();
+        ArrayList<ChatDTO> helplineChats = Chat.getHelplineChats();
         JSONObject helplineChatsJSON = new JSONObject();
         helplineChatsJSON.put("helplineChats", helplineChats);
         return Response.ok().entity(helplineChatsJSON).build();
@@ -92,10 +118,10 @@ public class ChatController {
     @Path("/user/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getChatIds(@PathParam("userId") String userId) throws SQLException {
-        ArrayList<String> chatIds = Chat.getChatIdFromUserId(userId);
+    public Response getChats(@PathParam("userId") String userId) throws SQLException {
+        List<ChatDTO> chats = Chat.getChatDTOFromUserId(userId);
         JSONObject chatIdsJSON = new JSONObject();
-        chatIdsJSON.put("chatIds", chatIds);
+        chatIdsJSON.put("chats", chats);
         return Response.ok().entity(chatIdsJSON).build();
     }
 
@@ -130,8 +156,8 @@ public class ChatController {
     }
 
     private Chat openChat(String chatId) {
-        if (chats.isEmpty()) { return createNewChat(chatId); }
-        for (Chat chat : chats) {
+        if (chatList.isEmpty()) { return createNewChat(chatId); }
+        for (Chat chat : chatList) {
             if (chat.getChatId().equals(chatId)) {
                 return chat;
             }
@@ -141,9 +167,9 @@ public class ChatController {
 
     private Chat createNewChat(String chatId) {
         Chat chat = new Chat(chatId);
-        chats.add(chat);
+        chatList.add(chat);
         return chat;
     }
 
-    public void setChats(List<Chat> chats) { this.chats = chats; }
+    public void setChats(List<Chat> chats) { this.chatList = chats; }
 }

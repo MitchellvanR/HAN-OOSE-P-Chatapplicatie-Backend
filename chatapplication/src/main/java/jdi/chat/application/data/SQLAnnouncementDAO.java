@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class SQLAnnouncementDAO implements IAnnouncementDAO{
     @Override
     public void saveAnnouncement(String announcement, String endDate) {
+        SQLConnection.connectToDatabase();
         String sql = Queries.getInstance().getQuery("saveAnnouncementQuery");
         try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {
             statement.setString(1, announcement);
@@ -22,6 +23,7 @@ public class SQLAnnouncementDAO implements IAnnouncementDAO{
 
     @Override
     public ArrayList<String> getAnnouncements() throws SQLException {
+        SQLConnection.connectToDatabase();
         String sql = Queries.getInstance().getQuery("getAnnouncementsQuery");
         ResultSet resultSet = null;
         try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {

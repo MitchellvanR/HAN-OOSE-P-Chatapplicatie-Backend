@@ -18,6 +18,8 @@ public class Chat {
         chatId = id;
     }
 
+    public static int checkIfUserExists(String userId) { return chatDAO.checkIfUserExists(userId); }
+
     public List<MessageDTO> getChatHistory() {
         try {
             return chatDAO.getChatHistory(chatId);
@@ -32,8 +34,12 @@ public class Chat {
 
     public void addUserToChat(String userId) { chatDAO.addUserToChat(chatId, userId); }
 
-    public static ArrayList<String> getChatIdFromUserId(String userId) throws SQLException {
-        return chatDAO.getChatIdFromUserId(userId);
+    public static List<ChatDTO> getChatDTOFromUserId(String userId) throws SQLException {
+        try {
+            return chatDAO.getChatDTOFromUserId(userId);
+        } catch (SQLException e) {
+            throw new DatabaseRequestException(e);
+        }
     }
 
     public static String getUserHelplineChatId(String userId) {
@@ -59,4 +65,6 @@ public class Chat {
     public static void setChatDAO(IChatDAO chatDAO) { Chat.chatDAO = chatDAO; }
 
     public String getChatType() { return chatType; }
+
+    public static int getStandardChatWithUsers(String userId, String otherUserId){ return chatDAO.getStandardChatWithUsers(userId, otherUserId); }
 }

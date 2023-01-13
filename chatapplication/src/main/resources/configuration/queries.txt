@@ -11,9 +11,11 @@ addUserToChatQuery_: INSERT INTO `prolog-jdi`.usersInChats (userId, chatId) VALU
 createChatQuery_: CALL createNewChatAndReturnId(?, ?)
 savePublicKeyQuery_: CALL verifyPublicKey(?, ?)
 getOtherPublicKeyQuery_: SELECT publicKey FROM `prolog-jdi`.users WHERE id in (SELECT userId FROM usersInChats WHERE (chatId = ?) AND NOT (userId = ?)) limit 1
-getChatIdQuery_: SELECT chatId FROM `prolog-jdi`.usersInChats WHERE userId = ? AND chatId IN (SELECT id FROM chats WHERE `type` = 'standaard')
+getChatIdQuery_: SELECT chatId, GROUP_CONCAT(DISTINCT userId) as users FROM `prolog-jdi`.usersInChats WHERE chatId IN (SELECT DISTINCT chatId FROM usersinchats WHERE userId = ?) AND chatId IN (SELECT id FROM chats WHERE type = "standaard" OR type = "groep") GROUP by chatId
 getUserHelplineChatIdQuery_: SELECT id FROM `prolog-jdi`.chats WHERE type = 'hulplijn' AND id IN (SELECT chatId FROM usersinchats WHERE userId = ?)
 getHelplineChatsQuery_: SELECT c.id AS 'chatId', m.message AS 'latest message', m.`date` AS 'date' FROM chats c INNER JOIN messages m ON c.id = m.chatId INNER JOIN (SELECT chatId, MAX(`date`) AS maxDate FROM messages GROUP BY chatId ) m2 ON m.chatId = m2.chatId AND m.`date` = m2.maxDate WHERE c.type = 'hulplijn'
 getUsersQuery_: SELECT id FROM `prolog-jdi`.users WHERE id != 'admin';
 saveAnnouncementQuery_: INSERT INTO `prolog-jdi`.announcements (announcement, endDate) VALUES (?, ?)
 getAnnouncementsQuery_: SELECT announcement FROM `prolog-jdi`.announcements WHERE endDate > NOW()
+getStandardChatsWithUsersQuery_: SELECT COUNT(DISTINCT chatId) FROM `prolog-jdi`.usersInChats WHERE userId = ? AND chatId IN (SELECT id FROM chats WHERE `type`='standaard') AND chatId IN (SELECT chatId FROM usersinchats WHERE userId = ?)
+getUserWithIdQuery_: SELECT COUNT(id) FROM `prolog-jdi`.users WHERE id = ?

@@ -4,6 +4,7 @@ import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface IChatDAO {
 
@@ -17,6 +18,10 @@ public interface IChatDAO {
         return new MessageDTO(senderId, content, time, iv);
     }
 
+    default ChatDTO formatChatDTO(String chatId, List<String> users){
+        return new ChatDTO(chatId, users);
+    }
+
     default ChatDTO formatChat(String chatId) {
         return new ChatDTO(chatId);
     }
@@ -27,7 +32,11 @@ public interface IChatDAO {
 
     String getChatType(String chatId) throws SQLException;
 
-    ArrayList<String> getChatIdFromUserId(String userId) throws SQLException;
+    ArrayList<ChatDTO> getChatDTOFromUserId(String userId) throws SQLException;
+
+    int getStandardChatWithUsers(String userId, String otherUserId);
+
+    int checkIfUserExists(String userId);
 
     String getUserHelplineChatId(String userId);
 

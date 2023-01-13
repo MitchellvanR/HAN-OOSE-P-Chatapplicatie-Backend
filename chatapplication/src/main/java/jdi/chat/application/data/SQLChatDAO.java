@@ -6,6 +6,7 @@ import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SQLChatDAO implements IChatDAO {
     @Override
@@ -126,8 +127,9 @@ public class SQLChatDAO implements IChatDAO {
             }
         }
     }
+
     @Override
-    public ArrayList<String> getChatIdFromUserId(String userId) throws SQLException {
+    public ArrayList<ChatDTO> getChatDTOFromUserId(String userId) throws SQLException {
         SQLConnection.connectToDatabase();
         String sql = Queries.getInstance().getQuery("getChatIdQuery");
         ResultSet resultSet = null;
@@ -135,13 +137,20 @@ public class SQLChatDAO implements IChatDAO {
             if (statement == null) { throw new DatabaseRequestException(); }
             statement.setString(1, userId);
             resultSet = statement.executeQuery();
-
-            ArrayList<String> chatIds = new ArrayList<>();
+            ArrayList<ChatDTO> chats = new ArrayList<>();
             while(resultSet.next()){
-                String chatId = resultSet.getString("chatId");
-                chatIds.add(chatId);
+                ArrayList<String> users = new ArrayList<>();
+                String chat = resultSet.getString("chatId");
+                String usersString = resultSet.getString("users");
+                String[] usersArray = usersString.split(",");
+                for (String user : usersArray){
+                    if (!Objects.equals(user, userId)) {
+                        users.add(user);
+                    }
+                }
+                chats.add(formatChatDTO(chat, users));
             }
-            return chatIds;
+            return chats;
         } catch (Exception e) {
             throw new DatabaseRequestException(e);
         } finally {
@@ -150,6 +159,46 @@ public class SQLChatDAO implements IChatDAO {
             }
         }
     }
+
+    @Override
+    public int getStandardChatWithUsers(String userId, String otherUserId) {
+        SQLConnection.connectToDatabase();
+        String sql = Queries.getInstance().getQuery("getStandardChatsWithUsersQuery");
+        ResultSet resultSet = null;
+        int result = 0;
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {
+            if (statement == null) { throw new DatabaseRequestException(); }
+            statement.setString(1, userId);
+            statement.setString(2, otherUserId);
+            resultSet = statement.executeQuery();
+            while(resultSet.next()) {
+                result = resultSet.getInt(1);
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new DatabaseRequestException(e);
+        }
+    }
+
+    @Override
+    public int checkIfUserExists(String userId){
+        SQLConnection.connectToDatabase();
+        String sql = Queries.getInstance().getQuery("getUserWithIdQuery");
+        ResultSet resultSet = null;
+        int result = 0;
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {
+            if (statement == null) { throw new DatabaseRequestException(); }
+            statement.setString(1, userId);
+            resultSet = statement.executeQuery();
+            while(resultSet.next()) {
+                result = resultSet.getInt(1);
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new DatabaseRequestException(e);
+        }
+    }
+
     @Override
     public String getUserHelplineChatId(String userId) {
         SQLConnection.connectToDatabase();
