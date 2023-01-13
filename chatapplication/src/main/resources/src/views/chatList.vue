@@ -10,20 +10,13 @@
       </div>
     </div>
     <div class="row">
-      <p class="display-4">Gebruiker Menu</p>
-      <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Let op! Dit scherm wordt alleen gebruikt voor testen en het geven van demo's.</small>
+      <div class="col lg-8">
+        <p class="display-4">Gebruiker Menu</p>
+        <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Let op! Dit scherm wordt alleen gebruikt voor testen en het geven van demo's.</small>
+      </div>
       <hr>
     </div>
     <div class="row">
-      <div class="col-lg-6">
-        <form id="makeHelplineChat" class="wrap">
-          <router-link to="/chat" custom v-slot="{ navigate }">
-            <button class="btn btn-outline-info fa-lg float-right" type="submit" @click="navigate" role="link">
-              <i class="fa fa-info-circle" aria-hidden="true"></i> Hulplijn
-            </button>
-          </router-link>
-        </form>
-      </div>
       <div class="col-lg-6">
         <form id="newChatForm">
           <label>Open een nieuwe chat</label>
@@ -35,6 +28,13 @@
           </div>
         </form>
       </div>
+      <div class="col-lg-6">
+        <router-link to="/chat" custom v-slot="{ navigate }">
+          <button class="btn btn-outline-info fa-lg float-right" type="submit" v-on:click="setHelpLineChatType()" @click="navigate"  role="link">
+            <i class="fa fa-info-circle" aria-hidden="true"></i> Hulplijn
+          </button>
+        </router-link>
+      </div>
     </div>
     <div class="row">
       <div class="col-lg-11">
@@ -42,7 +42,7 @@
           <thead>
           <tr>
             <th>Chat</th>
-            <th>Action</th>
+            <th>Actie</th>
           </tr>
           </thead>
           <tbody>
@@ -112,14 +112,12 @@ export default {
         if (input.value === ""){
           input.classList.add("border", "border-danger");
         } else {
-          //is het een int validatie
           this.addChatToDatabase(input.value);
           input.value = '';
         }
       }
     },
     addChatToDatabase: function (id) {
-      sessionStorage.setItem('userId', '1'); // mock
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + this.userId).then()
     },
     getAllChatsFromUser: function() {
@@ -127,16 +125,17 @@ export default {
         this.items.push(...responseData.chatIds);
       });
     },
+    setHelpLineChatType: function (){
+      sessionStorage.setItem("isHelpline", "true");
+    },
     setChatId: function (chatId){
+      sessionStorage.setItem("isHelpline", "false");
       sessionStorage.setItem('chatId', chatId)
     },
     getAnnouncements: function (){
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/announcement/getAnnouncements').then(responseData => {
         this.announcements.push(...responseData.announcements)
       })
-    },
-    setHelpline: function() {
-      sessionStorage.setItem("isHelpline", "true");
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {

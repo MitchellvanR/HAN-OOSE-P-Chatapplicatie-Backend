@@ -4,12 +4,9 @@ import jdi.chat.application.data.IChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
 import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
-import org.apache.commons.compress.archivers.ar.ArArchiveEntry;
-
 import java.util.ArrayList;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Chat {
@@ -17,7 +14,6 @@ public class Chat {
     private static IChatDAO chatDAO = new SQLChatDAO();
     private String chatType;
     private boolean helpline;
-    private String latestMessage;
 
     public Chat(String id) {
         chatId = id;
@@ -69,12 +65,4 @@ public class Chat {
     public void defineChatType() throws SQLException { chatType = chatDAO.getChatType(chatId); }
 
     public String getChatType() { return chatType; }
-
-    public boolean isHelpline() { return helpline; }
-
-    public void setHelpline(boolean helpline) { this.helpline = helpline; }
-
-    public String getLatestMessage() { return latestMessage; }
-
-    public void setLatestMessage(String latestMessage) { this.latestMessage = latestMessage; }
 }

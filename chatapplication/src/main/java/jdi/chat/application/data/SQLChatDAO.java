@@ -180,8 +180,7 @@ public class SQLChatDAO implements IChatDAO {
             ArrayList<ChatDTO> helplineChats = new ArrayList<>();
             while(resultSet.next()){
                 helplineChats.add(formatChat(
-                        resultSet.getString("chatId"),
-                        resultSet.getString("latest message")
+                        resultSet.getString("chatId")
                 ));
             }
             return helplineChats;

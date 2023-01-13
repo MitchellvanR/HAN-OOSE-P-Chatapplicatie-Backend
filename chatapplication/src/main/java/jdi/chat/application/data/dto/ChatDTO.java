@@ -1,17 +1,11 @@
 package jdi.chat.application.data.dto;
 
-import java.util.ArrayList;
-
 public class ChatDTO {
     private String chatId;
     private String type;
-    private String latestMessage;
-    private ArrayList<String> users;
 
-
-    public ChatDTO(String chatId,  String latestMessage) {
+    public ChatDTO(String chatId) {
         this.chatId = chatId;
-        this.latestMessage = latestMessage;
     }
 
     public String getChatId() {
@@ -28,13 +22,5 @@ public class ChatDTO {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getLatestMessage() {
-        return latestMessage;
-    }
-
-    public void setLatestMessage(String latestMessage) {
-        this.latestMessage = latestMessage;
     }
 }

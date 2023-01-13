@@ -25,7 +25,7 @@
           <form id="sendMessageForm" class="wrap">
             <input type="text" id="message" placeholder="Stuur een bericht..." />
             <button class="btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-            <button class="btn" type="button" @click="toggleForm()"><i class="fa fa-users" aria-hidden="true"></i></button>
+            <button class="btn" id="groupChatButton" type="button" @click="toggleView('addUserToCurrentChat')"><i class="fa fa-users" aria-hidden="true"></i></button>
           </form>
         </div>
         <div class="row">
@@ -62,8 +62,8 @@ export default {
     if (this.webSocket.readyState === WebSocket.OPEN) {
       this.webSocket.close();
       this.webSocket = null;
-      sessionStorage.setItem("isHelpline", "false");
     }
+    sessionStorage.setItem("isHelpline", "false");
   },
   methods: {
     /* global BigInt */
@@ -141,7 +141,7 @@ export default {
           key,
           messageArray
       ).catch((messy) => {
-        console.log("this mess: " + messy);
+        console.log("An error has occurred with the encryption: " + messy);
       });
       return this.decodeMessage(encodedMessage);
     },
@@ -159,6 +159,7 @@ export default {
       });
     },
     getChatLog: async function () {
+      this.helpLineRemoveGroupChats()
       this.runWebSocket();
       this.validateSession();
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/' + this.chatId).then(async responseData => {
@@ -171,8 +172,13 @@ export default {
         this.array.push(...responseData.messages);
       }).then(() => this.scrollToBottom());
     },
-    toggleForm: function () {
-      document.getElementById("addUserToCurrentChat").classList.toggle("form-popup");
+    toggleView: function (id) {
+      document.getElementById(id).classList.toggle("form-popup");
+    },
+    helpLineRemoveGroupChats: function (){
+      if (sessionStorage.getItem("isHelpline") === "true"){
+        document.getElementById('groupChatButton').classList.add("display-none");
+      }
     },
     runWebSocket: function () {
       this.webSocket = new WebSocket('ws://localhost:443');
@@ -300,5 +306,9 @@ export default {
   background-color: #000000;
   border-radius: 10px;
   border: 3px solid #e6eaea;
+}
+
+.display-none {
+  display: none;
 }
 </style>
