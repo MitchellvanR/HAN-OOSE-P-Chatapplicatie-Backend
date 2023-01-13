@@ -3,6 +3,7 @@ package jdi.chat.application.controllers;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
 import jdi.chat.application.models.Chat;
 import net.minidev.json.JSONObject;
@@ -18,7 +19,7 @@ public class ChatController {
     @Path("/{chatId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getChatHistory(@PathParam("chatId") String chatId){
+    public Response getChatHistory(@PathParam("chatId") String chatId) {
         List<MessageDTO> chatHistory = openChat(chatId).getChatHistory();
         JSONObject chatHistoryJSON = new JSONObject();
         chatHistoryJSON.put("messages", chatHistory);
@@ -63,13 +64,28 @@ public class ChatController {
     @POST
     @Path("/newChat/{userId}/{currentUser}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response addChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
-        String type = "standaard"; //mock
-        Chat chat = createNewChat("0");
-        chat.addChatToDatabase(userId, type);
-        chat.addUserToChat(otherUserId);
+        this.createChat("standaard", userId, otherUserId);
         return Response.ok().build();
+    }
+
+    @POST
+    @Path("/newHelpLineChat/{userId}/{currentUser}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addHelplineChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
+        this.createChat("hulplijn", userId, otherUserId);
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("/helplineList")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAdministratorHelplineChats() {
+        ArrayList<ChatDTO> helplineChats = Chat.getHelplineChats();
+        JSONObject helplineChatsJSON = new JSONObject();
+        helplineChatsJSON.put("helplineChats", helplineChats);
+        return Response.ok().entity(helplineChatsJSON).build();
     }
 
     @GET
@@ -94,6 +110,23 @@ public class ChatController {
         JSONObject chatTypeJSON = new JSONObject();
         chatTypeJSON.put("chatType", type);
         return Response.ok().entity(chatTypeJSON).build();
+    }
+
+    @GET
+    @Path("/helpline/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserHelplineChatId (@PathParam("userId") String userId) {
+        String chatId = Chat.getUserHelplineChatId(userId);
+        JSONObject chatIdJSON = new JSONObject();
+        chatIdJSON.put("chatId", chatId);
+        return Response.ok().entity(chatIdJSON).build();
+    }
+
+    public void createChat(String type, String userId, String otherUserId){
+        Chat chat = createNewChat("0");
+        chat.addChatToDatabase(userId, type);
+        chat.addUserToChat(otherUserId);
     }
 
     private Chat openChat(String chatId) {

@@ -53,7 +53,7 @@
       </div>
       <div class="col-lg-6">
         <h4>Administrator scherm</h4>
-        <router-link to="/chatlist" custom v-slot="{ navigate }"><button @click="navigate" id="administrator" role="link" class="btn btn-primary" v-on:click="setUserId('Admin')"><i class="fa fa-sign-out" aria-hidden="true"></i>  Administrator</button></router-link>
+        <router-link to="/administration" custom v-slot="{ navigate }"><button @click="navigate" id="administrator" role="link" class="btn btn-primary" v-on:click="setUserId('Admin')"><i class="fa fa-sign-out" aria-hidden="true"></i>  Administrator</button></router-link>
       </div>
     </div>
   </div>
@@ -69,7 +69,7 @@ export default {
     };
   },
   mounted() {
-    this.getAllUsers();
+    // this.getAllUsers();
   },
   methods: {
     getAllUsers: function(){

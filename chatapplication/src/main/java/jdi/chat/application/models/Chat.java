@@ -2,19 +2,26 @@ package jdi.chat.application.models;
 
 import jdi.chat.application.data.IChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
+import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
+import java.util.ArrayList;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Chat {
     private String chatId;
     private static IChatDAO chatDAO = new SQLChatDAO();
     private String chatType;
+    private boolean helpline;
 
     public Chat(String id) {
         chatId = id;
+    }
+
+    public Chat(String id, boolean helpline) {
+        this.chatId = id;
+        this.helpline = helpline;
     }
 
     public List<MessageDTO> getChatHistory() {
@@ -33,6 +40,14 @@ public class Chat {
 
     public static ArrayList<String> getChatIdFromUserId(String userId) throws SQLException {
         return chatDAO.getChatIdFromUserId(userId);
+    }
+
+    public static String getUserHelplineChatId(String userId) {
+        return chatDAO.getUserHelplineChatId(userId);
+    }
+
+    public static ArrayList<ChatDTO> getHelplineChats() {
+        return chatDAO.getHelplineChats();
     }
 
     public String getChatId() {
