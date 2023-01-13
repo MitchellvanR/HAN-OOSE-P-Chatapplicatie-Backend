@@ -32,10 +32,4 @@ describe('chat.vue', () => {
         setWrapper();
         expect(delay).toBeCalled();
     });
-
-    it('check if UserId is set with mock data', () => {
-        setWrapper();
-        wrapper.setData({mockUserId: 1})
-        expect(wrapper.vm.mockUserId).toBe(1);
-    })
 })

@@ -189,7 +189,24 @@
 <a name='L124'></a><a href='#L124'>124</a>
 <a name='L125'></a><a href='#L125'>125</a>
 <a name='L126'></a><a href='#L126'>126</a>
-<a name='L127'></a><a href='#L127'>127</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">24x</span>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -315,74 +332,95 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="missing-if-branch" title="if path not taken" >I</span>&lt;template&gt;
-  &lt;div class="background"&gt;
-    &lt;div class="container mt-5"&gt;
-      &lt;div class="row"&gt;
-        &lt;p class="display-4"&gt;Chat Menu&lt;/p&gt;
-        &lt;small&gt;&lt;i class="fa fa-exclamation-circle" aria-hidden="true"&gt;&lt;/i&gt; Note! This is page is used for mocking purposes.&lt;/small&gt;
-        &lt;hr&gt;
-        &lt;div class="position-relative border1px"&gt;
-          &lt;div class="input_style w-100"&gt;
-            &lt;form id="secret-form"&gt;
-              &lt;input type="text" id="secret" v-model= "secret" placeholder="Insert password here..."/&gt;
-              &lt;label for="secret"&gt;&lt;/label&gt;
-              &lt;button type="button" @click.prevent="saveSecret(secret)"&gt;Submit&lt;/button&gt;
-            &lt;/form&gt;
+  &lt;div class="container background"&gt;
+    &lt;p class="display-4"&gt;Menu&lt;/p&gt;
+    &lt;small&gt;&lt;i class="fa fa-exclamation-circle" aria-hidden="true"&gt;&lt;/i&gt; Let op! Dit scherm wordt alleen gebruikt voor testen en het geven van demo's.&lt;/small&gt;
+    &lt;hr class="mb-5"&gt;
+    &lt;div class="row"&gt;
+      &lt;div class="col-lg-6"&gt;
+        &lt;form id="secret-form"&gt;
+          &lt;h5&gt;Voer identificatie in &lt;i class="fa fa-question-circle text-info" aria-hidden="true" title="Omdat de chats beveiligd zijn met End to End Encryption heeft iedere gebruiker een code nodig. Als je een nieuwe gebruiker bent is jouw eerste ingevoerde code je identificatie."&gt;&lt;/i&gt;&lt;/h5&gt;
+          &lt;div class="input-group mb-5"&gt;
+            &lt;div class="input-group-prepend"&gt;
+              &lt;button type="button" class="btn btn-outline-dark" @click.prevent="saveSecret(secret)"&gt;&lt;i class="fa fa-check" aria-hidden="true"&gt;&lt;/i&gt;&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;input class="form-control" type="text" id="secret" v-model="secret" placeholder="" /&gt;
           &lt;/div&gt;
+        &lt;/form&gt;
+        &lt;table class="table table-hover w-100"&gt;
+          &lt;thead&gt;
+          &lt;tr&gt;
+            &lt;th&gt;Chat&lt;/th&gt;
+            &lt;th&gt;Actie&lt;/th&gt;
+            &lt;th&gt;Tijdelijke oplossing&lt;/th&gt;
+          &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+          &lt;!--          &lt;tr v-for="userId in users" :key="userId"&gt;--&gt;
+          &lt;!--            &lt;td&gt;{{userId}}&lt;/td&gt;--&gt;
+          &lt;!--            &lt;td&gt;--&gt;
+          &lt;!--              &lt;router-link to="/chat" custom v-slot="{ navigate }"&gt;--&gt;
+          &lt;!--                &lt;button @click="navigate" role="link" class="btn" v-on:click="setUserId(userId)"&gt;&lt;i class="fa fa-sign-in" aria-hidden="true"&gt;&lt;/i&gt;&lt;/button&gt;--&gt;
+          &lt;!--              &lt;/router-link&gt;--&gt;
+          &lt;!--            &lt;/td&gt;--&gt;
+          &lt;!--            &lt;td&gt;&lt;/td&gt;--&gt;
+          &lt;!--          &lt;/tr&gt;--&gt;
+          &lt;tr&gt;
+            &lt;td&gt;1&lt;/td&gt;
+            &lt;td&gt;&lt;/td&gt;
+            &lt;td&gt;
+              &lt;form id="user" action="http://localhost:8081/chatlist"&gt;
+                &lt;button id="user1" role="link" class="btn btn-outline-primary" v-on:click="setUserId(1)"&gt;Gebruiker #1 (Mitch)&lt;/button&gt;&lt;/form&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td&gt;2&lt;/td&gt;
+            &lt;td&gt;&lt;/td&gt;
+            &lt;td&gt;
+              &lt;form id="user" action="http://localhost:8081/chatlist"&gt;
+                &lt;button id="user2" role="link" class="btn btn-outline-primary" v-on:click="setUserId(2)"&gt;Gebruiker #2 (Jaap)&lt;/button&gt;&lt;/form&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;div class="col-lg-6"&gt;
+          &lt;h4&gt;Administrator scherm&lt;/h4&gt;
+          &lt;form id="user" action="http://localhost:8081/chatlist"&gt;
+            &lt;button id="administrator" role="link" class="btn btn-primary" v-on:click="setUserId('Admin')"&gt;&lt;i class="fa fa-sign-out" aria-hidden="true"&gt;&lt;/i&gt;  Administrator&lt;/button&gt;&lt;/form&gt;
         &lt;/div&gt;
       &lt;/div&gt;
-      &lt;div class="row"&gt;
-          &lt;div class="col-6 m-2"&gt;
-            &lt;div class="row mb-2"&gt;
-              &lt;b class="text-left"&gt;Selecteer een gebruiker:&lt;/b&gt;
-            &lt;/div&gt;
-            &lt;form id="user" action="http://localhost:8081/chatlist"&gt;
-              &lt;div class="row mb-2"&gt;
-                &lt;!-- &lt;router-link id="user1" to="/chat" custom v-slot="{ navigate }"&gt;--&gt;&lt;button role="link" id="user1" class="btn btn-outline-primary" v-on:click="setUserId(1)"&gt;Gebruiker #1 (Mitch)&lt;/button&gt;&lt;!--&lt;/router-link&gt;--&gt;
-              &lt;/div&gt;
-              &lt;div class="row"&gt;
-                &lt;!-- &lt;router-link to="/chat" custom v-slot="{ navigate }"&gt;--&gt;&lt;button id="user2" role="link" class="btn btn-outline-primary" v-on:click="setUserId(2)"&gt;Gebruiker #2 (Jaap)&lt;/button&gt;&lt;!--&lt;/router-link&gt;--&gt;
-              &lt;/div&gt;
-              &lt;div class="row"&gt;
-                &lt;!-- &lt;router-link to="/chat" custom v-slot="{ navigate }"&gt;--&gt;&lt;button id="user3" role="link" class="btn btn-outline-primary" v-on:click="setUserId(3)"&gt;Gebruiker #3 (Helen)&lt;/button&gt;&lt;!--&lt;/router-link&gt;--&gt;
-              &lt;/div&gt;
-            &lt;/form&gt;
-          &lt;/div&gt;
-          &lt;div class="col-4 m-2"&gt;
-            &lt;div class="row mb-2"&gt;
-              &lt;b&gt;Log in als administrator:&lt;/b&gt;
-            &lt;/div&gt;
-            &lt;div class="row"&gt;
-              &lt;!-- &lt;router-link to="/chat" custom v-slot="{ navigate }"&gt;--&gt;&lt;button id="administrator" role="link" class="btn btn-primary"&gt;Administrator #1&lt;/button&gt; &lt;!--&lt;/router-link&gt;--&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class="row"&gt;
-            &lt;div class="row mb-2"&gt;
-              &lt;b class="text-left"&gt;Maak een nieuwe chat&lt;/b&gt;
-            &lt;/div&gt;
-            &lt;form id="newChatForm" class="wrap"&gt;
-              &lt;div class="row mb-2"&gt;
-                &lt;input type="text" id="userId" placeholder="Enter userId" /&gt;
-                &lt;button class="btn" type="submit"&gt;&lt;i class="fa fa-check" aria-hidden="true"&gt;&lt;/i&gt;&lt;/button&gt;
-              &lt;/div&gt;
-            &lt;/form&gt;
-        &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
 export default {
-  data() {
-    return {secret: ""};
-  },
   name: 'UserMenu',
+  data() {
+    return {
+      users: [],
+      secret: ""
+    };
+  },
   mounted() {
-    this.createChat();
+    this.getAllUsers();
   },
   methods: {
+    getAllUsers: function(){
+      this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/user/getAllUsers').then(data =&gt; {
+        this.users.push(...data.list);
+      });
+    },
     setUserId: function (userId) {
       sessionStorage.setItem("userId", userId);
     },
@@ -422,9 +460,10 @@ export default {
           }
         };
 &nbsp;
-        XmlHttpRequest.send(JSON.stringify(data));
+        XmlHttpRequest.send(data);
       });
     },
+&nbsp;
     saveSecret: async function (secret) {
       let numberFromString = Number(0);
       for (let i = 0; i &lt; secret.length; i++) {
@@ -438,9 +477,9 @@ export default {
 &lt;/script&gt;
 &nbsp;
 &lt;style&gt;
-body {
-  background: #ebebeb;
-}
+  body {
+    background: #ebebeb;
+  }
 &lt;/style&gt;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -448,7 +487,7 @@ body {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-11T09:32:05.541Z
+                at 2023-01-13T08:46:53.104Z
             </div>
         <script src="prettify.js"></script>
         <script>

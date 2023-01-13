@@ -78,8 +78,7 @@
 
 <script>
 export default {
-  name: "openChatList",
-
+  name: "ChatList",
   data() {
     return {
       items: [],

@@ -53,7 +53,6 @@ export default {
       otherPublicKey: '',
       userId: sessionStorage.getItem('userId'),
       chatId: sessionStorage.getItem('chatId'),
-      mockUserId: 1,
     }
   },
   mounted() {

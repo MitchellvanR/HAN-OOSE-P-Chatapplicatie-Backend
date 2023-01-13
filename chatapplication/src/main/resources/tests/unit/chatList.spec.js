@@ -24,7 +24,7 @@ describe('chatList.vue', () => {
         });
     }
 
-    it('is called openChatList', () => {
+    it('is called ChatList', () => {
         setWrapper();
         expect(wrapper.name()).toEqual('openChatList');
     });

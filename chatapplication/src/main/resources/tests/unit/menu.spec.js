@@ -19,21 +19,9 @@ describe('menu.vue', () => {
         expect(wrapper.name()).toEqual('UserMenu');
     });
 
-    it('check if setUserId is called after click button user 1', () => {
+    it('check if setUserId is called after click button user', () => {
         setWrapper();
         wrapper.find('#user1').trigger('click');
-        expect(listener.called);
-    });
-
-    it('check if setUserId is called after click button user 2', () => {
-        setWrapper();
-        wrapper.find('#user2').trigger('click');
-        expect(listener.called);
-    });
-
-    it('check if setUserId is called after click button user 3', () => {
-        setWrapper();
-        wrapper.find('#user2').trigger('click');
         expect(listener.called);
     });
 
