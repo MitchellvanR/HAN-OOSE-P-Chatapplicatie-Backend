@@ -29,11 +29,11 @@
         </form>
       </div>
       <div class="col-lg-6">
-        <router-link to="/chat" custom v-slot="{ navigate }">
-          <button class="btn btn-outline-info fa-lg float-right" type="submit" v-on:click="setHelpLineChatType()" @click="navigate"  role="link">
+        <form id="chat" action="http://localhost:8081/chat">
+          <button class="btn btn-outline-info fa-lg float-right" type="submit" v-on:click="setHelpLineChatType()" role="link">
             <i class="fa fa-info-circle" aria-hidden="true"></i> Hulplijn
           </button>
-        </router-link>
+        </form>
       </div>
     </div>
     <div class="row">

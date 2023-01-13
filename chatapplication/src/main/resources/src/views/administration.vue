@@ -38,9 +38,9 @@
           <tr @click="log(chatId)" v-for="(helplineChat, index) in array" :key="index">
             <td>{{helplineChat.chatId}}</td>
             <td>
-              <router-link to="/chat" custom v-slot="{ navigate }">
-                <button @click="navigate" role="link" class="btn" v-on:click="setChatId(helplineChat.chatId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
-              </router-link>
+              <form id="chat" action="http://localhost:8081/chat">
+                <button role="link" class="btn" v-on:click="setChatId(helplineChat.chatId)"><i class="fa fa-sign-in" aria-hidden="true"></i></button>
+              </form>
             </td>
           </tr>
           </tbody>

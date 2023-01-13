@@ -7,18 +7,20 @@ const localVue = createLocalVue();
 describe('chatList.vue', () => {
     let wrapper;
     const listener = sinon.spy();
-    let addToItems = jest.fn();
+    let setHelplineChat = jest.fn();
     let savePublicKey = jest.fn();
     let createChat = jest.fn();
-    let getAnnouncement = jest.fn();
+    let getAnnouncements = jest.fn();
+    let getAllChatsFromUser = jest.fn();
 
     function setWrapper() {
         wrapper = shallowMount(chatList, {
             methods: {
-                addToItems,
+                setHelplineChat,
                 savePublicKey,
                 createChat,
-                getAnnouncement
+                getAnnouncements,
+                getAllChatsFromUser
             },
             localVue
         });
@@ -29,24 +31,29 @@ describe('chatList.vue', () => {
         expect(wrapper.name()).toEqual('ChatList');
     });
 
-    it('calls addToList on mount',  () => {
+    it('calls setHelplineChat on mount',  () => {
         setWrapper();
-        expect(addToItems).toBeCalled();
+        expect(setHelplineChat).toBeCalled();
     });
 
     it('calls savePublicKey on mount',  () => {
         setWrapper();
-        expect(addToItems).toBeCalled();
+        expect(savePublicKey).toBeCalled();
     });
 
     it('calls createChat on mount',  () => {
         setWrapper();
-        expect(addToItems).toBeCalled();
+        expect(createChat).toBeCalled();
     });
 
-    it('calls getAnnouncement on mount',  () => {
+    it('calls getAnnouncements on mount',  () => {
         setWrapper();
-        expect(addToItems).toBeCalled();
+        expect(getAnnouncements).toBeCalled();
+    });
+
+    it('calls getAllChatsFromUser on mount',  () => {
+        setWrapper();
+        expect(getAllChatsFromUser).toBeCalled();
     });
 
     it('check if setChatId is called after click button', () => {
