@@ -14,7 +14,7 @@ import java.util.Objects;
 
 @Path("/chats")
 public class ChatController {
-    private List<Chat> chats = new ArrayList<>();
+    private List<Chat> chatList = new ArrayList<>();
 
     @GET
     @Path("/{chatId}")
@@ -158,8 +158,8 @@ public class ChatController {
     }
 
     private Chat openChat(String chatId) {
-        if (chats.isEmpty()) { return createNewChat(chatId); }
-        for (Chat chat : chats) {
+        if (chatList.isEmpty()) { return createNewChat(chatId); }
+        for (Chat chat : chatList) {
             if (chat.getChatId().equals(chatId)) {
                 return chat;
             }
@@ -169,9 +169,9 @@ public class ChatController {
 
     private Chat createNewChat(String chatId) {
         Chat chat = new Chat(chatId);
-        chats.add(chat);
+        chatList.add(chat);
         return chat;
     }
 
-    public void setChats(List<Chat> chats) { this.chats = chats; }
+    public void setChats(List<Chat> chats) { this.chatList = chats; }
 }

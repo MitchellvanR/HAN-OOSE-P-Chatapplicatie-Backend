@@ -155,7 +155,7 @@ export default {
     },
     getAllChatsFromUser: function() {
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/chats/user/' + this.userId).then(responseData => {
-        this.items.push(...responseData.chats);
+        this.chats.push(...responseData.chats);
       });
     },
     setHelpLineChatType: function (){
