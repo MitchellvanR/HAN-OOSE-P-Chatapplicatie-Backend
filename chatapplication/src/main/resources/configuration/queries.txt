@@ -9,7 +9,7 @@ sendMessageQuery_: INSERT INTO `prolog-jdi`.messages (message, senderId, chatId,
 addUserQuery_: INSERT INTO `prolog-jdi`.users (id) VALUES (?)
 addUserToChatQuery_: INSERT INTO `prolog-jdi`.usersInChats (userId, chatId) VALUES (?, ?)
 createChatQuery_: CALL createNewChatAndReturnId(?, ?)
-savePublicKeyQuery_: UPDATE `prolog-jdi`.users SET publicKey = (?) WHERE id = (?)
+savePublicKeyQuery_: CALL verifyPublicKey(?, ?)
 getOtherPublicKeyQuery_: SELECT publicKey FROM `prolog-jdi`.users WHERE id in (SELECT userId FROM usersInChats WHERE (chatId = ?) AND NOT (userId = ?)) limit 1
 getChatIdQuery_: SELECT chatId FROM `prolog-jdi`.usersInChats WHERE userId = ? AND chatId IN (SELECT id FROM chats WHERE `type` = 'standaard')
 getUserHelplineChatIdQuery_: SELECT id FROM `prolog-jdi`.chats WHERE type = 'hulplijn' AND id IN (SELECT chatId FROM usersinchats WHERE userId = ?)

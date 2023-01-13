@@ -10,20 +10,13 @@
       </div>
     </div>
     <div class="row">
-      <p class="display-4">Gebruiker Menu</p>
-      <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Let op! Dit scherm wordt alleen gebruikt voor testen en het geven van demo's.</small>
+      <div class="col lg-8">
+        <p class="display-4">Gebruiker Menu</p>
+        <small><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Let op! Dit scherm wordt alleen gebruikt voor testen en het geven van demo's.</small>
+      </div>
       <hr>
     </div>
     <div class="row">
-      <div class="col-lg-6">
-        <form id="makeHelplineChat" class="wrap">
-          <router-link to="/chat" custom v-slot="{ navigate }">
-            <button class="btn btn-outline-info fa-lg float-right" type="submit" @click="navigate" role="link">
-              <i class="fa fa-info-circle" aria-hidden="true"></i> Hulplijn
-            </button>
-          </router-link>
-        </form>
-      </div>
       <div class="col-lg-6">
         <form id="newChatForm">
           <label>Open een nieuwe chat</label>
@@ -35,6 +28,13 @@
           </div>
         </form>
       </div>
+      <div class="col-lg-6">
+        <router-link to="/chat" custom v-slot="{ navigate }">
+          <button class="btn btn-outline-info fa-lg float-right" type="submit" v-on:click="setHelpLineChatType()" @click="navigate"  role="link">
+            <i class="fa fa-info-circle" aria-hidden="true"></i> Hulplijn
+          </button>
+        </router-link>
+      </div>
     </div>
     <div class="row">
       <div class="col-lg-11">
@@ -42,7 +42,7 @@
           <thead>
           <tr>
             <th>Chat</th>
-            <th>Action</th>
+            <th>Actie</th>
           </tr>
           </thead>
           <tbody>
@@ -97,7 +97,12 @@ export default {
     savePublicKey: function (){
       let secret = sessionStorage.getItem('secret')
       let publicKey = this.formulatePublicKey(secret).toString();
-      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + this.userId + '/' + String(publicKey)).then(res => {return res})
+      this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/security/' + this.userId + '/' + String(publicKey)).then(responseData => {
+        let keysMatch = responseData.keysMatch;
+        if (!keysMatch){
+          history.back();
+        }
+      })
     },
     formulatePublicKey: function (secret) {
       return BigInt("2") ** BigInt(secret) % BigInt("32317006071311007300338913926423828248817941241140239112842009751400741706634354222619689417363569347117901737909704191754605873209195028853758986185622153212175412514901774520270235796078236248884246189477587641105928646099411723245426622522193230540919037680524235519125679715870117001058055877651038861847280257976054903569732561526167081339361799541336476559160368317896729073178384589680639671900977202194168647225871031411336429319536193471636533209717077448227988588565369208645296636077250268955505928362751121174096972998068410554359584866583291642136218231078990999448652468262416972035911852507045361090559");
@@ -112,14 +117,12 @@ export default {
         if (input.value === ""){
           input.classList.add("border", "border-danger");
         } else {
-          //is het een int validatie
           this.addChatToDatabase(input.value);
           input.value = '';
         }
       }
     },
     addChatToDatabase: function (id) {
-      sessionStorage.setItem('userId', '1'); // mock
       this.sendHttpRequest('POST', 'http://localhost:8080/chatapplication/chats/newChat/' + id + '/' + this.userId).then()
     },
     getAllChatsFromUser: function() {
@@ -127,16 +130,17 @@ export default {
         this.items.push(...responseData.chatIds);
       });
     },
+    setHelpLineChatType: function (){
+      sessionStorage.setItem("isHelpline", "true");
+    },
     setChatId: function (chatId){
+      sessionStorage.setItem("isHelpline", "false");
       sessionStorage.setItem('chatId', chatId)
     },
     getAnnouncements: function (){
       this.sendHttpRequest('GET', 'http://localhost:8080/chatapplication/announcement/getAnnouncements').then(responseData => {
         this.announcements.push(...responseData.announcements)
       })
-    },
-    setHelpline: function() {
-      sessionStorage.setItem("isHelpline", "true");
     },
     sendHttpRequest: function (method, url, data) {
       return new Promise((resolve, reject) => {

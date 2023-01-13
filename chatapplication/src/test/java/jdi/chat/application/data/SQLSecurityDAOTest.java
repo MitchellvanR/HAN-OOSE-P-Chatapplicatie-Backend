@@ -14,6 +14,7 @@ class SQLSecurityDAOTest {
     private SQLSecurityDAO sut;
     private Connection mockedConnection;
     private PreparedStatement mockedStatement;
+    private CallableStatement mockedCall;
     private ResultSet mockedResults;
     private Queries queries;
     private String userId;
@@ -31,6 +32,7 @@ class SQLSecurityDAOTest {
 
         mockedConnection = Mockito.mock(Connection.class);
         mockedStatement = Mockito.mock(PreparedStatement.class);
+        mockedCall = Mockito.mock(CallableStatement.class);
         mockedResults = Mockito.mock(ResultSet.class);
 
         SQLConnection.setConnection(mockedConnection);
@@ -71,15 +73,31 @@ class SQLSecurityDAOTest {
     void savePublicKeySuccessTest() {
         try {
             // Arrange
-            Mockito.when(mockedConnection.prepareStatement(queries.getQuery("savePublicKeyQuery"))).thenReturn(mockedStatement);
+            var expected = publicKey;
+
+            try {
+                when(mockedConnection.prepareCall(queries.getQuery("savePublicKeyQuery"))).thenReturn(mockedCall);
+                doReturn(mockedResults).when(mockedCall).executeQuery();
+
+                when(mockedResults.next()).thenReturn(true).thenReturn(false);
+
+                doReturn(publicKey).when(mockedResults).getString(1);
+            } catch (SQLException e) {
+                fail("An exception was thrown in success test case: " + e.getMessage());
+            }
 
             // Act
-            sut.savePublicKey(userId, publicKey);
+            String actual = "";
+            try {
+                actual = sut.savePublicKey(userId, publicKey);
+            } catch (Exception e) {
+                fail("An exception was thrown in success test case: " + e.getMessage());
+            }
 
             // Assert
-            verify(mockedStatement).executeUpdate();
-        } catch (SQLException e) {
-            fail("An exception was thrown in success test case: " + e.getMessage());
+            assertEquals(expected, actual);
+        } catch (Exception e) {
+            fail("An exception was thrown in test case: " + e.getMessage());
         }
     }
 
@@ -87,7 +105,7 @@ class SQLSecurityDAOTest {
     void savePublicKeySQLExceptionTest() throws SQLException {
         // Arrange
         Mockito.when(mockedConnection.prepareStatement(queries.getQuery("savePublicKeyQuery"))).thenReturn(mockedStatement);
-        Mockito.when(mockedStatement.executeUpdate()).thenThrow(new SQLException());
+        Mockito.when(mockedStatement.executeQuery()).thenThrow(new SQLException());
 
         // Assert
         assertThrows(DatabaseRequestException.class, () -> sut.savePublicKey(userId, publicKey));

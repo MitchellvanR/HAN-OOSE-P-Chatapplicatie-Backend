@@ -4,12 +4,9 @@ import jdi.chat.application.data.IChatDAO;
 import jdi.chat.application.data.SQLChatDAO;
 import jdi.chat.application.data.dto.ChatDTO;
 import jdi.chat.application.data.dto.MessageDTO;
-import org.apache.commons.compress.archivers.ar.ArArchiveEntry;
-
 import java.util.ArrayList;
 import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Chat {
