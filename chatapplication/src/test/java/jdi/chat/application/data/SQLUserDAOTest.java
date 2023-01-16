@@ -24,6 +24,7 @@ class SQLUserDAOTest {
 
     @Test
     void testAllUsers() throws SQLException  {
+
         // Arrange
         String statement = "TestQuery";
         String userId = "123";
@@ -41,11 +42,13 @@ class SQLUserDAOTest {
             Mockito.when(mockedResultSet.next()).thenReturn(true, false);
             Mockito.when(mockedResultSet.getString("id")).thenReturn(userId);
             Mockito.when(mockedPreparedStatement.executeQuery()).thenReturn(mockedResultSet);
+
             // Act
             try(MockedStatic<SQLConnection> mockedStaticSQLConnection = Mockito.mockStatic(SQLConnection.class)) {
                 UsersDTO result = sut.getAllUsers();
                 UserDTO userResult = result.getUsers().get(0);
                 mockedStaticSQLConnection.verify(SQLConnection::connectToDatabase);
+
                 // Assert
                 Assertions.assertEquals(userId, userResult.getId());
             }
@@ -54,6 +57,7 @@ class SQLUserDAOTest {
 
     @Test
     void testGetAllUsersWithException() throws SQLException{
+
         // Arrange
         String statement = "TestQuery";
         String userId = "123";
@@ -72,7 +76,8 @@ class SQLUserDAOTest {
             Mockito.when(mockedResultSet.next()).thenReturn(true, false);
             Mockito.when(mockedResultSet.getString("id")).thenReturn(userId);
             Mockito.when(mockedPreparedStatement.executeQuery()).thenReturn(mockedResultSet);
-            // Assert
+
+            // Act and Assert
             Assertions.assertThrows(DatabaseRequestException.class, () -> sut.getAllUsers());
         }
     }
