@@ -77,7 +77,7 @@ class SQLUserDAOTest {
             Mockito.when(mockedResultSet.getString("id")).thenReturn(userId);
             Mockito.when(mockedPreparedStatement.executeQuery()).thenReturn(mockedResultSet);
 
-            // Act and Assert
+            // Assert
             Assertions.assertThrows(DatabaseRequestException.class, () -> sut.getAllUsers());
         }
     }
