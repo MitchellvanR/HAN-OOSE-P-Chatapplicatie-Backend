@@ -7,10 +7,10 @@ getChatHistoryQuery_: SELECT inVec as iv, senderId, message, DATE(date) as date,
 getChatTypeQuery_: SELECT type FROM chats WHERE (id = ?)
 sendMessageQuery_: INSERT INTO `prolog-jdi`.messages (message, senderId, chatId, InVec) VALUES (?, ?, ?, ?)
 createChatQuery_: CALL createNewChatAndReturnId(?, ?)
-getChatIdQuery_: SELECT chatId, GROUP_CONCAT(DISTINCT userId) as users FROM `prolog-jdi`.usersInChats WHERE chatId IN (SELECT DISTINCT chatId FROM usersinchats WHERE userId = ?) AND chatId IN (SELECT id FROM chats WHERE type = "standaard" OR type = "groep") GROUP by chatId
-getUserHelplineChatIdQuery_: SELECT id FROM `prolog-jdi`.chats WHERE type = 'hulplijn' AND id IN (SELECT chatId FROM usersinchats WHERE userId = ?)
-getHelplineChatsQuery_: SELECT c.id AS 'chatId', m.message AS 'latest message', m.`date` AS 'date' FROM chats c INNER JOIN messages m ON c.id = m.chatId INNER JOIN (SELECT chatId, MAX(`date`) AS maxDate FROM messages GROUP BY chatId ) m2 ON m.chatId = m2.chatId AND m.`date` = m2.maxDate WHERE c.type = 'hulplijn'
-getStandardChatsWithUsersQuery_: SELECT COUNT(DISTINCT chatId) FROM `prolog-jdi`.usersInChats WHERE userId = ? AND chatId IN (SELECT id FROM chats WHERE `type`='standaard') AND chatId IN (SELECT chatId FROM usersinchats WHERE userId = ?)
+getChatIdQuery_: SELECT chatId, GROUP_CONCAT(DISTINCT userId) as users FROM `prolog-jdi`.usersInChats WHERE chatId IN (SELECT DISTINCT chatId FROM usersinchats WHERE userId = ?) AND chatId IN (SELECT id FROM chats WHERE type = "standard" OR type = "group") GROUP by chatId
+getUserHelplineChatIdQuery_: SELECT id FROM `prolog-jdi`.chats WHERE type = 'helpline' AND id IN (SELECT chatId FROM usersinchats WHERE userId = ?)
+getHelplineChatsQuery_: SELECT c.id AS 'chatId', m.message AS 'latest message', m.`date` AS 'date' FROM chats c INNER JOIN messages m ON c.id = m.chatId INNER JOIN (SELECT chatId, MAX(`date`) AS maxDate FROM messages GROUP BY chatId ) m2 ON m.chatId = m2.chatId AND m.`date` = m2.maxDate WHERE c.type = 'helpline'
+getStandardChatsWithUsersQuery_: SELECT COUNT(DISTINCT chatId) FROM `prolog-jdi`.usersInChats WHERE userId = ? AND chatId IN (SELECT id FROM chats WHERE `type`='standard') AND chatId IN (SELECT chatId FROM usersinchats WHERE userId = ?)
 
 # Users
 getUsersInChatQuery_: SELECT DISTINCT userId FROM usersInChats WHERE (chatId = ?)
