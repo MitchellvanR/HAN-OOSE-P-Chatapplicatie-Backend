@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1673599613130" clover="3.2.0">
+  <project timestamp="1673599613131" name="All files">
+    <metrics statements="6" coveredstatements="6" conditionals="6" coveredconditionals="1" methods="3" coveredmethods="3" elements="15" coveredelements="10" complexity="0" loc="6" ncloc="6" packages="1" files="3" classes="3"/>
+    <file name="chat.vue" path="C:\openjdk-17.0.2_windows-x64_bin\DEA\src\prolog-jdi\chatapplication\src\main\resources\src\views\chat.vue">
+      <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="1" count="15" type="cond" truecount="0" falsecount="2"/>
+      <line num="45" count="1" type="stmt"/>
+    </file>
+    <file name="chatList.vue" path="C:\openjdk-17.0.2_windows-x64_bin\DEA\src\prolog-jdi\chatapplication\src\main\resources\src\views\chatList.vue">
+      <metrics statements="2" coveredstatements="2" conditionals="3" coveredconditionals="1" methods="1" coveredmethods="1"/>
+      <line num="1" count="21" type="cond" truecount="1" falsecount="2"/>
+      <line num="78" count="1" type="stmt"/>
+    </file>
+    <file name="menu.vue" path="C:\openjdk-17.0.2_windows-x64_bin\DEA\src\prolog-jdi\chatapplication\src\main\resources\src\views\menu.vue">
+      <metrics statements="2" coveredstatements="2" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="1" count="22" type="cond" truecount="0" falsecount="1"/>
+      <line num="62" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
