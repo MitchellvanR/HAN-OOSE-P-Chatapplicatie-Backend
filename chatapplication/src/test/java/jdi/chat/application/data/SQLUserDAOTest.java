@@ -2,6 +2,7 @@ package jdi.chat.application.data;
 
 import jdi.chat.application.data.dto.UserDTO;
 import jdi.chat.application.data.dto.UsersDTO;
+import jdi.chat.application.data.exceptions.DatabaseRequestException;
 import jdi.chat.application.util.files.Queries;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,6 +56,34 @@ class SQLUserDAOTest {
                 mockedStaticSQLConnection.verify(SQLConnection::connectToDatabase);
                 Assertions.assertEquals(userId, userResult.getId());
             }
+        }
+    }
+
+    @Test
+    void testGetAllUsersWithException() throws SQLException{
+        String statement = "TestQuery";
+        String userId = "123";
+
+        try(MockedStatic<Queries> mockedStaticQueries = Mockito.mockStatic(Queries.class)) {
+            Queries mockedQueries = Mockito.mock(Queries.class);
+
+            Mockito.when(mockedQueries.getQuery("getUsersQuery")).thenReturn(statement);
+
+            mockedStaticQueries.when(Queries::getInstance).thenReturn(mockedQueries);
+
+            Connection mockedConnection = Mockito.mock(Connection.class);
+            PreparedStatement mockedPreparedStatement = Mockito.mock(PreparedStatement.class);
+            ResultSet mockedResultSet = Mockito.mock(ResultSet.class);
+            SQLConnection.setConnection(mockedConnection);
+
+
+            Mockito.when(mockedConnection.prepareStatement(statement)).thenReturn(null);
+            Mockito.when(mockedResultSet.next()).thenReturn(true, false);
+            Mockito.when(mockedResultSet.getString("id")).thenReturn(userId);
+            Mockito.when(mockedPreparedStatement.executeQuery()).thenReturn(mockedResultSet);
+
+            Assertions.assertThrows(DatabaseRequestException.class, () -> sut.getAllUsers());
+
         }
     }
 }
