@@ -1,14 +1,52 @@
-// ws staat voor WebSocket, maar ws is geïnstalleerd dus deze naam kan niet aangepast worden
 const ws = require('ws');
 
 const WebSocketServer = new ws.Server({port: 443});
 
-WebSocketServer.on('connection', client => {
-    client.on('message', (message, isBinary) => {
-        [...WebSocketServer.clients]
-            .filter(Clients => Clients !== client)
-            .forEach(Clients => Clients.send(isBinary ? message.toString() : message));
-    });
+const connections = [];
+const chats = [];
+
+WebSocketServer.on('connection', (socket, req) => {
+    onConnection(socket, req);
+    socket.on('message', body => { onMessage(socket, body, req) });
 });
 
-module.exports = WebSocketServer;
+const onConnection = (socket, req) => {
+    const reqUrl = new URL('ws://localhost:443' + req.url);
+    const id = reqUrl.searchParams.get('id');
+    const chatId = reqUrl.searchParams.get('chatId');
+    const users = reqUrl.searchParams.get('users');
+
+    const usersInChat = users.split(",");
+
+    connections.push({'id': id, 'socket': socket});
+    chats.push({'id': chatId, 'users': usersInChat});
+}
+
+const onMessage = (socket, body, req) => {
+    const reqUrl = new URL('ws://localhost:443' + req.url);
+    const chatId = reqUrl.searchParams.get('chatId');
+    getReceivingWebSockets(chatId)
+        .filter(clients => clients !== socket)
+        .forEach(clients => clients.send(body));
+}
+
+const getReceivingWebSockets = chatId => {
+    let receivingUsers = []
+
+    for (i = 0; i < chats.length; i++) {
+        if (chats[i].id === chatId) {
+            receivingUsers = chats[i].users;
+        }
+    }
+
+    let receivingSockets = [];
+    connections.forEach(connection => {
+        for (let i = 0; i < receivingUsers.length; i++) {
+            if (connection.id === receivingUsers[i]) {
+                receivingSockets.push(connection.socket);
+            }
+        }
+    })
+    console.log(receivingSockets.length);
+    return receivingSockets;
+}

@@ -29,4 +29,25 @@ public class SQLUserDAO implements IUserDAO {
             }
         }
     }
+
+    @Override
+    public UsersDTO getUsersFromChat(String chatId) throws SQLException {
+        SQLConnection.connectToDatabase();
+        String sql = Queries.getInstance().getQuery("getUsersInChatQuery");
+        ResultSet resultSet = null;
+        try (PreparedStatement statement = SQLConnection.connection.prepareStatement(sql)) {
+            if (statement == null) { throw new DatabaseRequestException(); }
+            statement.setString(1, chatId);
+            resultSet = statement.executeQuery();
+            ArrayList<UserDTO> usersInChat = new ArrayList<>();
+            while (resultSet.next()) {
+                usersInChat.add(formatUser(resultSet.getString("userId")));
+            }
+            return new UsersDTO(usersInChat);
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+        }
+    }
 }

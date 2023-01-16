@@ -7,7 +7,10 @@ import java.sql.SQLException;
 public interface IUserDAO {
     UsersDTO getAllUsers() throws SQLException;
 
+    UsersDTO getUsersFromChat(String chatId) throws SQLException;
+
     default UserDTO formatUser(String id) {
         return new UserDTO(id);
     }
+
 }
