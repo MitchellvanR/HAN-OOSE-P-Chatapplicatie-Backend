@@ -25,7 +25,7 @@ class SQLUserDAOTest {
     }
 
     @Test
-    void getAllUsers() throws SQLException  {
+    void testAllUsers() throws SQLException  {
         String statement = "TestQuery";
         String userId = "123";
 
