@@ -148,7 +148,7 @@ public class SQLChatDAO implements IChatDAO {
                         users.add(user);
                     }
                 }
-                chats.add(formatChatDTO(chat, users));
+                chats.add(formatChatDTOWithoutType(chat, users));
             }
             return chats;
         } catch (Exception e) {
@@ -228,7 +228,7 @@ public class SQLChatDAO implements IChatDAO {
 
             ArrayList<ChatDTO> helplineChats = new ArrayList<>();
             while(resultSet.next()){
-                helplineChats.add(formatChat(
+                helplineChats.add(formatChatDTOWithoutTypeAndUsers(
                         resultSet.getString("chatId")
                 ));
             }

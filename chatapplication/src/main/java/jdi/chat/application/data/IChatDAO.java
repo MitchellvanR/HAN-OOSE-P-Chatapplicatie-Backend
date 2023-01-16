@@ -18,11 +18,11 @@ public interface IChatDAO {
         return new MessageDTO(senderId, content, time, iv);
     }
 
-    default ChatDTO formatChatDTO(String chatId, List<String> users){
+    default ChatDTO formatChatDTOWithoutType(String chatId, List<String> users){
         return new ChatDTO(chatId, users);
     }
 
-    default ChatDTO formatChat(String chatId) {
+    default ChatDTO formatChatDTOWithoutTypeAndUsers(String chatId) {
         return new ChatDTO(chatId);
     }
 
