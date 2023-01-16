@@ -23,7 +23,7 @@ class SQLUserDAOTest {
     }
 
     @Test
-    void testAllUsers() throws SQLException  {
+    void getAllUsersSuccessTest() throws SQLException  {
 
         // Arrange
         String statement = "TestQuery";
@@ -56,7 +56,7 @@ class SQLUserDAOTest {
     }
 
     @Test
-    void testGetAllUsersWithException() throws SQLException{
+    void getAllUsersSQLExceptionTest() throws SQLException{
 
         // Arrange
         String statement = "TestQuery";
