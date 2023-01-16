@@ -50,10 +50,10 @@ public class ChatController {
         Chat chat = openChat(chatId);
         chat.defineChatType();
         String chatType = chat.getChatType();
-        if ("standaard".equals(chatType)){
+        if ("standard".equals(chatType)){
             ArrayList<String> users = chat.getUsers();
             Chat groupChat = createNewChat("0");
-            groupChat.addChatToDatabase(users.get(0), "groep");
+            groupChat.addChatToDatabase(users.get(0), "group");
             groupChat.addUserToChat(users.get(1));
             groupChat.addUserToChat(userId);
         } else {
@@ -66,7 +66,7 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
-        this.createChatInDatabase("standaard", userId, otherUserId);
+        this.createChatInDatabase("standard", userId, otherUserId);
         return Response.ok().build();
     }
 
@@ -75,7 +75,7 @@ public class ChatController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addHelplineChatToDatabase(@PathParam("userId") String userId, @PathParam("currentUser") String otherUserId){
-        this.createChatInDatabase("hulplijn", userId, otherUserId);
+        this.createChatInDatabase("helpline", userId, otherUserId);
         return Response.ok().build();
     }
 

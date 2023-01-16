@@ -46,7 +46,7 @@ class ChatControllerTest {
         userlist.add("1");
         userlist.add("2");
         chatIdList.add("1");
-        chatType = "standaard";
+        chatType = "standard";
         chatList.add(mockedChat);
         sut.setChats(chatList);
 
